@@ -1,6 +1,6 @@
 export default function Hero() {
   return (
-    <section className="relative min-h-screen bg-black text-white overflow-hidden">
+    <section id="hero" className="relative min-h-screen bg-black text-white overflow-hidden">
       {/* Scrolling Background Text */}
       <div className="absolute inset-0 flex items-center justify-center overflow-hidden opacity-5">
         <div className="animate-slide whitespace-nowrap text-[200px] font-medium tracking-tight">
