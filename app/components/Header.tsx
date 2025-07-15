@@ -1,91 +1,246 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('');
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  const smoothScrollTo = (elementId: string) => {
-    const element = document.getElementById(elementId);
-    if (element) {
-      const headerOffset = 80; // Account for fixed header
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+  // Scroll-based active section detection
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      
+      // If we're very close to top, no active section
+      if (scrollTop < 100) {
+        setActiveSection('');
+        return;
+      }
+      
+      const sections = ['projects', 'services', 'investments', 'about', 'contact'];
+      let currentSection = '';
+      
+      // Check each section to find which one is currently in view
+      for (const sectionId of sections) {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          const headerOffset = 80;
+          
+          // A section is considered active if:
+          // 1. Its top is above the middle of the screen (accounting for header)
+          // 2. Its bottom is below the middle of the screen
+          const sectionTop = rect.top + window.pageYOffset;
+          const sectionBottom = rect.bottom + window.pageYOffset;
+          const currentScrollWithOffset = scrollTop + headerOffset + (window.innerHeight * 0.3);
+          
+          if (sectionTop <= currentScrollWithOffset && sectionBottom > currentScrollWithOffset) {
+            currentSection = sectionId;
+            break;
+          }
+        }
+      }
+      
+      setActiveSection(currentSection);
+    };
 
+    // Initial check
+    handleScroll();
+    
+    // Add scroll listener with throttling
+    let ticking = false;
+    const throttledScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          handleScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener('scroll', throttledScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', throttledScroll);
+    };
+  }, []);
+
+  const smoothScrollTo = (elementId: string) => {
+    if (elementId === 'top') {
+      // Scroll to the very top
       window.scrollTo({
-        top: offsetPosition,
+        top: 0,
         behavior: 'smooth'
       });
+      setActiveSection('');
+    } else {
+      const element = document.getElementById(elementId);
+      if (element) {
+        const headerOffset = 80;
+        const elementPosition = element.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+        
+        setActiveSection(elementId);
+      }
     }
     setIsMenuOpen(false);
   };
 
   return (
-    <header className="fixed w-full top-8 z-50">
-      <div className="w-full px-4 md:px-6 lg:px-8">
-        <div className="flex items-center h-8 sm:h-9 md:h-10 lg:h-12">
+    <header className="fixed w-full top-2 sm:top-4 md:top-6 lg:top-8 z-50">
+      <div className="w-full px-3 sm:px-4 md:px-5 lg:px-6">
+        <div className="flex items-center h-12 sm:h-14 md:h-15 lg:h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-1 text-sm sm:text-base md:text-lg lg:text-xl font-medium">
-         
+          <Link href="/" onClick={() => smoothScrollTo('top')} className="flex items-center space-x-1 text-lg font-medium cursor-pointer hover:opacity-80 transition-opacity">
+            
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex flex-1 justify-center items-center">
-            <div className="w-1.5 h-1.5 md:w-2 md:h-2 lg:w-2.5 lg:h-2.5 xl:w-3 xl:h-3 bg-[#FF4D00] rounded-full mr-1.5 md:mr-2 lg:mr-3" />
-            <nav className="bg-white rounded-full pl-3 pr-0 md:pl-5 md:pr-0 lg:pl-6 lg:pr-0 xl:pl-5 xl:pr-1 py-3 md:py-4 lg:py-5 xl:py-1 flex items-center space-x-3 md:space-x-5 lg:space-x-6 xl:space-x-10">
-              <button onClick={() => smoothScrollTo('work')} className="text-[10px] md:text-xs lg:text-sm xl:text-[14px] font-medium group relative">
-                <span className="inline-block px-0.5 md:px-1 lg:px-1.5">
+          <div className="hidden md:flex flex-1 justify-center items-center relative">
+            {/* Navigation with individual button backgrounds */}
+            <nav className="bg-white rounded-full pl-0.5 sm:pl-1 md:pl-1 lg:pl-1.5 pr-1 py-0.5 sm:py-0.5 md:py-1 lg:py-1 flex items-center space-x-3 sm:space-x-4 md:space-x-5 lg:space-x-6 relative">
+              
+              {/* Animated dot that moves horizontally */}
+              <div 
+                className={`absolute w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 lg:w-3.5 lg:h-3.5 xl:w-4 xl:h-4 bg-[#FF4D00] rounded-full transition-all duration-500 ease-in-out transform top-1/2 -translate-y-1/2 ${
+                  !activeSection ? 'opacity-100 scale-100 -left-6 sm:-left-7 md:-left-8 lg:-left-9 xl:-left-10' :
+                  activeSection === 'projects' ? 'opacity-100 scale-100 left-4 sm:left-5 md:left-6 lg:left-8' :
+                  activeSection === 'services' ? 'opacity-100 scale-100 left-20 sm:left-24 md:left-28 lg:left-32' :
+                  activeSection === 'investments' ? 'opacity-100 scale-100 left-36 sm:left-44 md:left-52 lg:left-60' :
+                  activeSection === 'about' ? 'opacity-100 scale-100 left-60 sm:left-72 md:left-84 lg:left-96' :
+                  activeSection === 'contact' ? 'opacity-100 scale-100 left-72 sm:left-88 md:left-104 lg:left-120' :
+                  'opacity-100 scale-100 -left-6 sm:-left-7 md:-left-8 lg:-left-9 xl:-left-10'
+                }`}
+              />
+              
+              <button 
+                onClick={() => smoothScrollTo('projects')} 
+                className={`text-xs sm:text-sm md:text-sm lg:text-base font-medium group relative transition-all duration-500 px-2 py-2 sm:py-2.5 md:py-2.5 lg:py-3 rounded-full ${
+                  activeSection === 'projects' 
+                    ? 'bg-[#FF4D00] text-white scale-105' 
+                    : ''
+                }`}
+              >
+                <span className="inline-block px-1 sm:px-1.5 md:px-1.5 lg:px-2">
                   <span className="relative">
-                    <span className="inline-block transition-all duration-300 group-hover:opacity-0 group-hover:-translate-y-1.5">Projects</span>
-                    <span className="absolute top-0 left-0 transition-all duration-300 translate-y-full opacity-0 text-[#FF4D00] group-hover:-translate-y-0.5 group-hover:opacity-100">Projects</span>
+                    <span className={`inline-block transition-all duration-300 ${activeSection === 'projects' ? '' : 'group-hover:opacity-0 group-hover:-translate-y-1.5'}`}>Projects</span>
+                    {activeSection !== 'projects' && (
+                      <span className="absolute top-0 left-0 transition-all duration-300 translate-y-full opacity-0 text-[#FF4D00] group-hover:-translate-y-0.5 group-hover:opacity-100">Projects</span>
+                    )}
                   </span>
-                  <span className="absolute -left-0 -top-1 md:-top-1.5 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-1.5 text-[#FF4D00]">(</span>
-                  <span className="absolute -right-0 -top-1 md:-top-1.5 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-1.5 text-[#FF4D00]">)</span>
+                  {activeSection !== 'projects' && (
+                    <>
+                      <span className="absolute left-1 -top-1 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-4 text-[#FF4D00]">(</span>
+                      <span className="absolute right-1 -top-1 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-4 text-[#FF4D00]">)</span>
+                    </>
+                  )}
                 </span>
               </button>
-              <button onClick={() => smoothScrollTo('services')} className="text-[10px] md:text-xs lg:text-sm xl:text-[14px] font-medium group relative">
-                <span className="inline-block px-0.5 md:px-1 lg:px-1.5">
+              
+              <button 
+                onClick={() => smoothScrollTo('services')} 
+                className={`text-xs sm:text-sm md:text-sm lg:text-base font-medium group relative transition-all duration-500 px-2 py-2 sm:py-2.5 md:py-2.5 lg:py-3 rounded-full ${
+                  activeSection === 'services' 
+                    ? 'bg-[#FF4D00] text-white scale-105' 
+                    : ''
+                }`}
+              >
+                <span className="inline-block px-1 sm:px-1.5 md:px-1.5 lg:px-2">
                   <span className="relative">
-                    <span className="inline-block transition-all duration-300 group-hover:opacity-0 group-hover:-translate-y-1.5">Services</span>
-                    <span className="absolute top-0 left-0 transition-all duration-300 translate-y-full opacity-0 text-[#FF4D00] group-hover:-translate-y-0.5 group-hover:opacity-100">Services</span>
+                    <span className={`inline-block transition-all duration-300 ${activeSection === 'services' ? '' : 'group-hover:opacity-0 group-hover:-translate-y-1.5'}`}>Services</span>
+                    {activeSection !== 'services' && (
+                      <span className="absolute top-0 left-0 transition-all duration-300 translate-y-full opacity-0 text-[#FF4D00] group-hover:-translate-y-0.5 group-hover:opacity-100">Services</span>
+                    )}
                   </span>
-                  <span className="absolute -left-0 -top-1 md:-top-1.5 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-1.5 text-[#FF4D00]">(</span>
-                  <span className="absolute -right-0 -top-1 md:-top-1.5 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-1.5 text-[#FF4D00]">)</span>
+                  {activeSection !== 'services' && (
+                    <>
+                      <span className="absolute left-1 -top-1 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-4 text-[#FF4D00]">(</span>
+                      <span className="absolute right-1 -top-1 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-4 text-[#FF4D00]">)</span>
+                    </>
+                  )}
                 </span>
               </button>
-              <button onClick={() => smoothScrollTo('approach')} className="text-[10px] md:text-xs lg:text-sm xl:text-[14px] font-medium group relative">
-                <span className="inline-block px-0.5 md:px-1 lg:px-1.5">
+              
+              <button 
+                onClick={() => smoothScrollTo('investments')} 
+                className={`text-xs sm:text-sm md:text-sm lg:text-base font-medium group relative transition-all duration-500 px-2 py-2 sm:py-2.5 md:py-2.5 lg:py-3 rounded-full ${
+                  activeSection === 'investments' 
+                    ? 'bg-[#FF4D00] text-white scale-105' 
+                    : ''
+                }`}
+              >
+                <span className="inline-block px-1 sm:px-1.5 md:px-1.5 lg:px-2">
                   <span className="relative">
-                    <span className="inline-block transition-all duration-300 group-hover:opacity-0 group-hover:-translate-y-1.5">Investments</span>
-                    <span className="absolute top-0 left-0 transition-all duration-300 translate-y-full opacity-0 text-[#FF4D00] group-hover:-translate-y-0.5 group-hover:opacity-100">Investments</span>
+                    <span className={`inline-block transition-all duration-300 ${activeSection === 'investments' ? '' : 'group-hover:opacity-0 group-hover:-translate-y-1.5'}`}>Investments</span>
+                    {activeSection !== 'investments' && (
+                      <span className="absolute top-0 left-0 transition-all duration-300 translate-y-full opacity-0 text-[#FF4D00] group-hover:-translate-y-0.5 group-hover:opacity-100">Investments</span>
+                    )}
                   </span>
-                  <span className="absolute -left-0 -top-1 md:-top-1.5 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-1.5 text-[#FF4D00]">(</span>
-                  <span className="absolute -right-0 -top-1 md:-top-1.5 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-1.5 text-[#FF4D00]">)</span>
+                  {activeSection !== 'investments' && (
+                    <>
+                      <span className="absolute left-1 -top-1 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-4 text-[#FF4D00]">(</span>
+                      <span className="absolute right-1 -top-1 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-4 text-[#FF4D00]">)</span>
+                    </>
+                  )}
                 </span>
               </button>
-              <button onClick={() => smoothScrollTo('approach')} className="text-[10px] md:text-xs lg:text-sm xl:text-[14px] font-medium group relative">
-                <span className="inline-block px-0.5 md:px-1 lg:px-1.5">
+              
+              <button 
+                onClick={() => smoothScrollTo('about')} 
+                className={`text-xs sm:text-sm md:text-sm lg:text-base font-medium group relative transition-all duration-500 px-2 py-2 sm:py-2.5 md:py-2.5 lg:py-3 rounded-full ${
+                  activeSection === 'about' 
+                    ? 'bg-[#FF4D00] text-white scale-105' 
+                    : ''
+                }`}
+              >
+                <span className="inline-block px-1 sm:px-1.5 md:px-1.5 lg:px-2">
                   <span className="relative">
-                    <span className="inline-block transition-all duration-300 group-hover:opacity-0 group-hover:-translate-y-1.5">About</span>
-                    <span className="absolute top-0 left-0 transition-all duration-300 translate-y-full opacity-0 text-[#FF4D00] group-hover:-translate-y-0.5 group-hover:opacity-100">About</span>
+                    <span className={`inline-block transition-all duration-300 ${activeSection === 'about' ? '' : 'group-hover:opacity-0 group-hover:-translate-y-1.5'}`}>About</span>
+                    {activeSection !== 'about' && (
+                      <span className="absolute top-0 left-0 transition-all duration-300 translate-y-full opacity-0 text-[#FF4D00] group-hover:-translate-y-0.5 group-hover:opacity-100">About</span>
+                    )}
                   </span>
-                  <span className="absolute -left-0 -top-1 md:-top-1.5 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-1.5 text-[#FF4D00]">(</span>
-                  <span className="absolute -right-0 -top-1 md:-top-1.5 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-1.5 text-[#FF4D00]">)</span>
+                  {activeSection !== 'about' && (
+                    <>
+                      <span className="absolute left-1 -top-1 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-4 text-[#FF4D00]">(</span>
+                      <span className="absolute right-1 -top-1 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-4 text-[#FF4D00]">)</span>
+                    </>
+                  )}
                 </span>
               </button>
-              <button onClick={() => smoothScrollTo('contact')} className="text-[10px] md:text-xs lg:text-sm xl:text-[14px] font-medium group relative bg-[#E5E5E5] py-5 md:py-6 lg:py-2.5 rounded-full">
-                <span className="inline-block px-1 md:px-1 lg:px-5">
+              
+              <button 
+                onClick={() => smoothScrollTo('contact')} 
+                className={`text-xs sm:text-sm md:text-sm lg:text-base font-medium group relative transition-all duration-500 px-1.5 sm:px-2 md:px-2.5 lg:px-3 py-2 sm:py-2.5 md:py-3 lg:py-3.5 rounded-full ${
+                  activeSection === 'contact' 
+                    ? 'bg-[#FF4D00] text-white scale-105' 
+                    : 'bg-[#E5E5E5]'
+                }`}
+              >
+                <span className="inline-block px-1.5 sm:px-2 md:px-2.5 lg:px-3">
                   <span className="relative">
-                    <span className="inline-block transition-all duration-300 group-hover:opacity-0 group-hover:-translate-y-1.5">Contact</span>
-                    <span className="absolute top-0 left-0 transition-all duration-300 translate-y-full opacity-0 text-[#FF4D00] group-hover:-translate-y-0.5 group-hover:opacity-100">Contact</span>
+                    <span className={`inline-block transition-all duration-300 ${activeSection === 'contact' ? '' : 'group-hover:opacity-0 group-hover:-translate-y-1.5'}`}>Contact</span>
+                    {activeSection !== 'contact' && (
+                      <span className="absolute top-0 left-0 transition-all duration-300 translate-y-full opacity-0 text-[#FF4D00] group-hover:-translate-y-0.5 group-hover:opacity-100">Contact</span>
+                    )}
                   </span>
-                  <span className="absolute left-3 top-0 md:top-0 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-2 md:group-hover:translate-y-2.5 text-[#FF4D00]">(</span>
-                  <span className="absolute right-3 top-0 md:top-0 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-2 md:group-hover:translate-y-2.5 text-[#FF4D00]">)</span>
+                  {activeSection !== 'contact' && (
+                    <>
+                      <span className="absolute -left-1.5 sm:-left-1.5 md:-left-2 lg:left-4 top-1/2 -translate-y-1/2 opacity-0 transition-all duration-300 group-hover:opacity-100 text-[#FF4D00]">(</span>
+                      <span className="absolute -right-1.5 sm:-right-1.5 md:-right-2 lg:right-4 top-1/2 -translate-y-1/2 opacity-0 transition-all duration-300 group-hover:opacity-100 text-[#FF4D00]">)</span>
+                    </>
+                  )}
                 </span>
               </button>
             </nav>
@@ -106,10 +261,16 @@ export default function Header() {
         </div>
 
         {/* Mobile Menu */}
-        <div className={`md:hidden ${isMenuOpen ? 'block' : 'hidden'} bg-white shadow-lg rounded-xl mt-2 p-4`}>
-          <nav className="py-3 sm:py-4 space-y-3 sm:space-y-4">
+        <div className={`md:hidden ${isMenuOpen ? 'block' : 'hidden'} bg-white shadow-lg rounded-xl mt-1 p-2`}>
+          <nav className="py-1 sm:py-2 space-y-1 sm:space-y-2">
             <button 
-              onClick={() => smoothScrollTo('work')}
+              onClick={() => smoothScrollTo('top')}
+              className="block text-base sm:text-lg font-semibold hover:text-[#FF4D00] transition-colors w-full text-left"
+            >
+              Home
+            </button>
+            <button 
+              onClick={() => smoothScrollTo('projects')}
               className="block text-base sm:text-lg font-semibold hover:text-[#FF4D00] transition-colors w-full text-left"
             >
               Projects
@@ -121,13 +282,13 @@ export default function Header() {
               Services
             </button>
             <button 
-              onClick={() => smoothScrollTo('approach')}
+              onClick={() => smoothScrollTo('investments')}
               className="block text-base sm:text-lg font-semibold hover:text-[#FF4D00] transition-colors w-full text-left"
             >
               Investments
             </button>
             <button 
-              onClick={() => smoothScrollTo('approach')}
+              onClick={() => smoothScrollTo('about')}
               className="block text-base sm:text-lg font-semibold hover:text-[#FF4D00] transition-colors w-full text-left"
             >
               About
