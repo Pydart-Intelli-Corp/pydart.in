@@ -3,13 +3,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, useInView, useAnimation } from 'framer-motion';
 
 // Types
-interface Project {
+interface Feature {
   title: string;
   description: string;
-  category: 'app' | 'platform' | 'research';
-  status: string;
-  progress: number;
-  image: string;
+  category: 'booking' | 'ai' | 'service';
+  icon: string;
+  highlights: string[];
 }
 
 // Mouse tracking hook
@@ -73,40 +72,78 @@ export default function Projects() {
     }
   };
 
-  // Project data
-  const projects: Project[] = [
+  // Feature data
+  const features: Feature[] = [
     {
-      title: "Stibe Mobile App",
-      description: "AI-powered grooming platform connecting users with trusted service providers",
-      category: "app",
-      status: "In Development",
-      progress: 75,
-      image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&h=400&fit=crop&auto=format"
+      title: "AI Booking Management",
+      description: "Experience seamless scheduling with real-time availability and smart conflict resolution",
+      category: "booking",
+      icon: "calendar",
+      highlights: [
+        "Instant Availability: See real-time open slots and book your appointment in one tap",
+        "Auto-Reminders & Rescheduling: Never miss or double-book again—Stibe handles calendar conflicts for you",
+        "Dynamic Slot Optimization: Maximizes provider availability to reduce your wait time"
+      ]
     },
     {
-      title: "Service Provider Platform",
-      description: "Comprehensive dashboard for grooming professionals",
-      category: "platform",
-      status: "In Development", 
-      progress: 65,
-      image: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=600&h=400&fit=crop&auto=format"
+      title: "Personalized AI Suggestions",
+      description: "Get tailored recommendations based on your style preferences and trending looks",
+      category: "ai", 
+      icon: "sparkles",
+      highlights: [
+        "Style Match: Our AI analyzes your past choices and local trends to recommend looks you'll love",
+        "Product Pairings: Get add-on suggestions—from premium shampoos to styling tools—that complement your service",
+        "Trend Alerts: Be the first to try hot new styles and seasonal treatments"
+      ]
     },
     {
-      title: "AI Recommendation Engine",
-      description: "Machine learning system for intelligent service matching",
-      category: "research",
-      status: "Research Phase",
-      progress: 40,
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=400&fit=crop&auto=format"
+      title: "On-Demand Services",
+      description: "Choose between salon visits or professionals who come to you, for the whole family",
+      category: "service",
+      icon: "home",
+      highlights: [
+        "Home & Salon: Choose between salon visits or professionals who come to you",
+        "Family & Pets: Book kids' haircuts, senior friendly services, and certified pet groomers all in one place",
+        "Verified Experts: Browse ratings, portfolios, and safety credentials before you book"
+      ]
     }
   ];
 
   const getCategoryColor = (category: string) => {
     switch (category) {
-      case 'app': return 'from-blue-500 to-blue-600';
-      case 'platform': return 'from-green-500 to-green-600';
-      case 'research': return 'from-purple-500 to-purple-600';
+      case 'booking': return 'from-blue-500 to-blue-600';
+      case 'ai': return 'from-purple-500 to-purple-600';
+      case 'service': return 'from-green-500 to-green-600';
       default: return 'from-teal-500 to-teal-600';
+    }
+  };
+
+  const getCategoryIcon = (icon: string) => {
+    switch (icon) {
+      case 'calendar':
+        return (
+          <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+        );
+      case 'sparkles':
+        return (
+          <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3l3.057-3L11 3l3.057 3L17 3v4l-3.057 3L11 7l-3.057 3L5 7V3z" />
+          </svg>
+        );
+      case 'home':
+        return (
+          <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+          </svg>
+        );
+      default:
+        return (
+          <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+        );
     }
   };
 
@@ -114,9 +151,9 @@ export default function Projects() {
     <section 
       ref={sectionRef}
       id="projects"
-      className="relative min-h-screen bg-gradient-to-br from-neutral-200 via-neutral-100 to-neutral-300 overflow-hidden"
+      className="relative min-h-screen bg-gradient-to-br from-neutral-200 via-neutral-100 to-neutral-300 overflow-hidden py-32 lg:py-40"
     >
-      {/* Floating orange dot */}
+      {/* Floating teal dot */}
       {isClient && (
         <motion.div
           className="absolute w-3 h-3 rounded-full bg-[#00b4ab] shadow-lg shadow-teal-500/30 pointer-events-none z-30"
@@ -157,17 +194,20 @@ export default function Projects() {
         />
       )}
 
-      <div className="relative z-20 min-h-screen flex items-center">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-8 sm:py-12 lg:py-0">
+      <div className="relative z-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          
+          {/* Header Section */}
           <motion.div 
-            className="text-center mb-12 sm:mb-16"
+            className="text-center mb-20 sm:mb-32"
             initial="hidden"
             animate={controls}
             variants={containerVariants}
           >
-            {/* Main heading */}
+            {/* Headline */}
             <motion.h2
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-neutral-900 mb-4 sm:mb-6 leading-tight tracking-tight"
+              className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-neutral-900 mb-8 leading-[0.9] tracking-tight"
+              style={{ fontFamily: 'Inter, sans-serif' }}
               variants={itemVariants}
               onMouseEnter={() => setIsHovering(true)}
               onMouseLeave={() => setIsHovering(false)}
@@ -179,7 +219,7 @@ export default function Projects() {
                 }}
                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
               >
-                Current
+                Tired of Waiting Forever
               </motion.span>
               <motion.span 
                 className="block text-[#00b4ab]"
@@ -188,128 +228,140 @@ export default function Projects() {
                 }}
                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
               >
-                Projects
+                for Your Perfect Style?
               </motion.span>
             </motion.h2>
 
-            <motion.p
-              className="text-base sm:text-lg md:text-xl text-neutral-600 max-w-3xl mx-auto leading-relaxed font-light px-4 sm:px-0"
+            {/* Subheadline */}
+            <motion.h3
+              className="text-xl sm:text-2xl lg:text-3xl font-semibold text-neutral-700 mb-8 leading-relaxed max-w-4xl mx-auto"
               variants={itemVariants}
             >
-              Building innovative solutions that transform industries through AI and thoughtful design
+              Stibe by Pydart Intelli Corp is your soon‑to‑launch AI grooming and styling companion—bringing instant bookings, personalized recommendations, and on‑demand services for you, your family, and your pets.
+            </motion.h3>
+
+            {/* Intro Paragraph */}
+            <motion.p
+              className="text-base sm:text-lg md:text-xl text-neutral-600 max-w-4xl mx-auto leading-relaxed font-light px-4 sm:px-0"
+              variants={itemVariants}
+            >
+              Stibe will launch soon! Get ready to experience seamless scheduling, smart style suggestions, and top‑rated professionals at your fingertips. Whether you need a fresh haircut, a relaxing spa treatment, or a pet grooming session, our AI‑powered platform matches you with the right expert in seconds.
             </motion.p>
           </motion.div>
 
-          {/* Projects Grid */}
+          {/* Key Features Section */}
           <motion.div 
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 px-4 sm:px-0"
+            className="mb-20"
             initial="hidden"
             animate={controls}
             variants={containerVariants}
           >
-            {projects.map((project, index) => (
-              <motion.div
-                key={index}
-                className="group relative"
-                variants={itemVariants}
-                whileHover={{ y: -5 }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >
-                <div className="bg-neutral-200/90 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-neutral-300/50 h-full">
-                  {/* Project Image */}
-                  <div className="relative h-40 sm:h-48 overflow-hidden">
-                    <img 
-                      src={project.image} 
-                      alt={project.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-                    
-                    {/* Category Badge */}
-                    <div className="absolute top-3 sm:top-4 left-3 sm:left-4">
-                      <span className={`inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-xs font-semibold text-white bg-gradient-to-r ${getCategoryColor(project.category)}`}>
-                        {project.category.toUpperCase()}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="p-4 sm:p-6">
-                    <h3 className="text-lg sm:text-xl font-bold text-neutral-800 mb-2 sm:mb-3 group-hover:text-[#00b4ab] transition-colors duration-300">
-                      {project.title}
-                    </h3>
-                    
-                    <p className="text-neutral-600 mb-3 sm:mb-4 leading-relaxed text-sm">
-                      {project.description}
-                    </p>
-
-                    {/* Status and Progress */}
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs font-medium text-neutral-700">Status:</span>
-                        <span className="text-xs text-[#00b4ab] font-semibold">{project.status}</span>
-                      </div>
-                      
-                      {/* Progress bar */}
-                      <div>
-                        <div className="flex items-center justify-between mb-1">
-                          <span className="text-xs font-medium text-neutral-700">Progress</span>
-                          <span className="text-xs font-bold text-[#00b4ab]">{project.progress}%</span>
-                        </div>
-                        <div className="w-full bg-neutral-200 rounded-full h-2">
-                          <motion.div 
-                            className={`h-2 rounded-full bg-gradient-to-r ${getCategoryColor(project.category)}`}
-                            initial={{ width: 0 }}
-                            animate={{ width: `${project.progress}%` }}
-                            transition={{ duration: 1.5, delay: index * 0.2 }}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-
-          {/* Call to Action */}
-          <motion.div 
-            className="text-center mt-16"
-            initial="hidden"
-            animate={controls}
-            variants={containerVariants}
-          >
-            <motion.div 
-              className="inline-flex gap-6"
+            <motion.h3 
+              className="text-3xl sm:text-4xl lg:text-5xl font-bold text-neutral-900 text-center mb-16 tracking-tight"
               variants={itemVariants}
             >
-              <motion.a 
-                href="#contact" 
-                className="group relative inline-flex items-center text-lg font-medium text-[#00b4ab] pb-1"
-                whileHover={{ x: 5 }}
-                transition={{ type: "spring", stiffness: 400, damping: 30 }}
+              Key Features
+            </motion.h3>
+
+            {/* Features Grid */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
+              {features.map((feature, index) => (
+                <motion.div
+                  key={index}
+                  className="group relative"
+                  variants={itemVariants}
+                  whileHover={{ y: -8 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-xl transition-all duration-500 overflow-hidden border border-neutral-200/50 h-full p-8">
+                    
+                    {/* Icon and Category */}
+                    <div className="flex items-center justify-between mb-6">
+                      <div className={`p-3 rounded-xl bg-gradient-to-r ${getCategoryColor(feature.category)} text-white`}>
+                        {getCategoryIcon(feature.icon)}
+                      </div>
+                      <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold text-white bg-gradient-to-r ${getCategoryColor(feature.category)}`}>
+                        {feature.category.toUpperCase()}
+                      </span>
+                    </div>
+
+                    {/* Title and Description */}
+                    <h4 className="text-xl sm:text-2xl font-bold text-neutral-800 mb-4 group-hover:text-[#00b4ab] transition-colors duration-300">
+                      {feature.title}
+                    </h4>
+                    
+                    <p className="text-neutral-600 mb-6 leading-relaxed">
+                      {feature.description}
+                    </p>
+
+                    {/* Highlights */}
+                    <div className="space-y-3">
+                      {feature.highlights.map((highlight, highlightIndex) => (
+                        <div key={highlightIndex} className="flex items-start gap-3">
+                          <div className="w-1.5 h-1.5 rounded-full bg-[#00b4ab] mt-2 flex-shrink-0" />
+                          <p className="text-sm text-neutral-600 leading-relaxed">
+                            <span className="font-semibold text-neutral-800">
+                              {highlight.split(':')[0]}:
+                            </span>
+                            {highlight.split(':')[1]}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Market Study & Call to Action */}
+          <motion.div 
+            className="text-center"
+            initial="hidden"
+            animate={controls}
+            variants={containerVariants}
+          >
+            {/* Market Study Section */}
+            <motion.div 
+              className="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg border border-neutral-200/50 p-8 sm:p-12 mb-12 max-w-4xl mx-auto"
+              variants={itemVariants}
+            >
+              <h4 className="text-2xl sm:text-3xl font-bold text-neutral-900 mb-4">
+                Market Study & Resources
+              </h4>
+              <p className="text-neutral-600 mb-8 leading-relaxed">
+                Curious about our industry insights? Fill out our market study and see why experts believe in Stibe's potential:
+              </p>
+              <motion.a
+                href="https://forms.gle/6cDuUXCBXqur4XuQ7"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-[#00b4ab] to-teal-600 text-white font-semibold rounded-xl hover:from-teal-600 hover:to-[#00b4ab] transition-all duration-300 shadow-lg hover:shadow-xl"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.98 }}
               >
-                <span className="relative">
-                  View All Projects
-                  <motion.div
-                    className="absolute bottom-0 left-0 h-[1px] bg-[#00b4ab]"
-                    initial={{ width: "0%" }}
-                    whileHover={{ width: "100%" }}
-                    transition={{ duration: 0.3 }}
-                  />
-                </span>
-                <svg className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                Complete the Market Study
+                <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                 </svg>
               </motion.a>
-              
+            </motion.div>
+
+            {/* Primary Calls to Action */}
+            <motion.div 
+              className="flex flex-col sm:flex-row gap-8 justify-center items-center"
+              variants={itemVariants}
+            >
               <motion.a
-                href="#contact"
+                href="https://lactosure.azurewebsites.net/api/Email/DownloadStibePdf"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="group relative inline-flex items-center text-lg font-medium text-neutral-700 pb-1"
                 whileHover={{ x: 5 }}
                 transition={{ type: "spring", stiffness: 400, damping: 30 }}
               >
                 <span className="relative">
-                  Get Involved
+                  Download Pitch Deck
                   <motion.div
                     className="absolute bottom-0 left-0 h-[1px] bg-neutral-700"
                     initial={{ width: "0%" }}
@@ -318,9 +370,40 @@ export default function Projects() {
                   />
                 </span>
                 <svg className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
               </motion.a>
+
+              <motion.button
+                onClick={() => {
+                  const element = document.getElementById('investments');
+                  if (element) {
+                    const headerOffset = 80;
+                    const elementPosition = element.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                    window.scrollTo({
+                      top: offsetPosition,
+                      behavior: 'smooth'
+                    });
+                  }
+                }}
+                className="group relative inline-flex items-center text-lg font-medium text-[#00b4ab] pb-1"
+                whileHover={{ x: 5 }}
+                transition={{ type: "spring", stiffness: 400, damping: 30 }}
+              >
+                <span className="relative">
+                  Investment Opportunities
+                  <motion.div
+                    className="absolute bottom-0 left-0 h-[1px] bg-[#00b4ab]"
+                    initial={{ width: "0%" }}
+                    whileHover={{ width: "100%" }}
+                    transition={{ duration: 0.3 }}
+                  />
+                </span>
+                <svg className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                </svg>
+              </motion.button>
             </motion.div>
           </motion.div>
         </div>

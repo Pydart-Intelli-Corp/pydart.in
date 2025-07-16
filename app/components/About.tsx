@@ -251,8 +251,19 @@ export default function About() {
               className="flex flex-col sm:inline-flex sm:flex-row gap-4 sm:gap-6"
               variants={itemVariants}
             >
-              <motion.a 
-                href="#contact" 
+              <motion.button 
+                onClick={() => {
+                  const element = document.getElementById('contact');
+                  if (element) {
+                    const headerOffset = 80;
+                    const elementPosition = element.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                    window.scrollTo({
+                      top: offsetPosition,
+                      behavior: 'smooth'
+                    });
+                  }
+                }}
                 className="group relative inline-flex items-center justify-center sm:justify-start text-base sm:text-lg font-medium text-[#00b4ab] pb-1"
                 whileHover={{ x: 5 }}
                 transition={{ type: "spring", stiffness: 400, damping: 30 }}
@@ -269,10 +280,21 @@ export default function About() {
                 <svg className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
-              </motion.a>
+              </motion.button>
               
-              <motion.a
-                href="#projects"
+              <motion.button
+                onClick={() => {
+                  const element = document.getElementById('projects');
+                  if (element) {
+                    const headerOffset = 80;
+                    const elementPosition = element.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                    window.scrollTo({
+                      top: offsetPosition,
+                      behavior: 'smooth'
+                    });
+                  }
+                }}
                 className="group relative inline-flex items-center justify-center sm:justify-start text-base sm:text-lg font-medium text-neutral-700 pb-1"
                 whileHover={{ x: 5 }}
                 transition={{ type: "spring", stiffness: 400, damping: 30 }}
@@ -289,7 +311,7 @@ export default function About() {
                 <svg className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
-              </motion.a>
+              </motion.button>
             </motion.div>
           </motion.div>
         </div>

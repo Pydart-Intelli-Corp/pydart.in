@@ -18,70 +18,136 @@ export default function Footer() {
             <h4 className="text-white text-base font-bold mb-4 tracking-wider">Our Services</h4>
             <ul className="space-y-3">
               <li>
-                <Link 
-                  href="#services" 
-                  className="text-gray-300 hover:text-[#00b4ab] transition-colors duration-300 text-sm flex items-center group"
+                <button 
+                  onClick={() => {
+                    const element = document.getElementById('services');
+                    if (element) {
+                      const headerOffset = 80;
+                      const elementPosition = element.getBoundingClientRect().top;
+                      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                      window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                      });
+                    }
+                  }}
+                  className="text-gray-300 hover:text-[#00b4ab] transition-colors duration-300 text-sm flex items-center group w-full text-left"
                 >
                   <svg className="w-4 h-4 mr-2 text-gray-400 group-hover:text-[#00b4ab]" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
                   </svg>
                   Website Development
-                </Link>
+                </button>
               </li>
               <li>
-                <Link 
-                  href="#services" 
-                  className="text-gray-300 hover:text-[#00b4ab] transition-colors duration-300 text-sm flex items-center group"
+                <button 
+                  onClick={() => {
+                    const element = document.getElementById('services');
+                    if (element) {
+                      const headerOffset = 80;
+                      const elementPosition = element.getBoundingClientRect().top;
+                      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                      window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                      });
+                    }
+                  }}
+                  className="text-gray-300 hover:text-[#00b4ab] transition-colors duration-300 text-sm flex items-center group w-full text-left"
                 >
                   <svg className="w-4 h-4 mr-2 text-gray-400 group-hover:text-[#00b4ab]" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
                   </svg>
                   iOS & Android Development
-                </Link>
+                </button>
               </li>
               <li>
-                <Link 
-                  href="#services" 
-                  className="text-gray-300 hover:text-[#00b4ab] transition-colors duration-300 text-sm flex items-center group"
+                <button 
+                  onClick={() => {
+                    const element = document.getElementById('services');
+                    if (element) {
+                      const headerOffset = 80;
+                      const elementPosition = element.getBoundingClientRect().top;
+                      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                      window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                      });
+                    }
+                  }}
+                  className="text-gray-300 hover:text-[#00b4ab] transition-colors duration-300 text-sm flex items-center group w-full text-left"
                 >
                   <svg className="w-4 h-4 mr-2 text-gray-400 group-hover:text-[#00b4ab]" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M3 4a1 1 0 011-1h4a1 1 0 010 2H6.414l2.293 2.293a1 1 0 11-1.414 1.414L5 6.414V8a1 1 0 11-2 0V4zm9 1a1 1 0 010-2h4a1 1 0 011 1v4a1 1 0 11-2 0V6.414l-2.293 2.293a1 1 0 11-1.414-1.414L13.586 5H12zm-9 7a1 1 0 112 0v1.586l2.293-2.293a1 1 0 111.414 1.414L6.414 15H8a1 1 0 110 2H4a1 1 0 01-1-1v-4zm13-1a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 110-2h1.586l-2.293-2.293a1 1 0 111.414-1.414L15 13.586V12a1 1 0 011-1z" clipRule="evenodd" />
                   </svg>
                   Embedded System Development
-                </Link>
+                </button>
               </li>
               <li>
-                <Link 
-                  href="#services" 
-                  className="text-gray-300 hover:text-[#00b4ab] transition-colors duration-300 text-sm flex items-center group"
+                <button 
+                  onClick={() => {
+                    const element = document.getElementById('services');
+                    if (element) {
+                      const headerOffset = 80;
+                      const elementPosition = element.getBoundingClientRect().top;
+                      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                      window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                      });
+                    }
+                  }}
+                  className="text-gray-300 hover:text-[#00b4ab] transition-colors duration-300 text-sm flex items-center group w-full text-left"
                 >
                   <svg className="w-4 h-4 mr-2 text-gray-400 group-hover:text-[#00b4ab]" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M5.5 16a3.5 3.5 0 01-.369-6.98 4 4 0 117.753-1.977A4.5 4.5 0 1113.5 16h-8z" />
                   </svg>
                   Cloud Solutions
-                </Link>
+                </button>
               </li>
               <li>
-                <Link 
-                  href="#services" 
-                  className="text-gray-300 hover:text-[#00b4ab] transition-colors duration-300 text-sm flex items-center group"
+                <button 
+                  onClick={() => {
+                    const element = document.getElementById('services');
+                    if (element) {
+                      const headerOffset = 80;
+                      const elementPosition = element.getBoundingClientRect().top;
+                      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                      window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                      });
+                    }
+                  }}
+                  className="text-gray-300 hover:text-[#00b4ab] transition-colors duration-300 text-sm flex items-center group w-full text-left"
                 >
                   <svg className="w-4 h-4 mr-2 text-gray-400 group-hover:text-[#00b4ab]" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
                   </svg>
                   IoT Solutions
-                </Link>
+                </button>
               </li>
               <li>
-                <Link 
-                  href="#services" 
-                  className="text-gray-300 hover:text-[#00b4ab] transition-colors duration-300 text-sm flex items-center group"
+                <button 
+                  onClick={() => {
+                    const element = document.getElementById('services');
+                    if (element) {
+                      const headerOffset = 80;
+                      const elementPosition = element.getBoundingClientRect().top;
+                      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                      window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                      });
+                    }
+                  }}
+                  className="text-gray-300 hover:text-[#00b4ab] transition-colors duration-300 text-sm flex items-center group w-full text-left"
                 >
                   <svg className="w-4 h-4 mr-2 text-gray-400 group-hover:text-[#00b4ab]" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                   AI Integration
-                </Link>
+                </button>
               </li>
             </ul>
           </div>

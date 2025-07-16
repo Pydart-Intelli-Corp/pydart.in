@@ -272,7 +272,7 @@ export default function Hero() {
                   transition={{ type: "spring", stiffness: 400, damping: 30 }}
                 >
                   <span className="relative">
-                    What We Build
+                    What We Do ?
                     <motion.div
                       className="absolute bottom-0 left-0 h-[1px] bg-neutral-700"
                       initial={{ width: "0%" }}
