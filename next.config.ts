@@ -22,11 +22,15 @@ const nextConfig: NextConfig = {
     ];
   },
 
-  // Image domains (if you plan to use external images)
+  // Image configuration for external images
   images: {
-    domains: [
-      'images.unsplash.com',
-      // Add domains for external images if needed
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+        pathname: '/**',
+      },
+      // Add more remote patterns if needed
     ],
   },
 };

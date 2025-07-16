@@ -117,9 +117,9 @@ export default function Header() {
                   !activeSection ? 'opacity-100 scale-100 -left-6 sm:-left-7 md:-left-8 lg:-left-9 xl:-left-10' :
                   activeSection === 'projects' ? 'opacity-100 scale-100 left-4 sm:left-5 md:left-6 lg:left-8' :
                   activeSection === 'services' ? 'opacity-100 scale-100 left-20 sm:left-24 md:left-28 lg:left-32' :
-                  activeSection === 'investments' ? 'opacity-100 scale-100 left-36 sm:left-44 md:left-52 lg:left-60' :
-                  activeSection === 'about' ? 'opacity-100 scale-100 left-60 sm:left-72 md:left-84 lg:left-96' :
-                  activeSection === 'contact' ? 'opacity-100 scale-100 left-72 sm:left-88 md:left-104 lg:left-120' :
+                  activeSection === 'investments' ? 'opacity-100 scale-100 left-44 sm:left-52 md:left-60 lg:left-72' :
+                  activeSection === 'about' ? 'opacity-100 scale-100 left-72 sm:left-84 md:left-96 lg:left-112' :
+                  activeSection === 'contact' ? 'opacity-100 scale-100 left-88 sm:left-104 md:left-120 lg:left-140' :
                   'opacity-100 scale-100 -left-6 sm:-left-7 md:-left-8 lg:-left-9 xl:-left-10'
                 }`}
               />

@@ -1,0 +1,52 @@
+'use client';
+
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
+import Link from 'next/link';
+
+interface Service {
+  title: string;
+  description: string;
+  icon: string;
+  image: string;
+}
+
+const services: Service[] = [
+  {
+    title: "Website Development",
+    description: "Custom-built, responsive websites that deliver exceptional user experiences across all devices. From corporate sites to complex web applications.",
+    icon: "/assets/icons/icon_development.png",
+    image: "https://images.unsplash.com/photo-1581276879432-15e50529f34b?q=80&w=2070&auto=format&fit=crop"
+  },
+  {
+    title: "iOS & Android Development",
+    description: "Native and cross-platform mobile applications that provide seamless experiences for your users on any device.",
+    icon: "/assets/icons/icon_ui.png",
+    image: "https://images.unsplash.com/photo-1565538810643-b5bdb714032a?q=80&w=1974&auto=format&fit=crop"
+  },
+  {
+    title: "UI/UX Design",
+    description: "Digital product experiences that engage, convert, and keep users coming back. Every interface is crafted to bridge user needs with business goals.",
+    icon: "/assets/icons/creativity.png",
+    image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=2000&auto=format&fit=crop"
+  },
+  {
+    title: "Digital Marketing",
+    description: "Strategic digital marketing solutions to increase your brand visibility, drive traffic, and convert prospects into customers.",
+    icon: "/assets/icons/map.png",
+    image: "https://images.unsplash.com/photo-1542744094-3a31f272c490?q=80&w=2070&auto=format&fit=crop"
+  },
+  {
+    title: "Graphic Design",
+    description: "Eye-catching visual designs that communicate your brand message effectively and leave a lasting impression on your audience.",
+    icon: "/assets/icons/inspiration.png",
+    image: "https://images.unsplash.com/photo-1572044162444-ad60f128bdea?q=80&w=2070&auto=format&fit=crop"
+  },
+  {
+    title: "Social Media Management",
+    description: "Comprehensive social media strategies to build your online presence, engage with your audience, and drive meaningful business results.",
+    icon: "/assets/icons/customer_focus.png",
+    image: "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?q=80&w=1974&auto=format&fit=crop"
+  },
+];

@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./styles/theme-variables.css";
 
 :root {
   --background: #ffffff;
@@ -15,15 +16,115 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Montserrat', 'Product Sans', Arial, sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  cursor: default;
+}
+
+/* Gorgeous scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(15, 15, 15, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--color-primary-main), var(--color-accent-blue));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, var(--color-primary-light), var(--color-accent-purple));
+}
+
+/* Advanced page transitions */
+.page-transition-out {
+  animation: pageOut 0.3s ease forwards;
+}
+
+.page-transition-in {
+  animation: pageIn 0.5s ease forwards;
+}
+
+@keyframes pageOut {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes pageIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Custom Font Import */
+@font-face {
+  font-family: 'Product Sans';
+  src: url('/assets/fonts/product_sans_regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Product Sans';
+  src: url('/assets/fonts/product_sans_bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/assets/fonts/Montserrat-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/assets/fonts/Montserrat-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
 }
 
 /* Smooth scrolling for the entire page */
 html {
   scroll-behavior: smooth;
+  cursor: default;
 }
 
-/* Custom animations for the hero section */
+/* Ensure proper cursor styles for interactive elements */
+button, a, [role="button"], input[type="button"], input[type="submit"], input[type="reset"] {
+  cursor: pointer;
+}
+
+input, textarea, select {
+  cursor: text;
+}
+
+input[type="checkbox"], input[type="radio"] {
+  cursor: pointer;
+}
+
+/* Custom animations for enhanced visual appeal */
 @keyframes float {
   0%, 100% {
     transform: translateY(0px);
@@ -44,8 +145,77 @@ html {
   }
 }
 
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes rotateGradient {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 .animate-float {
   animation: float 3s ease-in-out infinite;
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg, 
+    rgba(255, 255, 255, 0.1), 
+    rgba(255, 255, 255, 0.2), 
+    rgba(255, 255, 255, 0.1)
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+.animate-pulse {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradientShift 5s ease infinite;
+}
+
+.animate-rotate {
+  animation: rotateGradient 8s linear infinite;
 }
 
 .animate-fade-in-up {
@@ -67,4 +237,22 @@ html {
 
 .animate-delay-400 {
   animation-delay: 0.4s;
+}
+
+/* Career-inspired animations */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    max-height: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    max-height: 200px;
+    transform: translateY(0);
+  }
+}
+
+.animate-slideDown {
+  animation: slideDown 0.3s ease-out forwards;
 }
