@@ -102,7 +102,7 @@ export const useRazorpayPayment = () => {
           contact: registrationData.phoneNumber
         },
         theme: {
-          color: '#FF4D00'
+          color: '#00b4ab'
         },
         modal: {
           ondismiss: () => {

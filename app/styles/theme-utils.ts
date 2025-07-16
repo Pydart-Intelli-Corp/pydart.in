@@ -77,7 +77,7 @@ export const tx = {
     primary: 'text-white',
     secondary: 'text-gray-300',
     tertiary: 'text-gray-400',
-    accent: 'text-[#FF4D00]',
+    accent: 'text-[#00b4ab]',
   },
   
   // Background helpers
@@ -86,19 +86,19 @@ export const tx = {
     darker: 'bg-gray-900',
     gradient: 'bg-gradient-to-b from-black to-gray-900',
     card: 'bg-gray-800',
-    accent: 'bg-[#FF4D00]',
+    accent: 'bg-[#00b4ab]',
   },
   
   // Button variants
   button: {
-    primary: 'bg-[#FF4D00] hover:bg-[#FF6C33] text-white transition-colors duration-300',
+    primary: 'bg-[#00b4ab] hover:bg-[#33c3bc] text-white transition-colors duration-300',
     secondary: 'bg-gray-700 hover:bg-gray-600 text-white transition-colors duration-300',
-    outline: 'border border-gray-600 hover:border-[#FF4D00] text-white hover:text-[#FF4D00] transition-colors duration-300',
-    link: 'text-gray-300 hover:text-[#FF4D00] transition-colors duration-300',
+    outline: 'border border-gray-600 hover:border-[#00b4ab] text-white hover:text-[#00b4ab] transition-colors duration-300',
+    link: 'text-gray-300 hover:text-[#00b4ab] transition-colors duration-300',
   },
   
   // Input styles
-  input: 'bg-gray-800 border border-gray-600 focus:border-[#FF4D00] text-white rounded',
+  input: 'bg-gray-800 border border-gray-600 focus:border-[#00b4ab] text-white rounded',
   
   // Card styles
   card: 'bg-gray-800 rounded-lg shadow-lg',
@@ -125,7 +125,7 @@ export const tx = {
   
   // Hover effects
   hover: {
-    accent: 'hover:text-[#FF4D00] transition-colors duration-300',
+    accent: 'hover:text-[#00b4ab] transition-colors duration-300',
     scale: 'hover:scale-105 transition-transform duration-300',
     shadow: 'hover:shadow-lg transition-shadow duration-300',
   },

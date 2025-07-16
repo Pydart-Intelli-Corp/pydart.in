@@ -2,17 +2,17 @@
 
 :root {
   /* Primary Colors - More refined professional palette */
-  --color-primary-main: #0070F3;
-  --color-primary-light: #3291FF;
-  --color-primary-dark: #0053B3;
-  --color-primary-ultralight: #EBF8FF;
-  --color-primary-ultradark: #003A80;
-  --color-primary-main-rgb: 0, 112, 243; /* RGB values for opacity control */
+  --color-primary-main: #00b4ab;
+  --color-primary-light: #33c3bc;
+  --color-primary-dark: #008a82;
+  --color-primary-ultralight: #e6f9f7;
+  --color-primary-ultradark: #006b65;
+  --color-primary-main-rgb: 0, 180, 171; /* RGB values for opacity control */
   
   /* Accent Colors - Sophisticated complementary colors */
   --color-accent-blue: #0070F3;
   --color-accent-purple: #7928CA;
-  --color-accent-teal: #00C9A7;
+  --color-accent-teal: #00b4ab;
   --color-accent-gold: #FFBF00;
   --color-accent-rose: #FF4D88;
   --color-accent-indigo: #4C6EF5;
@@ -40,12 +40,12 @@
   --color-ui-border: #374151;
   --color-ui-input-background: #1F2937;
   --color-ui-input-border: #4B5563;
-  --color-ui-input-focus: #FF4D00;
+  --color-ui-input-focus: #00b4ab;
   --color-ui-card-background: #1F2937;
   
   /* Button Colors */
-  --color-ui-button-primary-background: #FF4D00;
-  --color-ui-button-primary-hover: #FF6C33;
+  --color-ui-button-primary-background: #00b4ab;
+  --color-ui-button-primary-hover: #33c3bc;
   --color-ui-button-primary-text: #FFFFFF;
   --color-ui-button-secondary-background: #374151;
   --color-ui-button-secondary-hover: #4B5563;

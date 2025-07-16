@@ -95,7 +95,7 @@ function testPaymentFlow() {
           contact: '9999999999'
         },
         theme: {
-          color: '#FF4D00'
+          color: '#00b4ab'
         }
       };
 

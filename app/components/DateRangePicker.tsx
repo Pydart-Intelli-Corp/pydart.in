@@ -188,7 +188,7 @@ export default function DateRangePicker({
       <button
         type="button"
         onClick={() => setShowCalendar(!showCalendar)}
-        className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#FF4D00] focus:border-transparent text-left flex items-center justify-between ${
+        className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#00b4ab] focus:border-transparent text-left flex items-center justify-between ${
           error 
             ? 'border-red-500 bg-red-50 text-red-900' 
             : 'border-gray-600 bg-gray-800 text-white'
@@ -284,9 +284,9 @@ export default function DateRangePicker({
                           ? 'text-yellow-400 cursor-not-allowed bg-yellow-900/20'
                           : 'text-gray-500 cursor-not-allowed bg-gray-700'
                         : isSelected
-                        ? 'bg-[#FF4D00] text-white'
+                        ? 'bg-[#00b4ab] text-white'
                         : isHovered
-                        ? 'bg-[#FF4D00]/30 text-white'
+                        ? 'bg-[#00b4ab]/30 text-white'
                         : 'text-white hover:bg-gray-700'
                     }`}
                   >
@@ -299,7 +299,7 @@ export default function DateRangePicker({
             {/* Legend */}
             <div className="mt-4 text-xs text-gray-400 space-y-1">
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-[#FF4D00] rounded"></div>
+                <div className="w-3 h-3 bg-[#00b4ab] rounded"></div>
                 <span>Selected range ({internshipDays} working days)</span>
               </div>
               <div className="flex items-center gap-2">

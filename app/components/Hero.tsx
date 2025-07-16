@@ -61,20 +61,23 @@ export default function Hero() {
     <section 
       ref={heroRef}
       id="hero" 
-      className="relative min-h-screen bg-gradient-to-br from-neutral-50 via-white to-neutral-100 overflow-hidden"
+      className="relative min-h-screen bg-gradient-to-br from-neutral-200 via-neutral-100 to-neutral-300 overflow-hidden"
     >
-      {/* Company Logo - Top Left */}
-      <div className="absolute -top-5 left-6 md:left-10 lg:left-14 z-[100]">
+      {/* Company Logo - Top Left (Desktop Only) */}
+      <div className="absolute -top-5 left-6 md:left-10 lg:left-14 z-[100] hidden md:block">
         <a href="/" aria-label="Go to homepage" className="group block hover:scale-110 transition-transform duration-300 ease-out relative">
           <img src="/pydart_logo.png" alt="Pydart Logo" className="w-22 h-22 md:w-32 md:h-32 lg:w-40 lg:h-40 object-contain cursor-pointer hover:opacity-80 transition-opacity duration-300" />
         </a>
       </div>
 
+
       {/* Email Us Button - Top Right */}
-      <div className="absolute top-8 right-4 md:right-6 lg:right-8 z-50">
+      <div className="absolute top-8 right-2 sm:right-4 md:right-6 lg:right-8 z-50 hidden md:block">
         <a
-          href="mailto:hello@pydart.com"
-          className="text-[10px] md:text-xs lg:text-sm xl:text-[14px] font-medium group relative cursor-pointer overflow-hidden px-3 py-2 rounded-sm hover:bg-neutral-100 transition-colors duration-200 block pointer-events-auto text-neutral-700"
+          href="https://mail.google.com/mail/?view=cm&fs=1&to=info.pydart@gmail.com&su=Inquiry%20from%20Website&body=Hello%20Pydart%20Team,%0A%0AI%20would%20like%20to%20inquire%20about%20your%20services.%0A%0AThank%20you!"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[10px] md:text-xs lg:text-sm xl:text-[14px] font-medium group relative cursor-pointer overflow-hidden px-3 py-2 rounded-sm transition-colors duration-200 block pointer-events-auto text-neutral-700"
           style={{ pointerEvents: 'auto' }}
           onMouseEnter={() => setIsHovering(true)}
           onMouseLeave={() => setIsHovering(false)}
@@ -84,20 +87,20 @@ export default function Hero() {
               <span className="inline-block transition-all duration-300 group-hover:opacity-0 group-hover:-translate-y-1.5">
                 Email Us
               </span>
-              <span className="absolute top-0 left-0 transition-all duration-300 translate-y-full opacity-0 text-[#FF7A00] group-hover:-translate-y-0.5 group-hover:opacity-100">
+              <span className="absolute top-0 left-0 transition-all duration-300 translate-y-full opacity-0 text-[#00b4ab] group-hover:-translate-y-0.5 group-hover:opacity-100">
                 Email Us
               </span>
             </span>
-            <span className="absolute left-1 md:left-1.5 lg:left-2 -top-1 md:-top-1.5 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-2.5 md:group-hover:translate-y-3 text-[#FF7A00]">(</span>
-            <span className="absolute right-1 md:right-1.5 lg:right-2 -top-1 md:-top-1.5 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-2.5 md:group-hover:translate-y-3 text-[#FF7A00]">)</span>
+            <span className="absolute left-1 md:left-1.5 lg:left-2 -top-1 md:-top-1.5 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-2.5 md:group-hover:translate-y-3 text-[#00b4ab]">(</span>
+            <span className="absolute right-1 md:right-1.5 lg:right-2 -top-1 md:-top-1.5 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-2.5 md:group-hover:translate-y-3 text-[#00b4ab]">)</span>
           </span>
         </a>
       </div>
 
-      {/* Animated Floating Orange Dot */}
+      {/* Animated Floating Teal Dot */}
       {isClient && (
         <motion.div
-          className="absolute w-3 h-3 rounded-full bg-[#FF7A00] shadow-lg shadow-orange-500/30 pointer-events-none z-30"
+          className="absolute w-3 h-3 rounded-full bg-[#00b4ab] shadow-lg shadow-teal-500/30 pointer-events-none z-30"
           animate={{
             x: mousePosition.x * 800,
             y: mousePosition.y * 600,
@@ -152,7 +155,7 @@ export default function Hero() {
       {/* Ambient Glow Effect */}
       {isClient && (
         <motion.div
-          className="absolute w-96 h-96 rounded-full bg-gradient-to-r from-orange-200/10 to-orange-300/10 blur-3xl"
+          className="absolute w-96 h-96 rounded-full bg-gradient-to-r from-teal-200/10 to-teal-300/10 blur-3xl"
           animate={{
             x: mousePosition.x * 100 - 192,
             y: mousePosition.y * 100 - 192,
@@ -167,14 +170,21 @@ export default function Hero() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             
             {/* Left Content */}
-            <div className="lg:col-span-8 text-left">
+            <div className="lg:col-span-8 text-left pt-8 sm:pt-12 md:pt-0">
+              
+              {/* Company Logo (Mobile Only) */}
+              <div className="mb-0 md:hidden">
+                <a href="/" aria-label="Go to homepage" className="group block hover:scale-110 transition-transform duration-300 ease-out relative inline-block">
+                  <img src="/pydart_logo.png" alt="Pydart Logo" className="w-36 h-36 md:w-48 md:h-48 lg:w-56 lg:h-56 object-contain cursor-pointer hover:opacity-80 transition-opacity duration-300" />
+                </a>
+              </div>
               
               {/* Main Headline */}
               <motion.h1
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
-                className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold text-neutral-900 mb-8 leading-[0.9] tracking-tight"
+                className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold text-neutral-900 mb-8 leading-[0.9] tracking-tight -mt-8 md:mt-0"
                 style={{ fontFamily: 'Inter, sans-serif' }}
                 onMouseEnter={() => setIsHovering(true)}
                 onMouseLeave={() => setIsHovering(false)}
@@ -189,7 +199,7 @@ export default function Hero() {
                   Intelligence,
                 </motion.span>
                 <motion.span 
-                  className="block text-[#FF7A00]"
+                  className="block text-[#00b4ab]"
                   animate={{
                     x: isHovering ? mousePosition.x * -3 : 0,
                   }}
@@ -229,7 +239,7 @@ export default function Hero() {
               >
                 <motion.button
                   onClick={scrollToProjects}
-                  className="group relative inline-flex items-center text-lg font-medium text-[#FF7A00] pb-1"
+                  className="group relative inline-flex items-center text-lg font-medium text-[#00b4ab] pb-1"
                   onMouseEnter={() => setIsHovering(true)}
                   onMouseLeave={() => setIsHovering(false)}
                   whileHover={{ x: 5 }}
@@ -238,7 +248,7 @@ export default function Hero() {
                   <span className="relative">
                     Explore Stibe
                     <motion.div
-                      className="absolute bottom-0 left-0 h-[1px] bg-[#FF7A00]"
+                      className="absolute bottom-0 left-0 h-[1px] bg-[#00b4ab]"
                       initial={{ width: "0%" }}
                       whileHover={{ width: "100%" }}
                       transition={{ duration: 0.3 }}
@@ -287,7 +297,7 @@ export default function Hero() {
               >
                 {/* Stibe Product Card */}
                 <motion.div
-                  className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-neutral-200/50 relative overflow-hidden"
+                  className="bg-neutral-200/90 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-neutral-300/50 relative overflow-hidden"
                   animate={{
                     y: mousePosition.y * -10,
                     rotateX: mousePosition.y * 5,
@@ -298,10 +308,10 @@ export default function Hero() {
                   onMouseLeave={() => setIsHovering(false)}
                 >
                   {/* Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-teal-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   
                   {/* Stibe Logo/Icon */}
-                  <div className="w-16 h-16 bg-gradient-to-br from-[#FF7A00] to-orange-600 rounded-xl flex items-center justify-center mb-6">
+                  <div className="w-16 h-16 bg-gradient-to-br from-[#00b4ab] to-teal-600 rounded-xl flex items-center justify-center mb-6">
                     <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                     </svg>
@@ -316,7 +326,7 @@ export default function Hero() {
                   <div className="space-y-3">
                     {['Smart Booking', 'AI Recommendations', 'Quality Assurance'].map((feature, index) => (
                       <div key={feature} className="flex items-center text-sm text-neutral-700">
-                        <div className="w-1.5 h-1.5 bg-[#FF7A00] rounded-full mr-3" />
+                        <div className="w-1.5 h-1.5 bg-[#00b4ab] rounded-full mr-3" />
                         {feature}
                       </div>
                     ))}

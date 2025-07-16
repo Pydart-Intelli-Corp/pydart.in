@@ -13,17 +13,17 @@ module.exports = {
       colors: {
         // Primary brand colors
         primary: {
-          DEFAULT: '#FF4D00',
-          light: '#FF7A40',
-          dark: '#CC3E00',
-          ultralight: '#FFF0EB',
-          ultradark: '#992F00',
+          DEFAULT: '#00b4ab',
+          light: '#33c3bc',
+          dark: '#008a82',
+          ultralight: '#e6f9f7',
+          ultradark: '#006b65',
         },
         // Accent colors for visual interest
         accent: {
           blue: '#0066FF',
           purple: '#8A2BE2',
-          teal: '#00CCCC',
+          teal: '#00b4ab',
           gold: '#FFD700',
         },
         // Background colors for the theme

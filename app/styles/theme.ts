@@ -9,18 +9,18 @@ export const theme = {
   colors: {
     // Primary brand colors
     primary: {
-      main: '#FF4D00',        // Orange accent color (used in hover effects)
-      light: '#FF7A40',       // Lighter shade of primary
-      dark: '#CC3E00',        // Darker shade of primary
-      ultraLight: '#FFF0EB',  // Very light shade for backgrounds
-      ultraDark: '#992F00',   // Very dark shade for strong accents
+      main: '#00b4ab',        // Teal accent color (used in hover effects)
+      light: '#33c3bc',       // Lighter shade of primary
+      dark: '#008a82',        // Darker shade of primary
+      ultraLight: '#e6f9f7',  // Very light shade for backgrounds
+      ultraDark: '#006b65',   // Very dark shade for strong accents
     },
     
     // Accent colors for more vibrant designs
     accent: {
       blue: '#0066FF',
       purple: '#8A2BE2',
-      teal: '#00CCCC',
+      teal: '#00b4ab',
       gold: '#FFD700',
     },
     
@@ -37,9 +37,9 @@ export const theme = {
       gradient: {
         from: '#000000',  // black
         to: '#111827',    // gray-900
-        primary: 'linear-gradient(to right, #FF4D00, #FF7A40)',
+        primary: 'linear-gradient(to right, #00b4ab, #33c3bc)',
         accent: 'linear-gradient(to right, #0066FF, #8A2BE2)',
-        conic: 'conic-gradient(from 45deg at center, #CC3E00, #0066FF, #8A2BE2, #FF4D00, #CC3E00)',
+        conic: 'conic-gradient(from 45deg at center, #008a82, #0066FF, #8A2BE2, #00b4ab, #008a82)',
       }
     },
     
@@ -64,15 +64,15 @@ export const theme = {
       input: {
         background: '#1F2937', // gray-800
         border: '#4B5563',    // gray-600
-        focus: '#FF4D00',     // Primary color
+        focus: '#00b4ab',     // Primary color
       },
       card: {
         background: '#1F2937', // gray-800
       },
       button: {
         primary: {
-          background: '#FF4D00',
-          hover: '#FF6C33',
+          background: '#00b4ab',
+          hover: '#33c3bc',
           text: '#FFFFFF',
         },
         secondary: {

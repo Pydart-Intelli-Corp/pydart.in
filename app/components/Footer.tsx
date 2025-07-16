@@ -20,9 +20,9 @@ export default function Footer() {
               <li>
                 <Link 
                   href="#services" 
-                  className="text-gray-300 hover:text-[#FF4D00] transition-colors duration-300 text-sm flex items-center group"
+                  className="text-gray-300 hover:text-[#00b4ab] transition-colors duration-300 text-sm flex items-center group"
                 >
-                  <svg className="w-4 h-4 mr-2 text-gray-400 group-hover:text-[#FF4D00]" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-4 h-4 mr-2 text-gray-400 group-hover:text-[#00b4ab]" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
                   </svg>
                   Website Development
@@ -31,9 +31,9 @@ export default function Footer() {
               <li>
                 <Link 
                   href="#services" 
-                  className="text-gray-300 hover:text-[#FF4D00] transition-colors duration-300 text-sm flex items-center group"
+                  className="text-gray-300 hover:text-[#00b4ab] transition-colors duration-300 text-sm flex items-center group"
                 >
-                  <svg className="w-4 h-4 mr-2 text-gray-400 group-hover:text-[#FF4D00]" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-4 h-4 mr-2 text-gray-400 group-hover:text-[#00b4ab]" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
                   </svg>
                   iOS & Android Development
@@ -42,9 +42,9 @@ export default function Footer() {
               <li>
                 <Link 
                   href="#services" 
-                  className="text-gray-300 hover:text-[#FF4D00] transition-colors duration-300 text-sm flex items-center group"
+                  className="text-gray-300 hover:text-[#00b4ab] transition-colors duration-300 text-sm flex items-center group"
                 >
-                  <svg className="w-4 h-4 mr-2 text-gray-400 group-hover:text-[#FF4D00]" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-4 h-4 mr-2 text-gray-400 group-hover:text-[#00b4ab]" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M3 4a1 1 0 011-1h4a1 1 0 010 2H6.414l2.293 2.293a1 1 0 11-1.414 1.414L5 6.414V8a1 1 0 11-2 0V4zm9 1a1 1 0 010-2h4a1 1 0 011 1v4a1 1 0 11-2 0V6.414l-2.293 2.293a1 1 0 11-1.414-1.414L13.586 5H12zm-9 7a1 1 0 112 0v1.586l2.293-2.293a1 1 0 111.414 1.414L6.414 15H8a1 1 0 110 2H4a1 1 0 01-1-1v-4zm13-1a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 110-2h1.586l-2.293-2.293a1 1 0 111.414-1.414L15 13.586V12a1 1 0 011-1z" clipRule="evenodd" />
                   </svg>
                   Embedded System Development
@@ -53,9 +53,9 @@ export default function Footer() {
               <li>
                 <Link 
                   href="#services" 
-                  className="text-gray-300 hover:text-[#FF4D00] transition-colors duration-300 text-sm flex items-center group"
+                  className="text-gray-300 hover:text-[#00b4ab] transition-colors duration-300 text-sm flex items-center group"
                 >
-                  <svg className="w-4 h-4 mr-2 text-gray-400 group-hover:text-[#FF4D00]" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-4 h-4 mr-2 text-gray-400 group-hover:text-[#00b4ab]" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M5.5 16a3.5 3.5 0 01-.369-6.98 4 4 0 117.753-1.977A4.5 4.5 0 1113.5 16h-8z" />
                   </svg>
                   Cloud Solutions
@@ -64,9 +64,9 @@ export default function Footer() {
               <li>
                 <Link 
                   href="#services" 
-                  className="text-gray-300 hover:text-[#FF4D00] transition-colors duration-300 text-sm flex items-center group"
+                  className="text-gray-300 hover:text-[#00b4ab] transition-colors duration-300 text-sm flex items-center group"
                 >
-                  <svg className="w-4 h-4 mr-2 text-gray-400 group-hover:text-[#FF4D00]" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-4 h-4 mr-2 text-gray-400 group-hover:text-[#00b4ab]" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
                   </svg>
                   IoT Solutions
@@ -75,9 +75,9 @@ export default function Footer() {
               <li>
                 <Link 
                   href="#services" 
-                  className="text-gray-300 hover:text-[#FF4D00] transition-colors duration-300 text-sm flex items-center group"
+                  className="text-gray-300 hover:text-[#00b4ab] transition-colors duration-300 text-sm flex items-center group"
                 >
-                  <svg className="w-4 h-4 mr-2 text-gray-400 group-hover:text-[#FF4D00]" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-4 h-4 mr-2 text-gray-400 group-hover:text-[#00b4ab]" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                   AI Integration
@@ -93,9 +93,9 @@ export default function Footer() {
               <li>
                 <Link 
                   href="/careers" 
-                  className="text-gray-300 hover:text-[#FF4D00] transition-colors duration-300 text-sm flex items-center group"
+                  className="text-gray-300 hover:text-[#00b4ab] transition-colors duration-300 text-sm flex items-center group"
                 >
-                  <svg className="w-4 h-4 mr-2 text-gray-400 group-hover:text-[#FF4D00]" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-4 h-4 mr-2 text-gray-400 group-hover:text-[#00b4ab]" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M6 6V5a3 3 0 013-3h2a3 3 0 013 3v1h2a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V8a2 2 0 012-2h2zm4-3a1 1 0 00-1 1v1h2V4a1 1 0 00-1-1z" clipRule="evenodd" />
                   </svg>
                   Current Openings
@@ -104,9 +104,9 @@ export default function Footer() {
               <li>
                 <Link 
                   href="/internship" 
-                  className="text-gray-300 hover:text-[#FF4D00] transition-colors duration-300 text-sm flex items-center group"
+                  className="text-gray-300 hover:text-[#00b4ab] transition-colors duration-300 text-sm flex items-center group"
                 >
-                  <svg className="w-4 h-4 mr-2 text-gray-400 group-hover:text-[#FF4D00]" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-4 h-4 mr-2 text-gray-400 group-hover:text-[#00b4ab]" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z" />
                   </svg>
                   Internship Programs
@@ -115,9 +115,9 @@ export default function Footer() {
               <li>
                 <Link 
                   href="/careers" 
-                  className="text-gray-300 hover:text-[#FF4D00] transition-colors duration-300 text-sm flex items-center group"
+                  className="text-gray-300 hover:text-[#00b4ab] transition-colors duration-300 text-sm flex items-center group"
                 >
-                  <svg className="w-4 h-4 mr-2 text-gray-400 group-hover:text-[#FF4D00]" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-4 h-4 mr-2 text-gray-400 group-hover:text-[#00b4ab]" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M5 5a3 3 0 015-2.236A3 3 0 0114.83 6H16a2 2 0 110 4h-5V9a1 1 0 10-2 0v1H4a2 2 0 110-4h1.17C5.06 5.687 5 5.35 5 5zm4 1V5a1 1 0 10-1 1h1zm3 0a1 1 0 10-1-1v1h1z" clipRule="evenodd" />
                   </svg>
                   Employee Benefits
@@ -151,19 +151,19 @@ export default function Footer() {
               </p>
               <ul className="space-y-2 text-sm text-gray-400">
                 <li className="flex items-center">
-                  <svg className="w-3 h-3 mr-2 text-[#FF4D00]" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-3 h-3 mr-2 text-[#00b4ab]" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
                   Real Project Experience
                 </li>
                 <li className="flex items-center">
-                  <svg className="w-3 h-3 mr-2 text-[#FF4D00]" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-3 h-3 mr-2 text-[#00b4ab]" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
                   Mentorship & Training
                 </li>
                 <li className="flex items-center">
-                  <svg className="w-3 h-3 mr-2 text-[#FF4D00]" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-3 h-3 mr-2 text-[#00b4ab]" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
                   Certificate of Completion
@@ -172,7 +172,7 @@ export default function Footer() {
               <div className="mt-4">
                 <Link
                   href="/internship"
-                  className="inline-block px-6 py-2.5 bg-gradient-to-r from-[#FF4D00] to-[#e64400] hover:from-[#e64400] hover:to-[#d63900] text-white rounded-full text-sm font-medium transition-all duration-300 transform hover:scale-105 shadow-lg"
+                  className="inline-block px-6 py-2.5 bg-gradient-to-r from-[#00b4ab] to-[#008a82] hover:from-[#008a82] hover:to-[#006b65] text-white rounded-full text-sm font-medium transition-all duration-300 transform hover:scale-105 shadow-lg"
                 >
                   Apply Now
                 </Link>
@@ -187,9 +187,9 @@ export default function Footer() {
               <li>
                 <Link 
                   href="mailto:info@pydart.in" 
-                  className="text-gray-300 hover:text-[#FF4D00] transition-colors duration-300 text-sm flex items-center group"
+                  className="text-gray-300 hover:text-[#00b4ab] transition-colors duration-300 text-sm flex items-center group"
                 >
-                  <svg className="w-4 h-4 mr-2 text-gray-400 group-hover:text-[#FF4D00]" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-4 h-4 mr-2 text-gray-400 group-hover:text-[#00b4ab]" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
                     <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
                   </svg>
@@ -199,9 +199,9 @@ export default function Footer() {
               <li>
                 <Link 
                   href="tel:+917356765056" 
-                  className="text-gray-300 hover:text-[#FF4D00] transition-colors duration-300 text-sm flex items-center group"
+                  className="text-gray-300 hover:text-[#00b4ab] transition-colors duration-300 text-sm flex items-center group"
                 >
-                  <svg className="w-4 h-4 mr-2 text-gray-400 group-hover:text-[#FF4D00]" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-4 h-4 mr-2 text-gray-400 group-hover:text-[#00b4ab]" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
                   </svg>
                   +91 73567-65056
@@ -211,9 +211,9 @@ export default function Footer() {
                 <Link 
                   href="https://www.google.com/maps?q=10.001321532145445,76.30230229063729" 
                   target="_blank"
-                  className="text-gray-300 hover:text-[#FF4D00] transition-colors duration-300 text-sm flex items-center group"
+                  className="text-gray-300 hover:text-[#00b4ab] transition-colors duration-300 text-sm flex items-center group"
                 >
-                  <svg className="w-4 h-4 mr-2 text-gray-400 group-hover:text-[#FF4D00]" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-4 h-4 mr-2 text-gray-400 group-hover:text-[#00b4ab]" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
                   </svg>
                   Palarivattom, Kochi
@@ -232,7 +232,7 @@ export default function Footer() {
               <h5 className="text-white text-base font-bold mb-3 tracking-wider">Investor Relations</h5>
               <Link
                 href="mailto:founder@pydart.in"
-                className="inline-block px-4 py-2 border border-gray-400 hover:border-[#FF4D00] text-gray-300 hover:text-[#FF4D00] rounded-full text-sm font-medium transition-colors duration-300"
+                className="inline-block px-4 py-2 border border-gray-400 hover:border-[#00b4ab] text-gray-300 hover:text-[#00b4ab] rounded-full text-sm font-medium transition-colors duration-300"
               >
                 Investment Enquiry
               </Link>
@@ -261,7 +261,7 @@ export default function Footer() {
               <Link 
                 href="https://github.com/Pydart-Intelli-Corp" 
                 target="_blank"
-                className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-[#FF4D00] transition-colors duration-300 group"
+                className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-[#00b4ab] transition-colors duration-300 group"
                 aria-label="GitHub"
               >
                 <svg className="w-5 h-5 fill-current text-white group-hover:text-white" viewBox="0 0 24 24">
@@ -271,7 +271,7 @@ export default function Footer() {
               <Link 
                 href="https://www.linkedin.com/company/pydart-intelli-corp/" 
                 target="_blank"
-                className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-[#FF4D00] transition-colors duration-300 group"
+                className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-[#00b4ab] transition-colors duration-300 group"
                 aria-label="LinkedIn"
               >
                 <svg className="w-5 h-5 fill-current text-white group-hover:text-white" viewBox="0 0 24 24">
@@ -281,7 +281,7 @@ export default function Footer() {
               <Link 
                 href="https://www.instagram.com/pydart.india?igsh=MTVwMWhlMm9qNWRydw==" 
                 target="_blank"
-                className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-[#FF4D00] transition-colors duration-300 group"
+                className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-[#00b4ab] transition-colors duration-300 group"
                 aria-label="Instagram"
               >
                 <svg className="w-5 h-5 fill-current text-white group-hover:text-white" viewBox="0 0 24 24">

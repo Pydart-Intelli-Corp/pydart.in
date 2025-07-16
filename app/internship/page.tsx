@@ -217,7 +217,7 @@ export default function InternshipRegistrationPage() {
             >
               <button
                 onClick={scrollToRegistrationForm}
-                className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-[#FF4D00] to-[#e64400] text-white font-semibold rounded-full hover:shadow-lg hover:shadow-[#FF4D00]/30 transition-all duration-300 transform hover:scale-105"
+                className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-[#00b4ab] to-[#008a82] text-white font-semibold rounded-full hover:shadow-lg hover:shadow-[#00b4ab]/30 transition-all duration-300 transform hover:scale-105"
               >
                 Register Now →
               </button>
@@ -238,7 +238,7 @@ export default function InternshipRegistrationPage() {
               key={index}
               onClick={() => setCurrentSlide(index)}
               className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                index === currentSlide ? 'bg-[#FF4D00] scale-125' : 'bg-white/50'
+                index === currentSlide ? 'bg-[#00b4ab] scale-125' : 'bg-white/50'
               }`}
             />
           ))}
@@ -272,7 +272,7 @@ export default function InternshipRegistrationPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="bg-gradient-to-br from-gray-900 to-black p-6 rounded-2xl border border-gray-800 hover:border-[#FF4D00]/50 transition-all duration-300 group hover:transform hover:scale-105"
+                className="bg-gradient-to-br from-gray-900 to-black p-6 rounded-2xl border border-gray-800 hover:border-[#00b4ab]/50 transition-all duration-300 group hover:transform hover:scale-105"
               >
                 <div className="relative w-full h-48 mb-6 overflow-hidden rounded-xl group-hover:scale-105 transition-transform duration-300">
                   <Image
@@ -282,7 +282,7 @@ export default function InternshipRegistrationPage() {
                     className="object-cover"
                   />
                 </div>
-                <h3 className="text-xl font-bold text-white group-hover:text-[#FF4D00] transition-colors duration-300 mb-3">
+                <h3 className="text-xl font-bold text-white group-hover:text-[#00b4ab] transition-colors duration-300 mb-3">
                   {benefit.title}
                 </h3>
                 <p className="text-gray-300 leading-relaxed">{benefit.description}</p>
@@ -318,7 +318,7 @@ export default function InternshipRegistrationPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="bg-gradient-to-br from-gray-800 to-gray-900 p-6 rounded-2xl border border-gray-700 hover:border-[#FF4D00]/50 transition-all duration-300 group hover:transform hover:scale-105"
+                className="bg-gradient-to-br from-gray-800 to-gray-900 p-6 rounded-2xl border border-gray-700 hover:border-[#00b4ab]/50 transition-all duration-300 group hover:transform hover:scale-105"
               >
                 <div className="relative w-full h-32 mb-4 overflow-hidden rounded-lg group-hover:scale-105 transition-transform duration-300">
                   <Image
@@ -328,7 +328,7 @@ export default function InternshipRegistrationPage() {
                     className="object-cover"
                   />
                 </div>
-                <h3 className="text-xl font-bold text-white group-hover:text-[#FF4D00] transition-colors duration-300 mb-2">
+                <h3 className="text-xl font-bold text-white group-hover:text-[#00b4ab] transition-colors duration-300 mb-2">
                   {tech.name}
                 </h3>
                 <p className="text-gray-400 text-sm">{tech.description}</p>
@@ -364,7 +364,7 @@ export default function InternshipRegistrationPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.2 }}
                 viewport={{ once: true }}
-                className="bg-gradient-to-br from-gray-900 to-gray-800 p-6 rounded-2xl border border-gray-700 hover:border-[#FF4D00]/30 transition-all duration-300"
+                className="bg-gradient-to-br from-gray-900 to-gray-800 p-6 rounded-2xl border border-gray-700 hover:border-[#00b4ab]/30 transition-all duration-300"
               >
                 <div className="flex items-center mb-4">
                   <div className="relative w-16 h-16 mr-4 overflow-hidden rounded-full">
@@ -377,7 +377,7 @@ export default function InternshipRegistrationPage() {
                   </div>
                   <div>
                     <h4 className="text-lg font-bold text-white">{story.name}</h4>
-                    <p className="text-[#FF4D00] text-sm font-medium">{story.role}</p>
+                    <p className="text-[#00b4ab] text-sm font-medium">{story.role}</p>
                   </div>
                 </div>
                 <p className="text-gray-300 italic leading-relaxed">"{story.quote}"</p>
@@ -472,7 +472,7 @@ export default function InternshipRegistrationPage() {
               </p>
               <div className="bg-gray-700/50 rounded-lg p-6 mb-8">
                 <p className="text-sm font-medium text-gray-300">Registration ID:</p>
-                <p className="text-2xl font-bold text-[#FF4D00]">{registrationStatus.registrationId}</p>
+                <p className="text-2xl font-bold text-[#00b4ab]">{registrationStatus.registrationId}</p>
               </div>
               <div className="space-y-3 text-sm text-gray-300">
                 <p>• Our training team will contact you within 2-3 business days</p>
@@ -529,11 +529,11 @@ export default function InternshipRegistrationPage() {
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
-              className="bg-gradient-to-br from-gray-900 to-gray-800 p-8 rounded-2xl border border-gray-700 hover:border-[#FF4D00]/30 transition-all duration-300"
+              className="bg-gradient-to-br from-gray-900 to-gray-800 p-8 rounded-2xl border border-gray-700 hover:border-[#00b4ab]/30 transition-all duration-300"
             >
               <div className="flex items-center mb-4">
-                <div className="w-12 h-12 bg-[#FF4D00]/20 rounded-lg flex items-center justify-center mr-4">
-                  <svg className="w-6 h-6 text-[#FF4D00]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-12 h-12 bg-[#00b4ab]/20 rounded-lg flex items-center justify-center mr-4">
+                  <svg className="w-6 h-6 text-[#00b4ab]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                   </svg>
                 </div>
@@ -542,7 +542,7 @@ export default function InternshipRegistrationPage() {
               <p className="text-gray-300 mb-4">For internship program queries and guidance:</p>
               <a
                 href="mailto:training.pydart@gmail.com"
-                className="text-[#FF4D00] hover:text-[#ff6b2a] font-medium transition-colors duration-200 flex items-center"
+                className="text-[#00b4ab] hover:text-[#33c3bc] font-medium transition-colors duration-200 flex items-center"
               >
                 <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -556,11 +556,11 @@ export default function InternshipRegistrationPage() {
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
-              className="bg-gradient-to-br from-gray-900 to-gray-800 p-8 rounded-2xl border border-gray-700 hover:border-[#FF4D00]/30 transition-all duration-300"
+              className="bg-gradient-to-br from-gray-900 to-gray-800 p-8 rounded-2xl border border-gray-700 hover:border-[#00b4ab]/30 transition-all duration-300"
             >
               <div className="flex items-center mb-4">
-                <div className="w-12 h-12 bg-[#FF4D00]/20 rounded-lg flex items-center justify-center mr-4">
-                  <svg className="w-6 h-6 text-[#FF4D00]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-12 h-12 bg-[#00b4ab]/20 rounded-lg flex items-center justify-center mr-4">
+                  <svg className="w-6 h-6 text-[#00b4ab]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
                   </svg>
                 </div>
@@ -569,7 +569,7 @@ export default function InternshipRegistrationPage() {
               <p className="text-gray-300 mb-4">For registration issues and technical help:</p>
               <a
                 href="mailto:hello@pydart.com"
-                className="text-[#FF4D00] hover:text-[#ff6b2a] font-medium transition-colors duration-200 flex items-center"
+                className="text-[#00b4ab] hover:text-[#33c3bc] font-medium transition-colors duration-200 flex items-center"
               >
                 <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />

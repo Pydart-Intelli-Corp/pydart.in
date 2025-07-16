@@ -294,7 +294,7 @@ export default function InternshipRegistrationForm({
                 data-field="collegeName"
                 value={formData.collegeName}
                 onChange={(e) => setFormData(prev => ({ ...prev, collegeName: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-600 bg-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#FF4D00] focus:border-transparent placeholder-gray-400"
+                className="w-full px-3 py-2 border border-gray-600 bg-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#00b4ab] focus:border-transparent placeholder-gray-400"
                 placeholder="Enter college name"
               />
               {errors.collegeName && <p className="text-red-400 text-sm mt-1">{errors.collegeName}</p>}
@@ -310,7 +310,7 @@ export default function InternshipRegistrationForm({
                 data-field="email"
                 value={formData.email}
                 onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-600 bg-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#FF4D00] focus:border-transparent placeholder-gray-400"
+                className="w-full px-3 py-2 border border-gray-600 bg-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#00b4ab] focus:border-transparent placeholder-gray-400"
                 placeholder="college@example.com"
               />
               {errors.email && <p className="text-red-400 text-sm mt-1">{errors.email}</p>}
@@ -326,7 +326,7 @@ export default function InternshipRegistrationForm({
                 data-field="phoneNumber"
                 value={formData.phoneNumber}
                 onChange={(e) => setFormData(prev => ({ ...prev, phoneNumber: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-600 bg-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#FF4D00] focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-600 bg-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#00b4ab] focus:border-transparent"
                 placeholder="10-digit phone number"
               />
               {errors.phoneNumber && <p className="text-red-400 text-sm mt-1">{errors.phoneNumber}</p>}
@@ -342,7 +342,7 @@ export default function InternshipRegistrationForm({
                 data-field="batch"
                 value={formData.batch}
                 onChange={(e) => setFormData(prev => ({ ...prev, batch: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-600 bg-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#FF4D00] focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-600 bg-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#00b4ab] focus:border-transparent"
                 placeholder="e.g., 2023-2024"
               />
               {errors.batch && <p className="text-red-400 text-sm mt-1">{errors.batch}</p>}
@@ -357,7 +357,7 @@ export default function InternshipRegistrationForm({
                 data-field="collegeDistrict"
                 value={formData.collegeDistrict}
                 onChange={(e) => setFormData(prev => ({ ...prev, collegeDistrict: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-600 bg-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#FF4D00] focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-600 bg-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#00b4ab] focus:border-transparent"
               >
                 <option value="">Select District</option>
                 
@@ -397,7 +397,7 @@ export default function InternshipRegistrationForm({
                 data-field="pincode"
                 value={formData.pincode}
                 onChange={(e) => setFormData(prev => ({ ...prev, pincode: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-600 bg-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#FF4D00] focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-600 bg-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#00b4ab] focus:border-transparent"
                 placeholder="6-digit pincode"
               />
               {errors.pincode && <p className="text-red-400 text-sm mt-1">{errors.pincode}</p>}
@@ -419,7 +419,7 @@ export default function InternshipRegistrationForm({
                 max="100"
                 value={formData.numberOfStudents}
                 onChange={(e) => setFormData(prev => ({ ...prev, numberOfStudents: parseInt(e.target.value) || 1 }))}
-                className="w-full px-3 py-2 border border-gray-600 bg-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#FF4D00] focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-600 bg-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#00b4ab] focus:border-transparent"
               />
             </div>
 
@@ -430,7 +430,7 @@ export default function InternshipRegistrationForm({
               <select
                 value={formData.internshipDays}
                 onChange={(e) => setFormData(prev => ({ ...prev, internshipDays: parseInt(e.target.value) }))}
-                className="w-full px-3 py-2 border border-gray-600 bg-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#FF4D00] focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-600 bg-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#00b4ab] focus:border-transparent"
               >
                 <option value={5}>5 Days</option>
                 <option value={10}>10 Days</option>
@@ -443,7 +443,7 @@ export default function InternshipRegistrationForm({
               <label className="block text-sm font-medium text-gray-300 mb-1">
                 Total Amount
               </label>
-              <div className="px-3 py-2 bg-gray-800 border border-gray-600 text-white rounded-md text-lg font-semibold text-[#FF4D00]">
+              <div className="px-3 py-2 bg-gray-800 border border-gray-600 text-white rounded-md text-lg font-semibold text-[#00b4ab]">
                 ₹{calculateAmount().toLocaleString()}
               </div>
             </div>
@@ -480,7 +480,7 @@ export default function InternshipRegistrationForm({
               value={formData.additionalNotes}
               onChange={(e) => setFormData(prev => ({ ...prev, additionalNotes: e.target.value }))}
               rows={3}
-              className="w-full px-3 py-2 border border-gray-600 bg-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#FF4D00] focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-600 bg-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#00b4ab] focus:border-transparent"
               placeholder="Any special requirements or notes..."
             />
           </div>
@@ -503,7 +503,7 @@ export default function InternshipRegistrationForm({
                       data-student-field={`${index}-studentName`}
                       value={student.studentName}
                       onChange={(e) => updateStudent(index, 'studentName', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-600 bg-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#FF4D00] focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-600 bg-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#00b4ab] focus:border-transparent"
                       placeholder="Student name"
                     />
                     {errors[`student_${index}_studentName`] && <p className="text-red-400 text-sm mt-1">{errors[`student_${index}_studentName`]}</p>}
@@ -518,7 +518,7 @@ export default function InternshipRegistrationForm({
                       data-student-field={`${index}-studentEmail`}
                       value={student.studentEmail}
                       onChange={(e) => updateStudent(index, 'studentEmail', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-600 bg-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#FF4D00] focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-600 bg-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#00b4ab] focus:border-transparent"
                       placeholder="student@example.com"
                     />
                     {errors[`student_${index}_studentEmail`] && <p className="text-red-400 text-sm mt-1">{errors[`student_${index}_studentEmail`]}</p>}
@@ -533,7 +533,7 @@ export default function InternshipRegistrationForm({
                       data-student-field={`${index}-studentPhone`}
                       value={student.studentPhone}
                       onChange={(e) => updateStudent(index, 'studentPhone', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-600 bg-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#FF4D00] focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-600 bg-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#00b4ab] focus:border-transparent"
                       placeholder="10-digit phone"
                     />
                     {errors[`student_${index}_studentPhone`] && <p className="text-red-400 text-sm mt-1">{errors[`student_${index}_studentPhone`]}</p>}
@@ -548,7 +548,7 @@ export default function InternshipRegistrationForm({
                       data-student-field={`${index}-rollNumber`}
                       value={student.rollNumber}
                       onChange={(e) => updateStudent(index, 'rollNumber', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-600 bg-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#FF4D00] focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-600 bg-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#00b4ab] focus:border-transparent"
                       placeholder="Roll number"
                     />
                     {errors[`student_${index}_rollNumber`] && <p className="text-red-400 text-sm mt-1">{errors[`student_${index}_rollNumber`]}</p>}
@@ -562,7 +562,7 @@ export default function InternshipRegistrationForm({
                       data-student-field={`${index}-department`}
                       value={student.department}
                       onChange={(e) => updateStudent(index, 'department', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-600 bg-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#FF4D00] focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-600 bg-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#00b4ab] focus:border-transparent"
                     >
                       <option value="">Select Department</option>
                       
@@ -665,7 +665,7 @@ export default function InternshipRegistrationForm({
                       data-student-field={`${index}-year`}
                       value={student.year}
                       onChange={(e) => updateStudent(index, 'year', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-600 bg-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#FF4D00] focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-600 bg-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#00b4ab] focus:border-transparent"
                     >
                       <option value="">Select Year</option>
                       <option value="1st Year">1st Year</option>
@@ -685,7 +685,7 @@ export default function InternshipRegistrationForm({
                       data-student-field={`${index}-skills`}
                       value={student.skills}
                       onChange={(e) => updateStudent(index, 'skills', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-600 bg-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#FF4D00] focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-600 bg-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#00b4ab] focus:border-transparent"
                       placeholder="e.g., Java, Python, Web Development"
                     />
                     {errors[`student_${index}_skills`] && <p className="text-red-400 text-sm mt-1">{errors[`student_${index}_skills`]}</p>}
@@ -730,7 +730,7 @@ export default function InternshipRegistrationForm({
           <button
             type="submit"
             disabled={isLoading}
-            className="px-8 py-2 bg-[#FF4D00] text-white rounded-md hover:bg-[#e04400] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+            className="px-8 py-2 bg-[#00b4ab] text-white rounded-md hover:bg-[#008a82] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
           >
             {isLoading && (
               <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">

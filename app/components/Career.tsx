@@ -392,7 +392,7 @@ export default function Career() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
               onClick={scrollToJobOpenings}
-              className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-[#FF4D00] to-[#e64400] text-white font-semibold rounded-full hover:shadow-lg hover:shadow-[#FF4D00]/30 transition-all duration-300 transform hover:scale-105"
+              className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-[#00b4ab] to-[#008a82] text-white font-semibold rounded-full hover:shadow-lg hover:shadow-[#00b4ab]/30 transition-all duration-300 transform hover:scale-105"
             >
               View Open Positions →
             </motion.button>
@@ -406,7 +406,7 @@ export default function Career() {
               key={index}
               onClick={() => setCurrentSlide(index)}
               className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                index === currentSlide ? 'bg-[#FF4D00] scale-125' : 'bg-white/50'
+                index === currentSlide ? 'bg-[#00b4ab] scale-125' : 'bg-white/50'
               }`}
             />
           ))}
@@ -439,11 +439,11 @@ export default function Career() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="bg-gradient-to-br from-gray-900 to-black p-6 rounded-2xl border border-gray-800 hover:border-[#FF4D00]/50 transition-all duration-300 group hover:transform hover:scale-105"
+                className="bg-gradient-to-br from-gray-900 to-black p-6 rounded-2xl border border-gray-800 hover:border-[#00b4ab]/50 transition-all duration-300 group hover:transform hover:scale-105"
               >
                 <div className="flex items-start justify-between mb-4">
                   <div>
-                    <h3 className="text-xl font-bold text-white group-hover:text-[#FF4D00] transition-colors duration-300">
+                    <h3 className="text-xl font-bold text-white group-hover:text-[#00b4ab] transition-colors duration-300">
                       {job.title}
                     </h3>
                     <p className="text-gray-400 text-sm mt-1">{job.location}</p>
@@ -466,7 +466,7 @@ export default function Career() {
                   <ul className="text-xs text-gray-400 space-y-1">
                     {job.requirements.map((req, idx) => (
                       <li key={idx} className="flex items-start">
-                        <span className="text-[#FF4D00] mr-2">•</span>
+                        <span className="text-[#00b4ab] mr-2">•</span>
                         {req}
                       </li>
                     ))}
@@ -474,7 +474,7 @@ export default function Career() {
                 </div>
                 
                 <div className="flex items-center justify-between">
-                  <span className="text-[#FF4D00] font-semibold text-sm">
+                  <span className="text-[#00b4ab] font-semibold text-sm">
                     {job.salary}
                   </span>
                   <button
@@ -482,7 +482,7 @@ export default function Career() {
                       setSelectedJob(job.title);
                       scrollToApplicationForm();
                     }}
-                    className="px-4 py-2 bg-[#FF4D00] text-white text-sm font-medium rounded-lg hover:bg-[#e64400] transition-colors duration-300"
+                    className="px-4 py-2 bg-[#00b4ab] text-white text-sm font-medium rounded-lg hover:bg-[#008a82] transition-colors duration-300"
                   >
                     Apply Now
                   </button>
@@ -529,7 +529,7 @@ export default function Career() {
                     className="object-cover"
                   />
                 </div>
-                <h3 className="text-xl font-bold text-white mb-3 group-hover:text-[#FF4D00] transition-colors duration-300">
+                <h3 className="text-xl font-bold text-white mb-3 group-hover:text-[#00b4ab] transition-colors duration-300">
                   {perk.title}
                 </h3>
                 <p className="text-gray-400 leading-relaxed">
@@ -608,7 +608,7 @@ export default function Career() {
                     className={`w-full px-4 py-3 bg-transparent border rounded-lg text-white placeholder-gray-400 focus:outline-none transition-colors duration-300 ${
                       formErrors.name 
                         ? 'border-red-500 focus:border-red-400' 
-                        : 'border-white/30 focus:border-[#FF4D00]'
+                        : 'border-white/30 focus:border-[#00b4ab]'
                     }`}
                     placeholder="Enter your full name"
                   />
@@ -630,7 +630,7 @@ export default function Career() {
                     className={`w-full px-4 py-3 bg-transparent border rounded-lg text-white placeholder-gray-400 focus:outline-none transition-colors duration-300 ${
                       formErrors.email 
                         ? 'border-red-500 focus:border-red-400' 
-                        : 'border-white/30 focus:border-[#FF4D00]'
+                        : 'border-white/30 focus:border-[#00b4ab]'
                     }`}
                     placeholder="Enter your email"
                   />
@@ -654,7 +654,7 @@ export default function Career() {
                     className={`w-full px-4 py-3 bg-transparent border rounded-lg text-white placeholder-gray-400 focus:outline-none transition-colors duration-300 ${
                       formErrors.phone 
                         ? 'border-red-500 focus:border-red-400' 
-                        : 'border-white/30 focus:border-[#FF4D00]'
+                        : 'border-white/30 focus:border-[#00b4ab]'
                     }`}
                     placeholder="Enter your phone number"
                   />
@@ -682,7 +682,7 @@ export default function Career() {
                     className={`w-full px-4 py-3 bg-transparent border rounded-lg text-white focus:outline-none transition-colors duration-300 ${
                       formErrors.job 
                         ? 'border-red-500 focus:border-red-400' 
-                        : 'border-white/30 focus:border-[#FF4D00]'
+                        : 'border-white/30 focus:border-[#00b4ab]'
                     }`}
                   >
                     <option value="" className="bg-black">Select a position</option>
@@ -716,7 +716,7 @@ export default function Career() {
                     className={`flex items-center justify-center w-full px-4 py-3 border rounded-lg cursor-pointer transition-colors duration-300 ${
                       formErrors.resume 
                         ? 'border-red-500 hover:border-red-400' 
-                        : 'border-white/30 hover:border-[#FF4D00]'
+                        : 'border-white/30 hover:border-[#00b4ab]'
                     }`}
                   >
                     <svg className="w-5 h-5 text-white/70 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -747,7 +747,7 @@ export default function Career() {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-[#FF4D00] to-[#e64400] text-white font-semibold rounded-full hover:shadow-lg hover:shadow-[#FF4D00]/30 transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-[#00b4ab] to-[#008a82] text-white font-semibold rounded-full hover:shadow-lg hover:shadow-[#00b4ab]/30 transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isLoading ? (
                     <>

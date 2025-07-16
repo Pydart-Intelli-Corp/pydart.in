@@ -9,7 +9,7 @@ import Footer from './components/Footer';
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-gradient-to-b from-background-dark to-gray-900">
+    <main className="min-h-screen bg-gradient-to-b from-neutral-200 to-neutral-300">
       {/* Background animated elements */}
       <div className="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-accent-blue opacity-5 animate-pulse blur-3xl"></div>
