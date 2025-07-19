@@ -13,7 +13,7 @@ interface Service {
   details: string[];
 }
 
-// Mouse tracking hook - mobile-safe
+// Optimized mouse tracking hook - mobile-safe with throttling
 const useMouseTracking = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isMobile, setIsMobile] = useState(false);
@@ -25,19 +25,25 @@ const useMouseTracking = () => {
     };
     
     checkMobile();
-    window.addEventListener('resize', checkMobile);
+    window.addEventListener('resize', checkMobile, { passive: true });
+    
+    let ticking = false;
     
     const updateMousePosition = (e: MouseEvent) => {
-      if (!isMobile) {
-        setMousePosition({ 
-          x: e.clientX / window.innerWidth, 
-          y: e.clientY / window.innerHeight 
+      if (!isMobile && !ticking) {
+        requestAnimationFrame(() => {
+          setMousePosition({ 
+            x: e.clientX / window.innerWidth, 
+            y: e.clientY / window.innerHeight 
+          });
+          ticking = false;
         });
+        ticking = true;
       }
     };
     
     if (typeof window !== 'undefined' && !isMobile) {
-      window.addEventListener('mousemove', updateMousePosition);
+      window.addEventListener('mousemove', updateMousePosition, { passive: true });
     }
     
     return () => {
@@ -56,13 +62,16 @@ export default function Services() {
   const [isClient, setIsClient] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
-  const [visibleWords, setVisibleWords] = useState<number[]>([0]); // Track visible words for single paragraph
   const [isHeadingComplete, setIsHeadingComplete] = useState(false);
-  const [scrollLocked, setScrollLocked] = useState(false);
   const [sectionFullScreen, setSectionFullScreen] = useState(false);
-  const [headingPosition, setHeadingPosition] = useState<'center' | 'top'>('center');
   const [wheelProgress, setWheelProgress] = useState(0);
   const [contentProgress, setContentProgress] = useState(0);
+  
+  // Typewriter effect states
+  const [currentLineIndex, setCurrentLineIndex] = useState(0);
+  const [currentCharIndex, setCurrentCharIndex] = useState(0);
+  const [isTypingComplete, setIsTypingComplete] = useState(false);
+  const [hasStartedTyping, setHasStartedTyping] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { once: false, margin: "-100px" });
   const controls = useAnimation();
@@ -72,274 +81,171 @@ export default function Services() {
     { text: 'Comprehensive Technology Solutions for Modern Business Challenges and Digital Innovation - Empowering Your Vision Through Advanced AI, Mobile Development, and Strategic Digital Transformation', color: 'text-white' }
   ];
 
-  // Memoize words per line to prevent unnecessary re-renders
-  const wordsPerLine = React.useMemo(() => 
-    typewriterLines.map(line => line.text.split(' ')), 
-    []
-  );
-  const totalWords = React.useMemo(() => 
-    wordsPerLine.reduce((sum, words) => sum + words.length, 0), 
-    [wordsPerLine]
-  );
-
   useEffect(() => {
     setIsClient(true);
     if (isInView) {
       controls.start("visible");
+      // Start typewriter effect when section comes into view
+      if (!hasStartedTyping) {
+        setHasStartedTyping(true);
+      }
     }
-  }, [isInView, controls]);
+  }, [isInView, controls, hasStartedTyping]);
+  
+  // Typewriter effect - optimized for long text
+  useEffect(() => {
+    if (!isClient || !hasStartedTyping) return;
 
-  // Store scroll position when locking
-  const [lockedScrollPosition, setLockedScrollPosition] = useState(0);
+    const timer = setTimeout(() => {
+      if (currentLineIndex < typewriterLines.length) {
+        const currentLine = typewriterLines[currentLineIndex];
+        
+        if (currentCharIndex < currentLine.text.length) {
+          // Still typing current line - type faster for longer text
+          // Increment by different amounts based on text length for a smoother experience
+          const increment = currentLine.text.length > 100 ? 3 : 1;
+          setCurrentCharIndex(prev => Math.min(prev + increment, currentLine.text.length));
+        } else {
+          // Current line complete, move to next line
+          setTimeout(() => {
+            setCurrentLineIndex(prev => prev + 1);
+            setCurrentCharIndex(0);
+          }, 150);
+        }
+      } else {
+        // All lines complete
+        setIsTypingComplete(true);
+        setIsHeadingComplete(true);
+      }
+    }, currentCharIndex === 0 ? 200 : 15); // Faster typing speed for longer text
 
-  // Check if section is in view and handle scroll locking - disabled on mobile
+    return () => clearTimeout(timer);
+  }, [currentLineIndex, currentCharIndex, isClient, hasStartedTyping, typewriterLines]);
+
+  // No scroll locking needed
+
+  // Professional scroll handling
   useEffect(() => {
     if (!isClient || !sectionRef.current || isMobile) return;
 
+    let ticking = false;
+
     const handleScroll = () => {
-      if (!sectionRef.current) return;
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          if (!sectionRef.current) return;
 
-      const rect = sectionRef.current.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-      
-      // Check if section fills the entire viewport
-      const sectionTop = rect.top;
-      const sectionBottom = rect.bottom;
-      
-      const isFullScreen = sectionTop <= 0 && sectionBottom >= windowHeight;
-      setSectionFullScreen(isFullScreen);
+          const rect = sectionRef.current.getBoundingClientRect();
+          const windowHeight = window.innerHeight;
+          
+          // Check if section fills the entire viewport
+          const sectionTop = rect.top;
+          const sectionBottom = rect.bottom;
+          
+          const isFullScreen = sectionTop <= 0 && sectionBottom >= windowHeight;
+          setSectionFullScreen(isFullScreen);
 
-      // Store current scroll position when entering full screen
-      if (isFullScreen && !scrollLocked && !isHeadingComplete) {
-        setLockedScrollPosition(window.pageYOffset);
-      }
+          // Reset progress when section is far from viewport (only if heading not complete)
+          if (sectionTop > windowHeight && !isHeadingComplete && scrollProgress < 0.1) {
+            setScrollProgress(0);
+          }
 
-      // Reset progress when leaving section (only if heading not complete)
-      if (!isFullScreen && !isHeadingComplete) {
-        setScrollProgress(0);
-        setVisibleWords([0]);
+          ticking = false;
+        });
+        ticking = true;
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll(); // Initial calculation
     
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [isClient, isHeadingComplete, scrollLocked, isMobile]);
+  }, [isClient, isHeadingComplete, scrollProgress, isMobile]);
 
-  // Lock/unlock scroll with position restoration - disabled on mobile
+  // No scroll lock/unlock needed
+
+  // Wheel handling removed - no need for scroll lock
+
+  // No scroll prevention needed
+
+  // When typing completes, update heading completion state
   useEffect(() => {
-    if (!isClient || isMobile) return;
-
-    // Lock scroll when section is full screen AND words are not fully revealed yet
-    if (sectionFullScreen && !isHeadingComplete) {
-      if (!scrollLocked) {
-        setScrollLocked(true);
-        
-        // Lock scroll position
-        document.body.style.position = 'fixed';
-        document.body.style.top = `-${lockedScrollPosition}px`;
-        document.body.style.width = '100%';
-        document.body.style.overflow = 'hidden';
-        
-        console.log('Scroll locked at position:', lockedScrollPosition);
-      }
-    } 
-    // Unlock scroll when words are fully revealed
-    else if (isHeadingComplete && scrollLocked) {
-      setScrollLocked(false);
-      
-      // Restore scroll position
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.width = '';
-      document.body.style.overflow = '';
-      
-      // Restore the scroll position
-      window.scrollTo(0, lockedScrollPosition);
-      
-      console.log('Scroll unlocked, restored to position:', lockedScrollPosition);
-    }
-    // Also unlock when leaving section
-    else if (!sectionFullScreen && scrollLocked) {
-      setScrollLocked(false);
-      
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.width = '';
-      document.body.style.overflow = '';
-      
-      console.log('Scroll unlocked - left section');
-    }
-
-    // Cleanup on unmount
-    return () => {
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.width = '';
-      document.body.style.overflow = '';
-    };
-  }, [isClient, sectionFullScreen, isHeadingComplete, scrollLocked, lockedScrollPosition, isMobile]);
-
-  // Wheel-based word reveal when scroll is locked - desktop only
-  useEffect(() => {
-    if (!scrollLocked || !sectionFullScreen || isMobile) return;
-
-    const handleWheel = (e: WheelEvent) => {
-      e.preventDefault();
-      
-      // Use wheel events to control word reveal when scroll is locked
-      setScrollProgress(prev => {
-        const delta = e.deltaY > 0 ? 0.015 : -0.015; // Faster wheel-based reveal (increased from 0.005)
-        const newProgress = Math.min(Math.max(prev + delta, 0), 1);
-        
-        // Calculate visible words based on progress - one word at a time
-        const currentTotalWords = typewriterLines.reduce((sum, line) => sum + line.text.split(' ').length, 0);
-        const exactWordProgress = newProgress * currentTotalWords;
-        const wordsToShow = Math.floor(exactWordProgress);
-        const newVisibleWords: number[] = [0];
-        
-        newVisibleWords[0] = Math.min(wordsToShow, typewriterLines[0].text.split(' ').length);
-        setVisibleWords(newVisibleWords);
-            // Check if heading is complete - only when ALL words are fully revealed
-      if (wordsToShow >= currentTotalWords && !isHeadingComplete) {
-        // Add a small delay to ensure the last word animation completes
-        setTimeout(() => {
-          setIsHeadingComplete(true);
-          setHeadingPosition('top');
-          setContentProgress(1);
-        }, 500);
-      }
-        
-        return newProgress;
-      });
-    };
-
-    window.addEventListener('wheel', handleWheel, { passive: false });
-    
-    return () => {
-      window.removeEventListener('wheel', handleWheel);
-    };
-  }, [scrollLocked, sectionFullScreen, isHeadingComplete, isMobile]);
-
-  // Prevent all other scroll attempts when locked - desktop only
-  useEffect(() => {
-    if (!scrollLocked || isMobile) return;
-
-    const preventScroll = (e: WheelEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-    };
-
-    const preventKeys = (e: KeyboardEvent) => {
-      const keys = ['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' '];
-      if (keys.includes(e.key)) {
-        e.preventDefault();
-      }
-    };
-
-    // Add event listeners to prevent scroll attempts - exclude touch events for mobile compatibility
-    window.addEventListener('wheel', preventScroll, { passive: false });
-    window.addEventListener('keydown', preventKeys, { passive: false });
-
-    return () => {
-      window.removeEventListener('wheel', preventScroll);
-      window.removeEventListener('keydown', preventKeys);
-    };
-  }, [scrollLocked, isMobile]);
-
-  // Simplified heading completion check - ensure ALL words are visible before marking complete
-  useEffect(() => {
-    const totalVisibleWords = visibleWords.reduce((sum, count) => sum + count, 0);
-    const currentTotalWords = typewriterLines.reduce((sum, line) => sum + line.text.split(' ').length, 0);
-    const complete = totalVisibleWords >= currentTotalWords;
-    
-    // Set heading complete when all words are visible with a delay to ensure animations finish
-    if (complete && !isHeadingComplete) {
-      const delay = isMobile ? 600 : 800; // Slightly faster on mobile
-      setTimeout(() => {
+    if (isTypingComplete && !isHeadingComplete) {
+      const delay = isMobile ? 200 : 300; // Short delay after typing completes
+      const timeoutId = setTimeout(() => {
         setIsHeadingComplete(true);
       }, delay);
-    }
-  }, [visibleWords, isHeadingComplete, isMobile]);
 
-  // Scroll-based word reveal effect - modified to work with locking, mobile-friendly
+      return () => clearTimeout(timeoutId);
+    }
+  }, [isTypingComplete, isHeadingComplete, isMobile]);
+
+  // Professional scroll detection for triggering typewriter
   useEffect(() => {
     if (!isClient || !sectionRef.current) return;
 
+    let ticking = false;
+
     const handleScroll = () => {
-      if (!sectionRef.current) return;
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          if (!sectionRef.current) return;
 
-      const rect = sectionRef.current.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-      const sectionHeight = rect.height;
-      
-      // Calculate how much of the section is visible
-      const sectionTop = rect.top;
-      const sectionBottom = rect.bottom;
-      
-      // Start revealing when section enters viewport
-      let progress = 0;
-      
-      // Calculate progress based on how much the section has been scrolled into view
-      if (sectionTop < windowHeight && sectionBottom > 0) {
-        if (sectionTop <= windowHeight * 0.9) { // Start earlier for faster reveal
-          // Calculate progress based on how far the section has scrolled
-          const maxScroll = windowHeight * 0.9;
-          const currentScroll = maxScroll - Math.max(sectionTop, -sectionHeight);
-          // Adjust scroll needed based on device type
-          const scrollMultiplier = isMobile ? 3.0 : 5.0; // Faster on mobile
-          const totalScrollNeeded = sectionHeight * scrollMultiplier + maxScroll;
+          const rect = sectionRef.current.getBoundingClientRect();
+          const windowHeight = window.innerHeight;
           
-          progress = Math.min(currentScroll / totalScrollNeeded, 1);
+          // Calculate section position
+          const sectionTop = rect.top;
+          const sectionBottom = rect.bottom;
           
-          // Apply faster easing for quicker reveal, especially on mobile
-          const easingPower = isMobile ? 1.0 : 1.2;
-          progress = Math.pow(progress, easingPower);
-        }
-      }
-      
-      setScrollProgress(progress);
+          // Calculate scroll progress for use in other animations
+          let progress = 0;
+          
+          if (sectionTop < windowHeight && sectionBottom > 0) {
+            // Start when section is partially in viewport
+            const sectionHeight = rect.height;
+            const visibleHeight = Math.min(sectionBottom, windowHeight) - Math.max(sectionTop, 0);
+            progress = Math.min(visibleHeight / (windowHeight * 0.6), 1);
+            
+            // Professional easing
+            const easingPower = isMobile ? 0.6 : 0.7;
+            progress = Math.pow(progress, easingPower);
+            
+            // Ensure smooth progress without jumps
+            progress = Math.max(0, Math.min(1, progress));
+            
+            // Start typewriter earlier in the view for longer text
+            if (progress > 0.1 && !hasStartedTyping) {
+              setHasStartedTyping(true);
+            }
+          }
+          
+          setScrollProgress(progress);
+          
+          // Content progress update after typing is complete
+          if (isTypingComplete && !contentProgress) {
+            const delay = isMobile ? 400 : 500;
+            setTimeout(() => {
+              setContentProgress(1);
+            }, delay);
+          }
 
-      // Calculate visible words based on scroll progress - faster precise reveal
-      const currentTotalWords = typewriterLines.reduce((sum, line) => sum + line.text.split(' ').length, 0);
-      // Faster word reveal multiplier, especially on mobile
-      const revealMultiplier = isMobile ? 1.0 : 0.8;
-      const exactWordProgress = progress * currentTotalWords * revealMultiplier;
-      const wordsToShow = Math.floor(exactWordProgress);
-      const newVisibleWords: number[] = [0];
-      
-      // For single paragraph, set exact visible word count
-      newVisibleWords[0] = Math.min(wordsToShow, typewriterLines[0].text.split(' ').length);
-      
-      setVisibleWords(newVisibleWords);
-
-      // Check if heading is complete - only when ALL words are fully revealed
-      if (wordsToShow >= currentTotalWords && !isHeadingComplete) {
-        // Add a small delay to ensure the last word animation completes
-        const delay = isMobile ? 300 : 500; // Faster on mobile
-        setTimeout(() => {
-          setIsHeadingComplete(true);
-          setHeadingPosition('top');
-          setContentProgress(1);
-        }, delay);
+          ticking = false;
+        });
+        ticking = true;
       }
     };
 
-    // Only add scroll listener if not locked, otherwise words reveal based on existing progress
-    if (!scrollLocked) {
-      window.addEventListener('scroll', handleScroll);
-      handleScroll(); // Initial calculation
-    }
+    // Always add scroll listener
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // Initial calculation
     
     return () => {
-      if (!scrollLocked) {
-        window.removeEventListener('scroll', handleScroll);
-      }
+      window.removeEventListener('scroll', handleScroll);
     };
-  }, [isClient, scrollLocked, isHeadingComplete, isMobile]);
+  }, [isClient, isTypingComplete, hasStartedTyping, contentProgress, isMobile]);
 
   // Animation variants
   const containerVariants = {
@@ -517,6 +423,10 @@ export default function Services() {
       ref={sectionRef}
       id="services"
       className="relative min-h-screen bg-gradient-to-tr from-gray-900 via-black to-gray-800 text-white overflow-hidden py-12 sm:py-16 md:py-20 lg:py-32"
+      style={{ 
+        willChange: 'transform', // Hint browser for optimization
+        transform: 'translateZ(0)' // Force hardware acceleration
+      }}
     >
       {/* Floating Particles */}
       {isClient && (
@@ -557,18 +467,18 @@ export default function Services() {
         </svg>
       </div>
 
-      {/* Ambient glow effect - mobile-safe */}
+      {/* Optimized ambient glow effect - mobile-safe */}
       {isClient && (
         <motion.div
           className="absolute w-96 h-96 rounded-full bg-gradient-to-r from-[#00b4ab]/20 to-[#008a82]/20 blur-3xl"
           animate={!isMobile ? {
-            x: mousePosition.x * 100 - 192,
-            y: mousePosition.y * 100 - 192,
+            x: mousePosition.x * 80 - 192, // Reduced multiplier for smoother performance
+            y: mousePosition.y * 80 - 192,
           } : {
             x: -96,
             y: -96,
           }}
-          transition={{ type: "spring", stiffness: 50, damping: 30 }}
+          transition={{ type: "spring", stiffness: 40, damping: 25 }} // Optimized spring values
         />
       )}
 
@@ -577,22 +487,20 @@ export default function Services() {
           
           {/* Header Section */}
           <motion.div 
-            className={`transition-all duration-1000 ease-in-out ${
-              headingPosition === 'center' 
-                ? 'flex items-center justify-start min-h-[80vh] sm:min-h-screen' 
-                : 'mb-12 sm:mb-16 md:mb-20 lg:mb-24'
-            }`}
+            className="flex items-center justify-start min-h-[80vh] sm:min-h-screen"
             initial="hidden"
             animate={controls}
             variants={containerVariants}
+            style={{
+              // Prevent layout shift during transition
+              willChange: 'transform, opacity',
+              transform: 'translateZ(0)'
+            }}
           >
-            {/* Main heading with Scroll-based Word Reveal */}
+            {/* Main heading with Typewriter Effect + Dark/White reveal */}
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
-              animate={{ 
-                opacity: 1, 
-                y: 0,
-              }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
               className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-normal mb-6 sm:mb-8 text-white leading-relaxed tracking-wide min-h-[100px] sm:min-h-[120px] md:min-h-[140px] lg:min-h-[160px] xl:min-h-[180px]"
               style={{ fontFamily: 'Montserrat, sans-serif' }}
@@ -600,18 +508,21 @@ export default function Services() {
               onMouseLeave={() => !isMobile && setIsHovering(false)}
             >
               {typewriterLines.map((line, lineIndex) => {
-                const words = wordsPerLine[lineIndex];
-                const visibleWordCount = visibleWords[lineIndex];
-                const allWordsVisible = visibleWordCount === words.length;
+                // Split the text into words for the dark/white reveal effect
+                const words = line.text.split(' ');
+                // Calculate visible word count based on typing progress
+                const visibleWordCount = !isTypingComplete 
+                  ? Math.ceil((currentCharIndex / line.text.length) * words.length) 
+                  : words.length;
                 
                 return (
                   <motion.span 
                     key={lineIndex}
-                    className={`block ${line.color} ${lineIndex < typewriterLines.length - 1 ? 'mb-4' : ''}`}
+                    className={`block ${line.color}`}
                     initial={{ opacity: 1 }}
                     animate={{ 
-                      opacity: 1, // Always visible
-                      x: !isMobile && isHovering && allWordsVisible ? mousePosition.x * (lineIndex === 1 ? -2 : 1.5) : 0,
+                      opacity: 1,
+                      x: !isMobile && isHovering && isTypingComplete ? mousePosition.x * 1.5 : 0,
                     }}
                     transition={{ 
                       opacity: { duration: 0.3 },
@@ -619,36 +530,60 @@ export default function Services() {
                     }}
                     style={{ color: '#374151' }} // Initial dark grey color for all text
                   >
-                    {words.map((word, wordIndex) => {
-                      const isRevealed = wordIndex < visibleWordCount;
-                      const isLastRevealedWord = wordIndex === visibleWordCount - 1 && !allWordsVisible;
-                      
-                      return (
+                    {!isTypingComplete && currentLineIndex === lineIndex ? (
+                      <>
+                        {words.map((word, wordIndex) => {
+                          const isRevealed = wordIndex < visibleWordCount;
+                          
+                          return (
+                            <motion.span
+                              key={wordIndex}
+                              className="inline-block mr-3"
+                              initial={{ opacity: 1 }}
+                              animate={{ 
+                                color: isRevealed ? '#ffffff' : '#374151', // White when revealed, dark grey when not
+                                opacity: 1 // Always visible
+                              }}
+                              transition={{ 
+                                duration: 0.08, // Much faster color transition
+                                delay: wordIndex * 0.002, // Much reduced stagger timing for fastest reveal
+                                ease: "easeOut"
+                              }}
+                            >
+                              {word}
+                            </motion.span>
+                          );
+                        })}
+                        {/* Typing cursor */}
+                        {currentCharIndex < line.text.length && (
+                          <motion.span
+                            className="inline-block w-1 h-[0.8em] bg-[#00b4ab] ml-1"
+                            animate={{ opacity: [1, 0] }}
+                            transition={{ duration: 0.8, repeat: Infinity, repeatType: "reverse" }}
+                          />
+                        )}
+                      </>
+                    ) : isTypingComplete ? (
+                      // All words revealed when typing is complete
+                      words.map((word, wordIndex) => (
                         <motion.span
                           key={wordIndex}
                           className="inline-block mr-3"
                           initial={{ opacity: 1 }}
                           animate={{ 
-                            color: (isRevealed || isHeadingComplete) ? '#ffffff' : '#374151', // White when revealed, dark grey when not
-                            opacity: 1 // Always visible
+                            color: '#ffffff', // All white when typing is complete
+                            opacity: 1
                           }}
                           transition={{ 
-                            duration: 0.3, // Faster color transition (reduced from 0.4)
-                            delay: wordIndex * 0.01, // Even faster stagger (reduced from 0.02)
+                            duration: 0.08,
+                            delay: wordIndex * 0.002,
                             ease: "easeOut"
                           }}
                         >
                           {word}
-                          {isLastRevealedWord && !isHeadingComplete && (
-                            <motion.span
-                              className="inline-block w-1 h-[0.8em] bg-[#00b4ab] ml-2"
-                              animate={{ opacity: [1, 0] }}
-                              transition={{ duration: 0.8, repeat: Infinity, repeatType: "reverse" }}
-                            />
-                          )}
                         </motion.span>
-                      );
-                    })}
+                      ))
+                    ) : null}
                   </motion.span>
                 );
               })}
@@ -658,14 +593,19 @@ export default function Services() {
           {/* Services Section */}
           <motion.div 
             className="mb-16 sm:mb-20 -mt-4 sm:-mt-6 md:-mt-8 lg:-mt-12"
-            initial={{ opacity: 0 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ 
-              opacity: isHeadingComplete ? 1 : 0 
+              opacity: isTypingComplete ? 1 : 0,
+              y: isTypingComplete ? 0 : 30
             }}
-            transition={{ duration: 0.8, delay: isHeadingComplete ? 0.8 : 0 }}
+            transition={{ 
+              duration: 1.0, 
+              delay: isTypingComplete ? 0.8 : 0,
+              ease: "easeOut"
+            }}
           >
             {/* Services Grid - Mobile-friendly responsive layout */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-12">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
               {services.map((service, index) => {
                 return (
                   <motion.div
@@ -673,60 +613,63 @@ export default function Services() {
                     className="group relative"
                     initial={{ opacity: 0, y: 50 }}
                     animate={{ 
-                      opacity: isHeadingComplete ? 1 : 0,
-                      y: isHeadingComplete ? 0 : 50
+                      opacity: isTypingComplete ? 1 : 0,
+                      y: isTypingComplete ? 0 : 50
                     }}
                     transition={{ 
-                      duration: 0.5, 
-                      delay: isHeadingComplete ? 1.0 + (index * 0.2) : 0,
+                      duration: 0.6, 
+                      delay: isTypingComplete ? 1.4 + (index * 0.2) : 0, // Smoother stagger
                       type: "spring",
-                      stiffness: 100,
-                      damping: 15
+                      stiffness: 80,
+                      damping: 25
                     }}
-                    whileHover={!isMobile ? { y: -8 } : {}}
+                    whileHover={!isMobile ? { 
+                      y: -8,
+                      transition: { duration: 0.2, ease: "easeOut" }
+                    } : {}}
                   >
-                  <div className="bg-gradient-to-tr from-gray-800 via-gray-900 to-black rounded-2xl shadow-lg hover:shadow-xl hover:shadow-[#00b4ab]/20 transition-all duration-500 overflow-hidden border border-gray-700 hover:border-[#00b4ab]/50 h-full p-6 sm:p-8">
+                  <div className="bg-gradient-to-br from-gray-800 via-gray-900 to-black rounded-2xl shadow-lg hover:shadow-xl hover:shadow-[#00b4ab]/20 transition-all duration-500 overflow-hidden border border-gray-700 hover:border-[#00b4ab]/50 h-full p-8 flex flex-col">
                     
                     {/* Icon and Category */}
-                    <div className="flex items-center justify-between mb-4 sm:mb-6">
-                      <div className={`p-2.5 sm:p-3 rounded-xl bg-gradient-to-r ${getCategoryColor(service.category)} text-white shadow-lg`}>
+                    <div className="flex items-center justify-between mb-6">
+                      <div className={`p-3 rounded-xl bg-gradient-to-r ${getCategoryColor(service.category)} text-white shadow-lg`}>
                         {getCategoryIcon(service.icon)}
                       </div>
-                      <span className={`inline-flex items-center px-2.5 sm:px-3 py-1 rounded-full text-xs font-semibold text-white bg-gradient-to-r ${getCategoryColor(service.category)} shadow-lg`}>
+                      <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold text-white bg-gradient-to-r ${getCategoryColor(service.category)} shadow-lg`}>
                         {service.category.toUpperCase()}
                       </span>
                     </div>
 
                     {/* Title and Description */}
-                    <h4 className="text-lg sm:text-xl lg:text-2xl font-bold text-white mb-3 sm:mb-4 group-hover:text-[#00b4ab] transition-colors duration-300">
+                    <h4 className="text-xl sm:text-2xl font-bold text-white mb-4 group-hover:text-[#00b4ab] transition-colors duration-300">
                       {service.title}
                     </h4>
                     
-                    <p className="text-gray-300 mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base">
+                    <p className="text-gray-300 mb-6 leading-relaxed flex-grow">
                       {service.description}
                     </p>
 
                     {/* Features */}
-                    <div className="mb-4 sm:mb-6">
-                      <h5 className="text-sm font-semibold text-gray-200 mb-2 sm:mb-3">Key Features:</h5>
-                      <div className="space-y-2 sm:space-y-3">
+                    <div className="mb-6">
+                      <h5 className="text-sm font-semibold text-gray-200 mb-3">Key Features:</h5>
+                      <div className="space-y-3">
                         {service.features.slice(0, 3).map((feature, featureIndex) => (
-                          <div key={featureIndex} className="flex items-start gap-2 sm:gap-3">
-                            <div className="w-1.5 h-1.5 rounded-full bg-[#00b4ab] mt-1.5 sm:mt-2 flex-shrink-0" />
-                            <span className="text-xs sm:text-sm text-gray-400 leading-relaxed">{feature}</span>
+                          <div key={featureIndex} className="flex items-start gap-3">
+                            <div className="w-1.5 h-1.5 rounded-full bg-[#00b4ab] mt-2 flex-shrink-0" />
+                            <span className="text-sm text-gray-400 leading-relaxed">{feature}</span>
                           </div>
                         ))}
                       </div>
                     </div>
 
                     {/* Technologies */}
-                    <div className="space-y-2 sm:space-y-3">
-                      <h5 className="text-sm font-semibold text-gray-200">Technologies:</h5>
-                      <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                    <div className="mt-auto">
+                      <h5 className="text-sm font-semibold text-gray-200 mb-3">Technologies:</h5>
+                      <div className="flex flex-wrap gap-2">
                         {service.technologies.slice(0, 4).map((tech, techIndex) => (
                           <span
                             key={techIndex}
-                            className="px-2 sm:px-3 py-1 bg-gray-800/60 backdrop-blur-sm text-gray-300 text-xs rounded-lg border border-gray-700/50"
+                            className="px-3 py-1 bg-gray-800/60 backdrop-blur-sm text-gray-300 text-xs rounded-lg border border-gray-700/50"
                           >
                             {tech}
                           </span>
@@ -743,22 +686,27 @@ export default function Services() {
           {/* Call to Action */}
           <motion.div 
             className="text-center"
-            initial={{ opacity: 0 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ 
-              opacity: isHeadingComplete ? 1 : 0 
+              opacity: isTypingComplete ? 1 : 0,
+              y: isTypingComplete ? 0 : 20
             }}
-            transition={{ duration: 0.6, delay: isHeadingComplete ? 1.8 : 0 }}
+            transition={{ 
+              duration: 0.8, 
+              delay: isTypingComplete ? 2.2 : 0,
+              ease: "easeOut"
+            }}
           >
             {/* CTA Section */}
             <motion.div 
               className="bg-gradient-to-br from-gray-900/90 via-black/90 to-gray-800/90 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-700/50 hover:border-[#00b4ab]/30 transition-all duration-500 p-6 sm:p-8 lg:p-12 mb-8 sm:mb-12 max-w-4xl mx-auto"
               initial={{ opacity: 0, y: 30 }}
               animate={{ 
-                opacity: isHeadingComplete ? 1 : 0,
-                y: isHeadingComplete ? 0 : 30
+                opacity: isTypingComplete ? 1 : 0,
+                y: isTypingComplete ? 0 : 30
               }}
-              transition={{ duration: 0.5, delay: isHeadingComplete ? 2.0 : 0 }}
-              whileHover={!isMobile ? { scale: isHeadingComplete ? 1.02 : 1 } : {}}
+              transition={{ duration: 0.6, delay: isTypingComplete ? 2.6 : 0 }} // Smoother timing
+              whileHover={!isMobile ? { scale: isTypingComplete ? 1.02 : 1 } : {}}
             >
               <h4 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-3 sm:mb-4">
                 Ready to Transform Your Business?
@@ -816,7 +764,7 @@ export default function Services() {
               className="flex justify-center items-center"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 2.8 }}
+              transition={{ duration: 0.6, delay: 3.2 }} // Smoother final timing
             >
               <motion.a
                 href="/careers"
