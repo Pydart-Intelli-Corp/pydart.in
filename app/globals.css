@@ -19,7 +19,37 @@ body {
   font-family: 'Montserrat', 'Product Sans', Arial, sans-serif;
   min-height: 100vh;
   overflow-x: hidden;
-  cursor: default;
+  cursor: default !important;
+  transition: cursor 0.2s ease;
+}
+
+/* Ensure normal cursor behavior globally */
+*, *::before, *::after {
+  cursor: inherit !important;
+}
+
+/* Override cursor styles for interactive elements */
+button, a, [role="button"], input, select, textarea, .cursor-pointer {
+  cursor: pointer !important;
+  transition: cursor 0.1s ease;
+}
+
+/* Disable cursor transitions for hero section to avoid flickering */
+#hero, #hero * {
+  transition: none !important;
+}
+
+/* Specific override for hero section - will be controlled by the Hero component */
+#hero {
+  cursor: none !important;
+}
+
+#hero *, #hero *::before, #hero *::after {
+  cursor: none !important;
+}
+
+#hero button, #hero a, #hero [role="button"], #hero .cursor-pointer {
+  cursor: none !important;
 }
 
 /* Gorgeous scrollbar styling */

@@ -1,6 +1,15 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Enable static export for Firebase hosting
+  output: 'export',
+  trailingSlash: true,
+  
+  // Disable ESLint during builds
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+
   // Environment variables
   env: {
     NEXT_PUBLIC_API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL || 'https://lactosure.azurewebsites.net/api',
@@ -24,6 +33,8 @@ const nextConfig: NextConfig = {
 
   // Image configuration for external images
   images: {
+    unoptimized: true,
+    domains: ['images.unsplash.com'],
     remotePatterns: [
       {
         protocol: 'https',

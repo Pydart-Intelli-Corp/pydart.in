@@ -13,34 +13,74 @@ interface Service {
   details: string[];
 }
 
-// Mouse tracking hook
+// Mouse tracking hook - mobile-safe
 const useMouseTracking = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isMobile, setIsMobile] = useState(false);
   
   useEffect(() => {
-    const updateMousePosition = (e: MouseEvent) => {
-      setMousePosition({ 
-        x: e.clientX / window.innerWidth, 
-        y: e.clientY / window.innerHeight 
-      });
+    // Detect if device is mobile
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768 || 'ontouchstart' in window);
     };
     
-    if (typeof window !== 'undefined') {
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    const updateMousePosition = (e: MouseEvent) => {
+      if (!isMobile) {
+        setMousePosition({ 
+          x: e.clientX / window.innerWidth, 
+          y: e.clientY / window.innerHeight 
+        });
+      }
+    };
+    
+    if (typeof window !== 'undefined' && !isMobile) {
       window.addEventListener('mousemove', updateMousePosition);
-      return () => window.removeEventListener('mousemove', updateMousePosition);
     }
-  }, []);
+    
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+      if (!isMobile) {
+        window.removeEventListener('mousemove', updateMousePosition);
+      }
+    };
+  }, [isMobile]);
   
-  return { mousePosition };
+  return { mousePosition, isMobile };
 };
 
 export default function Services() {
-  const { mousePosition } = useMouseTracking();
+  const { mousePosition, isMobile } = useMouseTracking();
   const [isClient, setIsClient] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
-  const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [visibleWords, setVisibleWords] = useState<number[]>([0]); // Track visible words for single paragraph
+  const [isHeadingComplete, setIsHeadingComplete] = useState(false);
+  const [scrollLocked, setScrollLocked] = useState(false);
+  const [sectionFullScreen, setSectionFullScreen] = useState(false);
+  const [headingPosition, setHeadingPosition] = useState<'center' | 'top'>('center');
+  const [wheelProgress, setWheelProgress] = useState(0);
+  const [contentProgress, setContentProgress] = useState(0);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(sectionRef, { once: false, margin: "-100px" });
   const controls = useAnimation();
+
+  // Typewriter text lines - single paragraph with white text
+  const typewriterLines = [
+    { text: 'Comprehensive Technology Solutions for Modern Business Challenges and Digital Innovation - Empowering Your Vision Through Advanced AI, Mobile Development, and Strategic Digital Transformation', color: 'text-white' }
+  ];
+
+  // Memoize words per line to prevent unnecessary re-renders
+  const wordsPerLine = React.useMemo(() => 
+    typewriterLines.map(line => line.text.split(' ')), 
+    []
+  );
+  const totalWords = React.useMemo(() => 
+    wordsPerLine.reduce((sum, words) => sum + words.length, 0), 
+    [wordsPerLine]
+  );
 
   useEffect(() => {
     setIsClient(true);
@@ -48,6 +88,258 @@ export default function Services() {
       controls.start("visible");
     }
   }, [isInView, controls]);
+
+  // Store scroll position when locking
+  const [lockedScrollPosition, setLockedScrollPosition] = useState(0);
+
+  // Check if section is in view and handle scroll locking - disabled on mobile
+  useEffect(() => {
+    if (!isClient || !sectionRef.current || isMobile) return;
+
+    const handleScroll = () => {
+      if (!sectionRef.current) return;
+
+      const rect = sectionRef.current.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      
+      // Check if section fills the entire viewport
+      const sectionTop = rect.top;
+      const sectionBottom = rect.bottom;
+      
+      const isFullScreen = sectionTop <= 0 && sectionBottom >= windowHeight;
+      setSectionFullScreen(isFullScreen);
+
+      // Store current scroll position when entering full screen
+      if (isFullScreen && !scrollLocked && !isHeadingComplete) {
+        setLockedScrollPosition(window.pageYOffset);
+      }
+
+      // Reset progress when leaving section (only if heading not complete)
+      if (!isFullScreen && !isHeadingComplete) {
+        setScrollProgress(0);
+        setVisibleWords([0]);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Initial calculation
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [isClient, isHeadingComplete, scrollLocked, isMobile]);
+
+  // Lock/unlock scroll with position restoration - disabled on mobile
+  useEffect(() => {
+    if (!isClient || isMobile) return;
+
+    // Lock scroll when section is full screen AND words are not fully revealed yet
+    if (sectionFullScreen && !isHeadingComplete) {
+      if (!scrollLocked) {
+        setScrollLocked(true);
+        
+        // Lock scroll position
+        document.body.style.position = 'fixed';
+        document.body.style.top = `-${lockedScrollPosition}px`;
+        document.body.style.width = '100%';
+        document.body.style.overflow = 'hidden';
+        
+        console.log('Scroll locked at position:', lockedScrollPosition);
+      }
+    } 
+    // Unlock scroll when words are fully revealed
+    else if (isHeadingComplete && scrollLocked) {
+      setScrollLocked(false);
+      
+      // Restore scroll position
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      document.body.style.overflow = '';
+      
+      // Restore the scroll position
+      window.scrollTo(0, lockedScrollPosition);
+      
+      console.log('Scroll unlocked, restored to position:', lockedScrollPosition);
+    }
+    // Also unlock when leaving section
+    else if (!sectionFullScreen && scrollLocked) {
+      setScrollLocked(false);
+      
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      document.body.style.overflow = '';
+      
+      console.log('Scroll unlocked - left section');
+    }
+
+    // Cleanup on unmount
+    return () => {
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      document.body.style.overflow = '';
+    };
+  }, [isClient, sectionFullScreen, isHeadingComplete, scrollLocked, lockedScrollPosition, isMobile]);
+
+  // Wheel-based word reveal when scroll is locked - desktop only
+  useEffect(() => {
+    if (!scrollLocked || !sectionFullScreen || isMobile) return;
+
+    const handleWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      
+      // Use wheel events to control word reveal when scroll is locked
+      setScrollProgress(prev => {
+        const delta = e.deltaY > 0 ? 0.015 : -0.015; // Faster wheel-based reveal (increased from 0.005)
+        const newProgress = Math.min(Math.max(prev + delta, 0), 1);
+        
+        // Calculate visible words based on progress - one word at a time
+        const currentTotalWords = typewriterLines.reduce((sum, line) => sum + line.text.split(' ').length, 0);
+        const exactWordProgress = newProgress * currentTotalWords;
+        const wordsToShow = Math.floor(exactWordProgress);
+        const newVisibleWords: number[] = [0];
+        
+        newVisibleWords[0] = Math.min(wordsToShow, typewriterLines[0].text.split(' ').length);
+        setVisibleWords(newVisibleWords);
+            // Check if heading is complete - only when ALL words are fully revealed
+      if (wordsToShow >= currentTotalWords && !isHeadingComplete) {
+        // Add a small delay to ensure the last word animation completes
+        setTimeout(() => {
+          setIsHeadingComplete(true);
+          setHeadingPosition('top');
+          setContentProgress(1);
+        }, 500);
+      }
+        
+        return newProgress;
+      });
+    };
+
+    window.addEventListener('wheel', handleWheel, { passive: false });
+    
+    return () => {
+      window.removeEventListener('wheel', handleWheel);
+    };
+  }, [scrollLocked, sectionFullScreen, isHeadingComplete, isMobile]);
+
+  // Prevent all other scroll attempts when locked - desktop only
+  useEffect(() => {
+    if (!scrollLocked || isMobile) return;
+
+    const preventScroll = (e: WheelEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+    };
+
+    const preventKeys = (e: KeyboardEvent) => {
+      const keys = ['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' '];
+      if (keys.includes(e.key)) {
+        e.preventDefault();
+      }
+    };
+
+    // Add event listeners to prevent scroll attempts - exclude touch events for mobile compatibility
+    window.addEventListener('wheel', preventScroll, { passive: false });
+    window.addEventListener('keydown', preventKeys, { passive: false });
+
+    return () => {
+      window.removeEventListener('wheel', preventScroll);
+      window.removeEventListener('keydown', preventKeys);
+    };
+  }, [scrollLocked, isMobile]);
+
+  // Simplified heading completion check - ensure ALL words are visible before marking complete
+  useEffect(() => {
+    const totalVisibleWords = visibleWords.reduce((sum, count) => sum + count, 0);
+    const currentTotalWords = typewriterLines.reduce((sum, line) => sum + line.text.split(' ').length, 0);
+    const complete = totalVisibleWords >= currentTotalWords;
+    
+    // Set heading complete when all words are visible with a delay to ensure animations finish
+    if (complete && !isHeadingComplete) {
+      const delay = isMobile ? 600 : 800; // Slightly faster on mobile
+      setTimeout(() => {
+        setIsHeadingComplete(true);
+      }, delay);
+    }
+  }, [visibleWords, isHeadingComplete, isMobile]);
+
+  // Scroll-based word reveal effect - modified to work with locking, mobile-friendly
+  useEffect(() => {
+    if (!isClient || !sectionRef.current) return;
+
+    const handleScroll = () => {
+      if (!sectionRef.current) return;
+
+      const rect = sectionRef.current.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      const sectionHeight = rect.height;
+      
+      // Calculate how much of the section is visible
+      const sectionTop = rect.top;
+      const sectionBottom = rect.bottom;
+      
+      // Start revealing when section enters viewport
+      let progress = 0;
+      
+      // Calculate progress based on how much the section has been scrolled into view
+      if (sectionTop < windowHeight && sectionBottom > 0) {
+        if (sectionTop <= windowHeight * 0.9) { // Start earlier for faster reveal
+          // Calculate progress based on how far the section has scrolled
+          const maxScroll = windowHeight * 0.9;
+          const currentScroll = maxScroll - Math.max(sectionTop, -sectionHeight);
+          // Adjust scroll needed based on device type
+          const scrollMultiplier = isMobile ? 3.0 : 5.0; // Faster on mobile
+          const totalScrollNeeded = sectionHeight * scrollMultiplier + maxScroll;
+          
+          progress = Math.min(currentScroll / totalScrollNeeded, 1);
+          
+          // Apply faster easing for quicker reveal, especially on mobile
+          const easingPower = isMobile ? 1.0 : 1.2;
+          progress = Math.pow(progress, easingPower);
+        }
+      }
+      
+      setScrollProgress(progress);
+
+      // Calculate visible words based on scroll progress - faster precise reveal
+      const currentTotalWords = typewriterLines.reduce((sum, line) => sum + line.text.split(' ').length, 0);
+      // Faster word reveal multiplier, especially on mobile
+      const revealMultiplier = isMobile ? 1.0 : 0.8;
+      const exactWordProgress = progress * currentTotalWords * revealMultiplier;
+      const wordsToShow = Math.floor(exactWordProgress);
+      const newVisibleWords: number[] = [0];
+      
+      // For single paragraph, set exact visible word count
+      newVisibleWords[0] = Math.min(wordsToShow, typewriterLines[0].text.split(' ').length);
+      
+      setVisibleWords(newVisibleWords);
+
+      // Check if heading is complete - only when ALL words are fully revealed
+      if (wordsToShow >= currentTotalWords && !isHeadingComplete) {
+        // Add a small delay to ensure the last word animation completes
+        const delay = isMobile ? 300 : 500; // Faster on mobile
+        setTimeout(() => {
+          setIsHeadingComplete(true);
+          setHeadingPosition('top');
+          setContentProgress(1);
+        }, delay);
+      }
+    };
+
+    // Only add scroll listener if not locked, otherwise words reveal based on existing progress
+    if (!scrollLocked) {
+      window.addEventListener('scroll', handleScroll);
+      handleScroll(); // Initial calculation
+    }
+    
+    return () => {
+      if (!scrollLocked) {
+        window.removeEventListener('scroll', handleScroll);
+      }
+    };
+  }, [isClient, scrollLocked, isHeadingComplete, isMobile]);
 
   // Animation variants
   const containerVariants = {
@@ -224,44 +516,57 @@ export default function Services() {
     <section 
       ref={sectionRef}
       id="services"
-      className="relative min-h-screen bg-gradient-to-br from-neutral-200 via-neutral-100 to-neutral-300 overflow-hidden py-32 lg:py-40"
+      className="relative min-h-screen bg-gradient-to-tr from-gray-900 via-black to-gray-800 text-white overflow-hidden py-12 sm:py-16 md:py-20 lg:py-32"
     >
-      {/* Floating teal dot */}
+      {/* Floating Particles */}
       {isClient && (
-        <motion.div
-          className="absolute w-3 h-3 rounded-full bg-[#00b4ab] shadow-lg shadow-teal-500/30 pointer-events-none z-30"
-          animate={{
-            x: mousePosition.x * 800,
-            y: mousePosition.y * 600,
-          }}
-          transition={{ 
-            type: "spring", 
-            stiffness: 100, 
-            damping: 20,
-            mass: 0.5
-          }}
-        />
+        <div className="absolute inset-0">
+          {[...Array(8)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-1 h-1 bg-[#00b4ab]/30 rounded-full"
+              style={{
+                left: `${15 + i * 12}%`,
+                top: `${20 + i * 8}%`,
+              }}
+              animate={{
+                scale: [1, 1.5, 1],
+                opacity: [0.3, 0.7, 0.3],
+              }}
+              transition={{
+                duration: 3 + i * 0.5,
+                repeat: Infinity,
+                repeatType: "reverse",
+                ease: "easeInOut",
+                delay: i * 0.2,
+              }}
+            />
+          ))}
+        </div>
       )}
 
       {/* Neural Network Background Pattern */}
-      <div className="absolute inset-0 overflow-hidden opacity-[0.03]">
+      <div className="absolute inset-0 overflow-hidden opacity-[0.1]">
         <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
           <defs>
             <pattern id="neural-grid-services" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">
-              <path d="M 10 0 L 0 0 0 10" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+              <path d="M 10 0 L 0 0 0 10" fill="none" stroke="#00b4ab" strokeWidth="0.2"/>
             </pattern>
           </defs>
           <rect width="100%" height="100%" fill="url(#neural-grid-services)" />
         </svg>
       </div>
 
-      {/* Ambient glow effect */}
+      {/* Ambient glow effect - mobile-safe */}
       {isClient && (
         <motion.div
-          className="absolute w-96 h-96 rounded-full bg-gradient-to-r from-teal-200/10 to-teal-300/10 blur-3xl"
-          animate={{
+          className="absolute w-96 h-96 rounded-full bg-gradient-to-r from-[#00b4ab]/20 to-[#008a82]/20 blur-3xl"
+          animate={!isMobile ? {
             x: mousePosition.x * 100 - 192,
             y: mousePosition.y * 100 - 192,
+          } : {
+            x: -96,
+            y: -96,
           }}
           transition={{ type: "spring", stiffness: 50, damping: 30 }}
         />
@@ -272,122 +577,156 @@ export default function Services() {
           
           {/* Header Section */}
           <motion.div 
-            className="text-center mb-20 sm:mb-32"
+            className={`transition-all duration-1000 ease-in-out ${
+              headingPosition === 'center' 
+                ? 'flex items-center justify-start min-h-[80vh] sm:min-h-screen' 
+                : 'mb-12 sm:mb-16 md:mb-20 lg:mb-24'
+            }`}
             initial="hidden"
             animate={controls}
             variants={containerVariants}
           >
-            {/* Main heading */}
-            <motion.h2
-              className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-neutral-900 mb-8 leading-[0.9] tracking-tight"
-              style={{ fontFamily: 'Inter, sans-serif' }}
-              variants={itemVariants}
-              onMouseEnter={() => setIsHovering(true)}
-              onMouseLeave={() => setIsHovering(false)}
+            {/* Main heading with Scroll-based Word Reveal */}
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ 
+                opacity: 1, 
+                y: 0,
+              }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-normal mb-6 sm:mb-8 text-white leading-relaxed tracking-wide min-h-[100px] sm:min-h-[120px] md:min-h-[140px] lg:min-h-[160px] xl:min-h-[180px]"
+              style={{ fontFamily: 'Montserrat, sans-serif' }}
+              onMouseEnter={() => !isMobile && setIsHovering(true)}
+              onMouseLeave={() => !isMobile && setIsHovering(false)}
             >
-              <motion.span 
-                className="block"
-                animate={{
-                  x: isHovering ? mousePosition.x * 3 : 0,
-                }}
-                transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              >
-                Comprehensive
-              </motion.span>
-              <motion.span 
-                className="block text-[#00b4ab]"
-                animate={{
-                  x: isHovering ? mousePosition.x * -2 : 0,
-                }}
-                transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              >
-                Digital Solutions
-              </motion.span>
-            </motion.h2>
-
-            {/* Subheadline */}
-            <motion.h3
-              className="text-xl sm:text-2xl lg:text-3xl font-semibold text-neutral-700 mb-8 leading-relaxed max-w-4xl mx-auto"
-              variants={itemVariants}
-            >
-              AI-integrated mobile apps, generative AI solutions, SEO-optimized web development, digital marketing, social media management, and stunning graphics design.
-            </motion.h3>
-
-            {/* Intro Paragraph */}
-            <motion.p
-              className="text-base sm:text-lg md:text-xl text-neutral-600 max-w-4xl mx-auto leading-relaxed font-light px-4 sm:px-0"
-              variants={itemVariants}
-            >
-              We specialize in cutting-edge technology solutions that combine artificial intelligence with mobile development, web optimization, and creative design to help your business thrive in the digital age.
-            </motion.p>
+              {typewriterLines.map((line, lineIndex) => {
+                const words = wordsPerLine[lineIndex];
+                const visibleWordCount = visibleWords[lineIndex];
+                const allWordsVisible = visibleWordCount === words.length;
+                
+                return (
+                  <motion.span 
+                    key={lineIndex}
+                    className={`block ${line.color} ${lineIndex < typewriterLines.length - 1 ? 'mb-4' : ''}`}
+                    initial={{ opacity: 1 }}
+                    animate={{ 
+                      opacity: 1, // Always visible
+                      x: !isMobile && isHovering && allWordsVisible ? mousePosition.x * (lineIndex === 1 ? -2 : 1.5) : 0,
+                    }}
+                    transition={{ 
+                      opacity: { duration: 0.3 },
+                      x: { type: "spring", stiffness: 300, damping: 30 }
+                    }}
+                    style={{ color: '#374151' }} // Initial dark grey color for all text
+                  >
+                    {words.map((word, wordIndex) => {
+                      const isRevealed = wordIndex < visibleWordCount;
+                      const isLastRevealedWord = wordIndex === visibleWordCount - 1 && !allWordsVisible;
+                      
+                      return (
+                        <motion.span
+                          key={wordIndex}
+                          className="inline-block mr-3"
+                          initial={{ opacity: 1 }}
+                          animate={{ 
+                            color: (isRevealed || isHeadingComplete) ? '#ffffff' : '#374151', // White when revealed, dark grey when not
+                            opacity: 1 // Always visible
+                          }}
+                          transition={{ 
+                            duration: 0.3, // Faster color transition (reduced from 0.4)
+                            delay: wordIndex * 0.01, // Even faster stagger (reduced from 0.02)
+                            ease: "easeOut"
+                          }}
+                        >
+                          {word}
+                          {isLastRevealedWord && !isHeadingComplete && (
+                            <motion.span
+                              className="inline-block w-1 h-[0.8em] bg-[#00b4ab] ml-2"
+                              animate={{ opacity: [1, 0] }}
+                              transition={{ duration: 0.8, repeat: Infinity, repeatType: "reverse" }}
+                            />
+                          )}
+                        </motion.span>
+                      );
+                    })}
+                  </motion.span>
+                );
+              })}
+            </motion.h1>
           </motion.div>
 
           {/* Services Section */}
           <motion.div 
-            className="mb-20"
-            initial="hidden"
-            animate={controls}
-            variants={containerVariants}
+            className="mb-16 sm:mb-20 -mt-4 sm:-mt-6 md:-mt-8 lg:-mt-12"
+            initial={{ opacity: 0 }}
+            animate={{ 
+              opacity: isHeadingComplete ? 1 : 0 
+            }}
+            transition={{ duration: 0.8, delay: isHeadingComplete ? 0.8 : 0 }}
           >
-            <motion.h3 
-              className="text-3xl sm:text-4xl lg:text-5xl font-bold text-neutral-900 text-center mb-16 tracking-tight"
-              variants={itemVariants}
-            >
-              Our Services
-            </motion.h3>
-
-            {/* Services Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8 lg:gap-12">
-              {services.map((service, index) => (
-                <motion.div
-                  key={index}
-                  className="group relative"
-                  variants={itemVariants}
-                  whileHover={{ y: -8 }}
-                  transition={{ type: "spring", stiffness: 300 }}
-                >
-                  <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-xl transition-all duration-500 overflow-hidden border border-neutral-200/50 h-full p-8">
+            {/* Services Grid - Mobile-friendly responsive layout */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-12">
+              {services.map((service, index) => {
+                return (
+                  <motion.div
+                    key={index}
+                    className="group relative"
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ 
+                      opacity: isHeadingComplete ? 1 : 0,
+                      y: isHeadingComplete ? 0 : 50
+                    }}
+                    transition={{ 
+                      duration: 0.5, 
+                      delay: isHeadingComplete ? 1.0 + (index * 0.2) : 0,
+                      type: "spring",
+                      stiffness: 100,
+                      damping: 15
+                    }}
+                    whileHover={!isMobile ? { y: -8 } : {}}
+                  >
+                  <div className="bg-gradient-to-tr from-gray-800 via-gray-900 to-black rounded-2xl shadow-lg hover:shadow-xl hover:shadow-[#00b4ab]/20 transition-all duration-500 overflow-hidden border border-gray-700 hover:border-[#00b4ab]/50 h-full p-6 sm:p-8">
                     
                     {/* Icon and Category */}
-                    <div className="flex items-center justify-between mb-6">
-                      <div className={`p-3 rounded-xl bg-gradient-to-r ${getCategoryColor(service.category)} text-white`}>
+                    <div className="flex items-center justify-between mb-4 sm:mb-6">
+                      <div className={`p-2.5 sm:p-3 rounded-xl bg-gradient-to-r ${getCategoryColor(service.category)} text-white shadow-lg`}>
                         {getCategoryIcon(service.icon)}
                       </div>
-                      <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold text-white bg-gradient-to-r ${getCategoryColor(service.category)}`}>
+                      <span className={`inline-flex items-center px-2.5 sm:px-3 py-1 rounded-full text-xs font-semibold text-white bg-gradient-to-r ${getCategoryColor(service.category)} shadow-lg`}>
                         {service.category.toUpperCase()}
                       </span>
                     </div>
 
                     {/* Title and Description */}
-                    <h4 className="text-xl sm:text-2xl font-bold text-neutral-800 mb-4 group-hover:text-[#00b4ab] transition-colors duration-300">
+                    <h4 className="text-lg sm:text-xl lg:text-2xl font-bold text-white mb-3 sm:mb-4 group-hover:text-[#00b4ab] transition-colors duration-300">
                       {service.title}
                     </h4>
                     
-                    <p className="text-neutral-600 mb-6 leading-relaxed">
+                    <p className="text-gray-300 mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base">
                       {service.description}
                     </p>
 
                     {/* Features */}
-                    <div className="mb-6">
-                      <h5 className="text-sm font-semibold text-neutral-800 mb-3">Key Features:</h5>
-                      <div className="space-y-2">
+                    <div className="mb-4 sm:mb-6">
+                      <h5 className="text-sm font-semibold text-gray-200 mb-2 sm:mb-3">Key Features:</h5>
+                      <div className="space-y-2 sm:space-y-3">
                         {service.features.slice(0, 3).map((feature, featureIndex) => (
-                          <div key={featureIndex} className="flex items-center gap-2">
-                            <div className="w-1.5 h-1.5 rounded-full bg-[#00b4ab] flex-shrink-0" />
-                            <span className="text-sm text-neutral-600">{feature}</span>
+                          <div key={featureIndex} className="flex items-start gap-2 sm:gap-3">
+                            <div className="w-1.5 h-1.5 rounded-full bg-[#00b4ab] mt-1.5 sm:mt-2 flex-shrink-0" />
+                            <span className="text-xs sm:text-sm text-gray-400 leading-relaxed">{feature}</span>
                           </div>
                         ))}
                       </div>
                     </div>
 
                     {/* Technologies */}
-                    <div className="space-y-2">
-                      <h5 className="text-sm font-semibold text-neutral-800">Technologies:</h5>
-                      <div className="flex flex-wrap gap-1">
+                    <div className="space-y-2 sm:space-y-3">
+                      <h5 className="text-sm font-semibold text-gray-200">Technologies:</h5>
+                      <div className="flex flex-wrap gap-1.5 sm:gap-2">
                         {service.technologies.slice(0, 4).map((tech, techIndex) => (
                           <span
                             key={techIndex}
-                            className="px-2 py-1 bg-neutral-100 text-neutral-700 text-xs rounded-md"
+                            className="px-2 sm:px-3 py-1 bg-gray-800/60 backdrop-blur-sm text-gray-300 text-xs rounded-lg border border-gray-700/50"
                           >
                             {tech}
                           </span>
@@ -396,31 +735,40 @@ export default function Services() {
                     </div>
                   </div>
                 </motion.div>
-              ))}
+                );
+              })}
             </div>
           </motion.div>
 
           {/* Call to Action */}
           <motion.div 
             className="text-center"
-            initial="hidden"
-            animate={controls}
-            variants={containerVariants}
+            initial={{ opacity: 0 }}
+            animate={{ 
+              opacity: isHeadingComplete ? 1 : 0 
+            }}
+            transition={{ duration: 0.6, delay: isHeadingComplete ? 1.8 : 0 }}
           >
             {/* CTA Section */}
             <motion.div 
-              className="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg border border-neutral-200/50 p-8 sm:p-12 mb-12 max-w-4xl mx-auto"
-              variants={itemVariants}
+              className="bg-gradient-to-br from-gray-900/90 via-black/90 to-gray-800/90 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-700/50 hover:border-[#00b4ab]/30 transition-all duration-500 p-6 sm:p-8 lg:p-12 mb-8 sm:mb-12 max-w-4xl mx-auto"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ 
+                opacity: isHeadingComplete ? 1 : 0,
+                y: isHeadingComplete ? 0 : 30
+              }}
+              transition={{ duration: 0.5, delay: isHeadingComplete ? 2.0 : 0 }}
+              whileHover={!isMobile ? { scale: isHeadingComplete ? 1.02 : 1 } : {}}
             >
-              <h4 className="text-2xl sm:text-3xl font-bold text-neutral-900 mb-4">
+              <h4 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-3 sm:mb-4">
                 Ready to Transform Your Business?
               </h4>
-              <p className="text-neutral-600 mb-8 leading-relaxed">
+              <p className="text-gray-300 mb-6 sm:mb-8 leading-relaxed text-sm sm:text-base">
                 Let's discuss how our comprehensive digital solutions can accelerate your growth and drive innovation in your industry.
               </p>
               
               {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
                 <motion.button
                   onClick={() => {
                     const contactSection = document.getElementById('contact');
@@ -428,8 +776,8 @@ export default function Services() {
                       contactSection.scrollIntoView({ behavior: 'smooth' });
                     }
                   }}
-                  className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-[#00b4ab] to-teal-600 text-white font-semibold rounded-xl hover:from-teal-600 hover:to-[#00b4ab] transition-all duration-300 shadow-lg hover:shadow-xl"
-                  whileHover={{ scale: 1.05 }}
+                  className="inline-flex items-center px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-[#00b4ab] to-teal-600 text-white font-semibold rounded-xl hover:from-teal-600 hover:to-[#00b4ab] transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-[#00b4ab]/20 text-sm sm:text-base"
+                  whileHover={!isMobile ? { scale: 1.05 } : {}}
                   whileTap={{ scale: 0.98 }}
                 >
                   Start Your Project
@@ -451,8 +799,8 @@ export default function Services() {
                       });
                     }
                   }}
-                  className="inline-flex items-center px-8 py-4 border-2 border-neutral-300 text-neutral-700 font-semibold rounded-xl hover:border-[#00b4ab] hover:text-[#00b4ab] transition-all duration-300"
-                  whileHover={{ scale: 1.05 }}
+                  className="inline-flex items-center px-6 sm:px-8 py-3 sm:py-4 border-2 border-gray-600 text-gray-300 font-semibold rounded-xl hover:border-[#00b4ab] hover:text-[#00b4ab] hover:bg-[#00b4ab]/10 transition-all duration-300 text-sm sm:text-base"
+                  whileHover={!isMobile ? { scale: 1.05 } : {}}
                   whileTap={{ scale: 0.98 }}
                 >
                   Learn More About Us
@@ -466,18 +814,20 @@ export default function Services() {
             {/* Secondary Links */}
             <motion.div 
               className="flex justify-center items-center"
-              variants={itemVariants}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 2.8 }}
             >
               <motion.a
                 href="/careers"
-                className="group relative inline-flex items-center text-lg font-medium text-neutral-700 pb-1"
-                whileHover={{ x: 5 }}
+                className="group relative inline-flex items-center text-base sm:text-lg font-medium text-gray-300 pb-1 hover:text-[#00b4ab] transition-colors duration-300"
+                whileHover={!isMobile ? { x: 5 } : {}}
                 transition={{ type: "spring", stiffness: 400, damping: 30 }}
               >
                 <span className="relative">
                   Join Our Team
                   <motion.div
-                    className="absolute bottom-0 left-0 h-[1px] bg-neutral-700"
+                    className="absolute bottom-0 left-0 h-[1px] bg-[#00b4ab]"
                     initial={{ width: "0%" }}
                     whileHover={{ width: "100%" }}
                     transition={{ duration: 0.3 }}
