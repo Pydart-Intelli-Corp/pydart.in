@@ -8,6 +8,7 @@ console.log('🔧 Testing Razorpay Integration...');
 console.log('📋 Configuration Check:');
 console.log('- API Base URL:', API_CONFIG.emailApiUrl);
 console.log('- Razorpay Key ID:', API_CONFIG.razorpay.keyId);
+console.log('- Key ID Type:', API_CONFIG.razorpay.keyId.startsWith('rzp_test_') ? 'TEST' : 'LIVE');
 console.log('- Endpoints:', API_CONFIG.endpoints.internship);
 
 // Test 2: Check if Razorpay script can be loaded
@@ -59,7 +60,7 @@ async function testAPIEndpoints() {
     // Test create order endpoint (with test data)
     console.log('💳 Testing CreateRazorpayOrder...');
     const testOrder = {
-      amount: 1000,
+      amount: 1,
       collegeName: 'Test College',
       email: 'test@example.com',
       numberOfStudents: 2
@@ -81,7 +82,7 @@ function testPaymentFlow() {
     try {
       const options = {
         key: API_CONFIG.razorpay.keyId,
-        amount: 100000, // ₹1000 in paisa
+        amount: 100, // ₹1 in paisa
         currency: 'INR',
         name: 'Pydart Intelli Corp',
         description: 'Test Payment',

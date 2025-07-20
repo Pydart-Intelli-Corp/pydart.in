@@ -13,7 +13,8 @@ const nextConfig: NextConfig = {
   // Environment variables
   env: {
     NEXT_PUBLIC_API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL || 'https://lactosure.azurewebsites.net/api',
-    NEXT_PUBLIC_RAZORPAY_KEY_ID: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || 'rzp_test_sewzXr1rtc9PGp',
+    NEXT_PUBLIC_RAZORPAY_KEY_ID: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || 'rzp_live_YK4ixrNgx0OUTC',
+    RAZORPAY_KEY_SECRET: process.env.RAZORPAY_KEY_SECRET || 'm44QWZae8PiimDqDcTnhp6pA',
   },
 
   // Security headers for Razorpay integration

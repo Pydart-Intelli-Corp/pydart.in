@@ -5,8 +5,17 @@ import { motion, useInView, useAnimation } from 'framer-motion';
 // Mouse tracking hook
 const useMouseTracking = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isMobile, setIsMobile] = useState(false);
   
   useEffect(() => {
+    // Detect if device is mobile
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768 || 'ontouchstart' in window);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
     const updateMousePosition = (e: MouseEvent) => {
       setMousePosition({ 
         x: e.clientX / window.innerWidth, 
@@ -14,22 +23,34 @@ const useMouseTracking = () => {
       });
     };
     
-    if (typeof window !== 'undefined') {
+    if (typeof window !== 'undefined' && !isMobile) {
       window.addEventListener('mousemove', updateMousePosition);
-      return () => window.removeEventListener('mousemove', updateMousePosition);
     }
-  }, []);
+    
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+      if (!isMobile) {
+        window.removeEventListener('mousemove', updateMousePosition);
+      }
+    };
+  }, [isMobile]);
   
-  return { mousePosition };
+  return { mousePosition, isMobile };
 };
 
 export default function Projects() {
-  const { mousePosition } = useMouseTracking();
+  const { mousePosition, isMobile } = useMouseTracking();
   const [isClient, setIsClient] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const [currentLineIndex, setCurrentLineIndex] = useState(0);
   const [currentCharIndex, setCurrentCharIndex] = useState(0);
   const [isTypingComplete, setIsTypingComplete] = useState(false);
+  
+  // Scroll speed tracking states
+  const [scrollSpeed, setScrollSpeed] = useState(1); // Track scroll speed multiplier
+  const [lastScrollY, setLastScrollY] = useState(0);
+  const [lastScrollTime, setLastScrollTime] = useState(Date.now());
+  
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
   const controls = useAnimation();
@@ -42,39 +63,39 @@ export default function Projects() {
     { text: 'Perfect Style?', color: 'text-white' }
   ];
 
-  // Feature cards data
+  // Feature cards data - original structure
   const features = [
     {
-      title: "AI Booking Management",
-      description: "Experience seamless scheduling with real-time availability and smart conflict resolution",
+      title: "AI Booking",
+      description: "Smart scheduling with real-time availability",
       category: "booking",
       icon: "calendar",
       highlights: [
-        "Instant Availability: See real-time open slots and book your appointment in one tap",
-        "Auto-Reminders & Rescheduling: Never miss or double-book again—Stibe handles calendar conflicts for you",
-        "Dynamic Slot Optimization: Maximizes provider availability to reduce your wait time"
+        "Real-time Availability: Instant booking with live calendar sync",
+        "Smart Scheduling: AI optimizes appointment times for efficiency",
+        "Automated Reminders: Never miss an appointment again"
       ]
     },
     {
-      title: "Personalized AI Suggestions",
-      description: "Get tailored recommendations based on your style preferences and trending looks",
+      title: "Save Time",
+      description: "Skip the wait, get perfect grooming instantly",
       category: "ai", 
       icon: "sparkles",
       highlights: [
-        "Style Match: Our AI analyzes your past choices and local trends to recommend looks you'll love",
-        "Product Pairings: Get add-on suggestions—from premium shampoos to styling tools—that complement your service",
-        "Trend Alerts: Be the first to try hot new styles and seasonal treatments"
+        "No More Wait Time: Book instantly without endless searching",
+        "Your Perfect Stylist: Matched with professionals who understand your style",
+        "On Your Time: Flexible scheduling that fits your busy lifestyle"
       ]
     },
     {
-      title: "Market Research Study",
-      description: "Join our comprehensive market study to shape the future of AI-powered grooming services",
+      title: "Market Study",
+      description: "Shape the future of AI grooming",
       category: "research",
       icon: "chart",
       highlights: [
-        "Early Access: Be among the first to experience Stibe's innovative features before public launch",
-        "Shape the Future: Your feedback directly influences product development and feature priorities",
-        "Exclusive Benefits: Get special discounts, priority booking, and insider updates on new developments"
+        "Early Access: First access to new AI grooming features",
+        "Exclusive Benefits: Special pricing and premium features",
+        "Shape Development: Your feedback directly influences our roadmap"
       ]
     }
   ];
@@ -92,25 +113,25 @@ export default function Projects() {
     switch (icon) {
       case 'calendar':
         return (
-          <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-3 h-3 sm:w-5 sm:h-5 lg:w-8 lg:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
           </svg>
         );
       case 'sparkles':
         return (
-          <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-3 h-3 sm:w-5 sm:h-5 lg:w-8 lg:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3l3.057-3L11 3l3.057 3L17 3v4l-3.057 3L11 7l-3.057 3L5 7V3z" />
           </svg>
         );
       case 'chart':
         return (
-          <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-3 h-3 sm:w-5 sm:h-5 lg:w-8 lg:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
           </svg>
         );
       default:
         return (
-          <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-3 h-3 sm:w-5 sm:h-5 lg:w-8 lg:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
           </svg>
         );
@@ -128,9 +149,57 @@ export default function Projects() {
     }
   }, [isInView, controls, hasStartedTyping]);
 
-  // Typewriter effect
+  // Track scroll speed for dynamic animation speed
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      const currentTime = Date.now();
+      
+      // Calculate scroll speed
+      const scrollDistance = Math.abs(currentScrollY - lastScrollY);
+      const timeElapsed = currentTime - lastScrollTime;
+      
+      if (timeElapsed > 0) {
+        const speed = scrollDistance / timeElapsed; // pixels per millisecond
+        // Normalize and clamp speed multiplier between 1x and 5x
+        const speedMultiplier = Math.min(Math.max(1 + speed * 0.5, 1), 5);
+        setScrollSpeed(speedMultiplier);
+      }
+      
+      setLastScrollY(currentScrollY);
+      setLastScrollTime(currentTime);
+    };
+
+    // Debounce scroll speed reset
+    let resetTimer: NodeJS.Timeout;
+    const handleScrollWithReset = () => {
+      handleScroll();
+      clearTimeout(resetTimer);
+      resetTimer = setTimeout(() => {
+        setScrollSpeed(1); // Reset to normal speed after scrolling stops
+      }, 200);
+    };
+
+    window.addEventListener('scroll', handleScrollWithReset, { passive: true });
+    
+    return () => {
+      window.removeEventListener('scroll', handleScrollWithReset);
+      clearTimeout(resetTimer);
+    };
+  }, [lastScrollY, lastScrollTime]);
+
+  // Typewriter effect with scroll-based speed
   useEffect(() => {
     if (!isClient || !hasStartedTyping) return;
+
+    // Calculate dynamic timing based on scroll speed - Much faster values
+    const baseTypingSpeed = 15; // Reduced from 35 to 15
+    const basePauseSpeed = 80;  // Reduced from 150 to 80
+    const baseInitialDelay = 100; // Reduced from 200 to 100
+    
+    const typingSpeed = Math.max(baseTypingSpeed / scrollSpeed, 3); // Min 3ms (was 8ms)
+    const pauseSpeed = Math.max(basePauseSpeed / scrollSpeed, 15); // Min 15ms (was 30ms)
+    const initialDelay = Math.max(baseInitialDelay / scrollSpeed, 25); // Min 25ms (was 50ms)
 
     const timer = setTimeout(() => {
       if (currentLineIndex < typewriterLines.length) {
@@ -144,16 +213,16 @@ export default function Projects() {
           setTimeout(() => {
             setCurrentLineIndex(prev => prev + 1);
             setCurrentCharIndex(0);
-          }, 150);
+          }, pauseSpeed);
         }
       } else {
         // All lines complete
         setIsTypingComplete(true);
       }
-    }, currentCharIndex === 0 ? 200 : 35);
+    }, currentCharIndex === 0 ? initialDelay : typingSpeed);
 
     return () => clearTimeout(timer);
-  }, [currentLineIndex, currentCharIndex, isClient, hasStartedTyping, typewriterLines]);
+  }, [currentLineIndex, currentCharIndex, isClient, hasStartedTyping, typewriterLines, scrollSpeed]);
 
   // Animation variants
   const containerVariants = {
@@ -184,18 +253,31 @@ export default function Projects() {
     <section 
       ref={sectionRef}
       id="projects"
-      className="relative min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white overflow-hidden py-20 lg:py-32"
+      className="relative min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white overflow-hidden py-6 sm:py-20 lg:py-32"
       style={{ cursor: 'auto' }}
     >
       {/* Neural Network Background Pattern */}
       <div className="absolute inset-0 overflow-hidden opacity-[0.1]">
-        <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+        {/* Desktop Pattern */}
+        <svg className="absolute inset-0 w-full h-full hidden sm:block" viewBox="0 0 100 100" preserveAspectRatio="none">
           <defs>
-            <pattern id="neural-grid-projects" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">
-              <path d="M 10 0 L 0 0 0 10" fill="none" stroke="#00b4ab" strokeWidth="0.2"/>
+            <pattern id="neural-grid-projects-desktop" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">
+              <path d="M 10 0 L 0 0" fill="none" stroke="#00b4ab" strokeWidth="0.2"/>
+              <path d="M 0 0 L 0 10" fill="none" stroke="#00b4ab" strokeWidth="0.2"/>
             </pattern>
           </defs>
-          <rect width="100%" height="100%" fill="url(#neural-grid-projects)" />
+          <rect width="100%" height="100%" fill="url(#neural-grid-projects-desktop)" />
+        </svg>
+        
+        {/* Mobile Pattern - 4x denser rows */}
+        <svg className="absolute inset-0 w-full h-full block sm:hidden" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <defs>
+            <pattern id="neural-grid-projects-mobile" x="0" y="0" width="10" height="2.5" patternUnits="userSpaceOnUse">
+              <path d="M 10 0 L 0 0" fill="none" stroke="#00b4ab" strokeWidth="0.05"/>
+              <path d="M 0 0 L 0 2.5" fill="none" stroke="#00b4ab" strokeWidth="0.2"/>
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#neural-grid-projects-mobile)" />
         </svg>
       </div>
 
@@ -215,11 +297,11 @@ export default function Projects() {
                 opacity: [0.3, 0.7, 0.3],
               }}
               transition={{
-                duration: 3 + i * 0.5,
+                duration: Math.max((3 + i * 0.5) / scrollSpeed, 0.8 + i * 0.1), // Faster with scroll speed
                 repeat: Infinity,
                 repeatType: "reverse",
                 ease: "easeInOut",
-                delay: i * 0.2,
+                delay: Math.max((i * 0.2) / scrollSpeed, i * 0.05), // Faster stagger
               }}
             />
           ))}
@@ -227,20 +309,24 @@ export default function Projects() {
       )}
 
       {/* Ambient glow effect */}
-      {isClient && (
+      {isClient && !isMobile && (
         <motion.div
           className="absolute w-96 h-96 rounded-full bg-gradient-to-r from-[#00b4ab]/20 to-[#008a82]/20 blur-3xl"
           animate={{
             x: mousePosition.x * 100 - 192,
             y: mousePosition.y * 100 - 192,
           }}
-          transition={{ type: "spring", stiffness: 50, damping: 30 }}
+          transition={{ 
+            type: "spring", 
+            stiffness: Math.min(50 * scrollSpeed, 120), // More responsive with scroll speed
+            damping: Math.max(30 - (scrollSpeed * 3), 20) // Reduce damping for faster movement
+          }}
         />
       )}
 
       <div className="relative z-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center min-h-screen">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-8 items-center min-h-[60vh] sm:min-h-screen">
             
             {/* Left Content */}
             <div className="lg:col-span-8 text-left">
@@ -249,8 +335,11 @@ export default function Projects() {
               <motion.h1
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-6 text-white leading-tight tracking-tight min-h-[200px] sm:min-h-[240px] md:min-h-[280px] lg:min-h-[320px]"
+                transition={{ 
+                  duration: Math.max(0.8 / scrollSpeed, 0.2), 
+                  delay: Math.max(0.2 / scrollSpeed, 0.05) 
+                }}
+                className="text-2xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-2 sm:mb-6 text-white leading-tight tracking-tight min-h-[100px] sm:min-h-[200px] md:min-h-[240px] lg:min-h-[320px]"
                 style={{ fontFamily: 'Montserrat, sans-serif' }}
                 onMouseEnter={() => setIsHovering(true)}
                 onMouseLeave={() => setIsHovering(false)}
@@ -329,35 +418,37 @@ export default function Projects() {
                   opacity: isTypingComplete ? 1 : 0, 
                   y: isTypingComplete ? 0 : 30 
                 }}
-                transition={{ duration: 0.4, delay: isTypingComplete ? 0.1 : 0 }}
-                className="text-lg sm:text-xl text-gray-300 mb-12 leading-relaxed max-w-3xl"
+                transition={{ 
+                  duration: Math.max(0.4 / scrollSpeed, 0.1), 
+                  delay: isTypingComplete ? Math.max(0.1 / scrollSpeed, 0.02) : 0 
+                }}
+                className="text-xs sm:text-lg lg:text-xl text-gray-300 mb-4 sm:mb-12 leading-relaxed max-w-3xl"
                 onMouseEnter={() => setIsHovering(true)}
                 onMouseLeave={() => setIsHovering(false)}
               >
-                Stibe is your AI-powered grooming companion — bringing instant bookings, personalized recommendations, and on-demand services right to your fingertips.
+                AI-powered grooming companion bringing instant bookings and personalized recommendations.
               </motion.p>
 
-
-            </div>
-
-            {/* Right Content - Pitch Deck Card */}
-            <div className="lg:col-span-4">
+              {/* Pitch Deck Card - Mobile positioned here */}
               <motion.div
                 initial={{ opacity: 0, x: 30 }}
                 animate={{ 
                   opacity: isTypingComplete ? 1 : 0, 
                   x: isTypingComplete ? 0 : 30 
                 }}
-                transition={{ duration: 0.5, delay: isTypingComplete ? 0.3 : 0 }}
-                className="relative"
+                transition={{ 
+                  duration: Math.max(0.5 / scrollSpeed, 0.12), 
+                  delay: isTypingComplete ? Math.max(0.3 / scrollSpeed, 0.08) : 0 
+                }}
+                className="relative max-w-sm mx-auto lg:hidden mb-6 sm:mb-8"
               >
                 {/* Pitch Deck Card */}
                 <motion.div
-                  className="bg-gradient-to-br from-gray-900 via-black to-gray-900 rounded-2xl p-6 shadow-lg border border-gray-800 hover:border-[#00b4ab]/50 transition-all duration-300 group relative overflow-hidden"
+                  className="bg-gradient-to-br from-gray-900 via-black to-gray-900 rounded-lg sm:rounded-xl p-3 sm:p-6 shadow-lg border border-gray-800 hover:border-[#00b4ab]/50 transition-all duration-300 group relative overflow-hidden"
                   animate={{
-                    y: mousePosition.y * -5,
-                    rotateX: mousePosition.y * 2,
-                    rotateY: mousePosition.x * 2,
+                    y: !isMobile ? mousePosition.y * -5 : 0,
+                    rotateX: !isMobile ? mousePosition.y * 2 : 0,
+                    rotateY: !isMobile ? mousePosition.x * 2 : 0,
                   }}
                   transition={{ type: "spring", stiffness: 100, damping: 30 }}
                   onMouseEnter={() => setIsHovering(true)}
@@ -368,24 +459,24 @@ export default function Projects() {
                   <div className="absolute inset-0 bg-gradient-to-br from-[#00b4ab]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   
                   {/* Document Icon */}
-                  <div className="relative w-12 h-12 bg-gradient-to-br from-[#00b4ab] to-[#008a82] rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="relative w-6 h-6 sm:w-12 sm:h-12 bg-gradient-to-br from-[#00b4ab] to-[#008a82] rounded-md sm:rounded-xl flex items-center justify-center mb-2 sm:mb-4 group-hover:scale-110 transition-transform duration-300">
+                    <svg className="w-3 h-3 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
                     {/* Glow effect */}
-                    <div className="absolute inset-0 bg-[#00b4ab]/20 rounded-xl blur-xl"></div>
+                    <div className="absolute inset-0 bg-[#00b4ab]/20 rounded-md sm:rounded-xl blur-lg sm:blur-xl"></div>
                   </div>
                   
-                  <h3 className="text-xl font-bold text-white mb-2 group-hover:text-[#00b4ab] transition-colors duration-300">Stibe Pitch Deck</h3>
-                  <p className="text-gray-300 text-sm leading-relaxed mb-4">
-                    Comprehensive business overview, market analysis, and growth strategy for our AI grooming platform
+                  <h3 className="text-xs sm:text-xl font-bold text-white mb-1 sm:mb-2 group-hover:text-[#00b4ab] transition-colors duration-300">Stibe Pitch Deck</h3>
+                  <p className="text-gray-300 text-[9px] sm:text-sm leading-relaxed mb-2 sm:mb-4">
+                    Business overview and market analysis for our AI grooming platform
                   </p>
                   
                   {/* Features */}
-                  <div className="space-y-2 mb-4">
+                  <div className="space-y-0.5 sm:space-y-2 mb-2 sm:mb-4">
                     {['Market Research', 'Business Model', 'Growth Strategy'].map((feature, index) => (
-                      <div key={feature} className="flex items-center text-xs text-gray-400">
-                        <div className="w-1 h-1 bg-[#00b4ab] rounded-full mr-2" />
+                      <div key={feature} className="flex items-center text-[7px] sm:text-xs text-gray-400">
+                        <div className="w-0.5 h-0.5 sm:w-1 sm:h-1 bg-[#00b4ab] rounded-full mr-1 sm:mr-2" />
                         {feature}
                       </div>
                     ))}
@@ -396,7 +487,7 @@ export default function Projects() {
                     href="https://lactosure.azurewebsites.net/api/Email/DownloadStibePdf"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="relative z-20 w-full px-3 py-2 bg-[#00b4ab] text-white text-xs font-medium rounded-lg hover:bg-[#008a82] transition-colors duration-300 group-hover:shadow-lg group-hover:shadow-[#00b4ab]/20 block text-center"
+                    className="relative z-20 w-full px-2 py-1 sm:px-3 sm:py-2 bg-[#00b4ab] text-white text-[7px] sm:text-xs font-medium rounded sm:rounded-lg hover:bg-[#008a82] transition-colors duration-300 group-hover:shadow-lg group-hover:shadow-[#00b4ab]/20 block text-center"
                     style={{ pointerEvents: 'auto' }}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
@@ -405,101 +496,281 @@ export default function Projects() {
                   </motion.a>
                   
                   {/* Status */}
-                  <div className="flex items-center mt-3 pt-3 border-t border-gray-800">
-                    <div className="w-1.5 h-1.5 bg-blue-400 rounded-full mr-2 animate-pulse" />
-                    <span className="text-[10px] text-gray-500 uppercase tracking-wider">Business Overview</span>
+                  <div className="flex items-center mt-1 sm:mt-3 pt-1 sm:pt-3 border-t border-gray-800">
+                    <div className="w-0.5 h-0.5 sm:w-1.5 sm:h-1.5 bg-blue-400 rounded-full mr-1 sm:mr-2 animate-pulse" />
+                    <span className="text-[7px] sm:text-[10px] text-gray-500 uppercase tracking-wider">Business Overview</span>
+                  </div>
+                </motion.div>
+              </motion.div>
+
+
+            </div>
+
+            {/* Right Content - Pitch Deck Card (Desktop only) */}
+            <div className="hidden lg:block lg:col-span-4">
+              <motion.div
+                initial={{ opacity: 0, x: 30 }}
+                animate={{ 
+                  opacity: isTypingComplete ? 1 : 0, 
+                  x: isTypingComplete ? 0 : 30 
+                }}
+                transition={{ 
+                  duration: Math.max(0.5 / scrollSpeed, 0.12), 
+                  delay: isTypingComplete ? Math.max(0.3 / scrollSpeed, 0.08) : 0 
+                }}
+                className="relative"
+              >
+                {/* Pitch Deck Card */}
+                <motion.div
+                  className="bg-gradient-to-br from-gray-900 via-black to-gray-900 rounded-lg sm:rounded-xl p-3 sm:p-6 shadow-lg border border-gray-800 hover:border-[#00b4ab]/50 transition-all duration-300 group relative overflow-hidden"
+                  animate={{
+                    y: !isMobile ? mousePosition.y * -5 : 0,
+                    rotateX: !isMobile ? mousePosition.y * 2 : 0,
+                    rotateY: !isMobile ? mousePosition.x * 2 : 0,
+                  }}
+                  transition={{ type: "spring", stiffness: 100, damping: 30 }}
+                  onMouseEnter={() => setIsHovering(true)}
+                  onMouseLeave={() => setIsHovering(false)}
+                  whileHover={{ scale: 1.02 }}
+                >
+                  {/* Gradient Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#00b4ab]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  
+                  {/* Document Icon */}
+                  <div className="relative w-6 h-6 sm:w-12 sm:h-12 bg-gradient-to-br from-[#00b4ab] to-[#008a82] rounded-md sm:rounded-xl flex items-center justify-center mb-2 sm:mb-4 group-hover:scale-110 transition-transform duration-300">
+                    <svg className="w-3 h-3 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    {/* Glow effect */}
+                    <div className="absolute inset-0 bg-[#00b4ab]/20 rounded-md sm:rounded-xl blur-lg sm:blur-xl"></div>
+                  </div>
+                  
+                  <h3 className="text-xs sm:text-xl font-bold text-white mb-1 sm:mb-2 group-hover:text-[#00b4ab] transition-colors duration-300">Stibe Pitch Deck</h3>
+                  <p className="text-gray-300 text-[9px] sm:text-sm leading-relaxed mb-2 sm:mb-4">
+                    Business overview and market analysis for our AI grooming platform
+                  </p>
+                  
+                  {/* Features */}
+                  <div className="space-y-0.5 sm:space-y-2 mb-2 sm:mb-4">
+                    {['Market Research', 'Business Model', 'Growth Strategy'].map((feature, index) => (
+                      <div key={feature} className="flex items-center text-[7px] sm:text-xs text-gray-400">
+                        <div className="w-0.5 h-0.5 sm:w-1 sm:h-1 bg-[#00b4ab] rounded-full mr-1 sm:mr-2" />
+                        {feature}
+                      </div>
+                    ))}
+                  </div>
+                  
+                  {/* CTA Button */}
+                  <motion.a
+                    href="https://lactosure.azurewebsites.net/api/Email/DownloadStibePdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="relative z-20 w-full px-2 py-1 sm:px-3 sm:py-2 bg-[#00b4ab] text-white text-[7px] sm:text-xs font-medium rounded sm:rounded-lg hover:bg-[#008a82] transition-colors duration-300 group-hover:shadow-lg group-hover:shadow-[#00b4ab]/20 block text-center"
+                    style={{ pointerEvents: 'auto' }}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    Download Pitch Deck
+                  </motion.a>
+                  
+                  {/* Status */}
+                  <div className="flex items-center mt-1 sm:mt-3 pt-1 sm:pt-3 border-t border-gray-800">
+                    <div className="w-0.5 h-0.5 sm:w-1.5 sm:h-1.5 bg-blue-400 rounded-full mr-1 sm:mr-2 animate-pulse" />
+                    <span className="text-[7px] sm:text-[10px] text-gray-500 uppercase tracking-wider">Business Overview</span>
                   </div>
                 </motion.div>
               </motion.div>
             </div>
           </div>
 
-          {/* Feature Cards Section */}
+          {/* Features Section - Timeline Design */}
           <motion.div 
-            className="-mt-8 lg:-mt-12"
+            className="-mt-2 sm:-mt-8 lg:-mt-12"
             initial={{ opacity: 0 }}
             animate={{ 
               opacity: isTypingComplete ? 1 : 0 
             }}
-            transition={{ duration: 0.6, delay: isTypingComplete ? 0.8 : 0 }}
+            transition={{ 
+              duration: Math.max(0.6 / scrollSpeed, 0.15), 
+              delay: isTypingComplete ? Math.max(0.8 / scrollSpeed, 0.2) : 0 
+            }}
           >
-            {/* Features Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
-              {features.map((feature, index) => (
-                <motion.div
-                  key={index}
-                  className="group relative"
-                  initial={{ opacity: 0, y: 50 }}
-                  animate={{ 
-                    opacity: isTypingComplete ? 1 : 0,
-                    y: isTypingComplete ? 0 : 50
-                  }}
-                  transition={{ 
-                    duration: 0.5, 
-                    delay: isTypingComplete ? 1.2 + (index * 0.2) : 0,
-                    type: "spring",
-                    stiffness: 100,
-                    damping: 15
-                  }}
-                  whileHover={{ y: -8 }}
-                >
-                  <div className="bg-gradient-to-br from-gray-800 via-gray-900 to-black rounded-2xl shadow-lg hover:shadow-xl hover:shadow-[#00b4ab]/20 transition-all duration-500 overflow-hidden border border-gray-700 hover:border-[#00b4ab]/50 h-full p-8">
-                    
-                    {/* Icon and Category */}
-                    <div className="flex items-center justify-between mb-6">
-                      <div className={`p-3 rounded-xl bg-gradient-to-r ${getCategoryColor(feature.category)} text-white shadow-lg`}>
+            {/* Mobile Vertical Timeline */}
+            <div className="relative lg:hidden px-2 sm:px-4">
+              {/* Timeline Line */}
+              <div className="absolute left-6 sm:left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-[#00b4ab]/50 via-[#00b4ab] to-[#00b4ab]/50"></div>
+              
+              <div className="space-y-4 sm:space-y-6">
+                {features.map((feature, index) => (
+                  <motion.div
+                    key={index}
+                    className="relative pl-10 sm:pl-14"
+                    initial={{ opacity: 0, x: -30 }}
+                    animate={{ 
+                      opacity: isTypingComplete ? 1 : 0,
+                      x: isTypingComplete ? 0 : -30
+                    }}
+                    transition={{ 
+                      duration: Math.max(0.5 / scrollSpeed, 0.12),
+                      delay: isTypingComplete ? Math.max((0.4 + (index * 0.15)) / scrollSpeed, 0.1 + (index * 0.03)) : 0,
+                    }}
+                  >
+                    {/* Timeline Node */}
+                    <div className={`absolute left-[-12px] sm:left-[-16px] w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-gradient-to-r ${getCategoryColor(feature.category)} flex items-center justify-center shadow-lg border-2 border-gray-900`}>
+                      <div className="text-white">
                         {getCategoryIcon(feature.icon)}
                       </div>
-                      <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold text-white bg-gradient-to-r ${getCategoryColor(feature.category)} shadow-lg`}>
-                        {feature.category.toUpperCase()}
-                      </span>
                     </div>
-
-                    {/* Title and Description */}
-                    <h4 className="text-xl sm:text-2xl font-bold text-white mb-4 group-hover:text-[#00b4ab] transition-colors duration-300">
-                      {feature.title}
-                    </h4>
                     
-                    <p className="text-gray-300 mb-6 leading-relaxed">
-                      {feature.description}
-                    </p>
-
-                    {/* Highlights */}
-                    <div className="space-y-3 mb-6">
-                      {feature.highlights.map((highlight, highlightIndex) => (
-                        <div key={highlightIndex} className="flex items-start gap-3">
-                          <div className="w-1.5 h-1.5 rounded-full bg-[#00b4ab] mt-2 flex-shrink-0" />
-                          <p className="text-sm text-gray-400 leading-relaxed">
-                            <span className="font-semibold text-gray-200">
-                              {highlight.split(':')[0]}:
-                            </span>
-                            {highlight.split(':')[1]}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* Market Study Button - Only show for research category */}
-                    {feature.category === 'research' && (
-                      <motion.a
-                        href="https://forms.gle/6cDuUXCBXqur4XuQ7"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center justify-center w-full px-4 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-medium rounded-lg hover:from-orange-600 hover:to-orange-700 transition-all duration-300 group-hover:shadow-lg group-hover:shadow-orange-500/20"
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                      >
-                        <span className="relative z-10">
-                          Join Market Study
+                    {/* Content Panel */}
+                    <div className="bg-gradient-to-r from-gray-800/40 to-gray-900/40 backdrop-blur-sm border border-gray-700/60 rounded-lg sm:rounded-xl p-3 sm:p-5 hover:border-[#00b4ab]/50 hover:from-gray-800/60 hover:to-gray-900/60 transition-all duration-300 shadow-lg">
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-2 sm:mb-3">
+                        <h4 className="text-sm sm:text-lg font-bold text-white leading-tight">
+                          {feature.title}
+                        </h4>
+                        <span className={`inline-flex px-2 py-1 rounded-full text-[10px] sm:text-xs font-bold text-white bg-gradient-to-r ${getCategoryColor(feature.category)} shadow-sm self-start sm:self-center`}>
+                          {feature.category.toUpperCase()}
                         </span>
-                        <svg className="ml-2 w-4 h-4 transition-all duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                        </svg>
-                      </motion.a>
-                    )}
-                  </div>
-                </motion.div>
-              ))}
+                      </div>
+                      
+                      <p className="text-xs sm:text-sm text-gray-300 mb-3 sm:mb-4 leading-relaxed">
+                        {feature.description}
+                      </p>
+                      
+                      {/* Show first 2 highlights */}
+                      <div className="space-y-2 sm:space-y-3 mb-4 sm:mb-5">
+                        {feature.highlights.slice(0, 2).map((highlight, highlightIndex) => (
+                          <div key={highlightIndex} className="flex items-start gap-2 sm:gap-3">
+                            <div className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-[#00b4ab] mt-1.5 sm:mt-2 flex-shrink-0"></div>
+                            <p className="text-[11px] sm:text-sm text-gray-400 leading-relaxed">
+                              <span className="font-semibold text-gray-200">
+                                {highlight.split(':')[0]}:
+                              </span>
+                              <span className="text-gray-300">
+                                {highlight.split(':')[1]}
+                              </span>
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                      
+                      {/* Action Button */}
+                      {feature.category === 'research' && (
+                        <motion.a
+                          href="https://forms.gle/6cDuUXCBXqur4XuQ7"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center justify-center px-4 py-2 sm:px-5 sm:py-2.5 bg-gradient-to-r from-orange-500 to-orange-600 text-white text-xs sm:text-sm font-medium rounded-lg hover:from-orange-600 hover:to-orange-700 transition-all duration-300 shadow-md hover:shadow-lg"
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                        >
+                          <span>Join Study</span>
+                          <svg className="ml-2 w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                          </svg>
+                        </motion.a>
+                      )}
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+
+            {/* Desktop Horizontal Timeline */}
+            <div className="hidden lg:block px-4">
+              {/* Horizontal Timeline Line */}
+              <div className="relative mb-20">
+                <div className="absolute top-8 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-[#00b4ab] to-transparent"></div>
+                
+                <div className="grid grid-cols-3 gap-12">
+                  {features.map((feature, index) => (
+                    <motion.div
+                      key={index}
+                      className="relative group"
+                      initial={{ opacity: 0, y: 30 }}
+                      animate={{ 
+                        opacity: isTypingComplete ? 1 : 0,
+                        y: isTypingComplete ? 0 : 30
+                      }}
+                      transition={{ 
+                        duration: Math.max(0.6 / scrollSpeed, 0.15),
+                        delay: isTypingComplete ? Math.max((0.5 + (index * 0.2)) / scrollSpeed, 0.12 + (index * 0.04)) : 0,
+                        type: "spring",
+                        stiffness: Math.min(120 * scrollSpeed, 300),
+                        damping: Math.max(20 - (scrollSpeed * 3), 15)
+                      }}
+                    >
+                      {/* Timeline Node */}
+                      <div className={`absolute top-0 left-1/2 transform -translate-x-1/2 w-16 h-16 rounded-full bg-gradient-to-r ${getCategoryColor(feature.category)} flex items-center justify-center shadow-xl z-10 group-hover:scale-110 transition-transform duration-300 border-4 border-gray-900`}>
+                        <div className="text-white">
+                          {getCategoryIcon(feature.icon)}
+                        </div>
+                      </div>
+                      
+                      {/* Content Card */}
+                      <div className="mt-20 bg-gradient-to-br from-gray-800/40 to-gray-900/50 backdrop-blur-sm border border-gray-700/40 rounded-2xl p-8 hover:border-[#00b4ab]/50 hover:from-gray-800/60 hover:to-gray-900/70 transition-all duration-500 group-hover:shadow-2xl group-hover:shadow-[#00b4ab]/20 min-h-[460px] flex flex-col">
+                        
+                        {/* Category Badge */}
+                        <div className="flex justify-center mb-6">
+                          <span className={`px-4 py-2 rounded-full text-sm font-bold text-white bg-gradient-to-r ${getCategoryColor(feature.category)} shadow-lg`}>
+                            {feature.category.toUpperCase()}
+                          </span>
+                        </div>
+                        
+                        {/* Title and Description */}
+                        <h4 className="text-2xl xl:text-3xl font-bold text-white mb-6 text-center group-hover:text-[#00b4ab] transition-colors duration-300">
+                          {feature.title}
+                        </h4>
+                        
+                        <p className="text-gray-300 mb-8 leading-relaxed text-center text-base">
+                          {feature.description}
+                        </p>
+                        
+                        {/* All Highlights */}
+                        <div className="space-y-4 mb-8 flex-1">
+                          {feature.highlights.map((highlight, highlightIndex) => (
+                            <div key={highlightIndex} className="flex items-start gap-4">
+                              <div className="w-2 h-2 rounded-full bg-[#00b4ab] mt-2 flex-shrink-0"></div>
+                              <p className="text-sm text-gray-400 leading-relaxed">
+                                <span className="font-semibold text-gray-200 text-base">
+                                  {highlight.split(':')[0]}:
+                                </span>
+                                <span className="text-gray-300">
+                                  {highlight.split(':')[1]}
+                                </span>
+                              </p>
+                            </div>
+                          ))}
+                        </div>
+                        
+                        {/* Action Button */}
+                        <div className="mt-auto">
+                          {feature.category === 'research' && (
+                            <motion.a
+                              href="https://forms.gle/6cDuUXCBXqur4XuQ7"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center justify-center w-full px-8 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold text-base rounded-xl hover:from-orange-600 hover:to-orange-700 transition-all duration-300 group-hover:shadow-xl group-hover:shadow-orange-500/30"
+                              whileHover={{ scale: 1.03 }}
+                              whileTap={{ scale: 0.97 }}
+                            >
+                              <span>Join Market Study</span>
+                              <svg className="ml-3 w-5 h-5 transition-all duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                              </svg>
+                            </motion.a>
+                          )}
+                        </div>
+                      </div>
+                      
+                      {/* Connecting Line for Middle Items */}
+                      {index < features.length - 1 && (
+                        <div className="absolute top-8 left-full w-12 h-0.5 bg-[#00b4ab]/60 transform translate-x-0"></div>
+                      )}
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
             </div>
           </motion.div>
         </div>

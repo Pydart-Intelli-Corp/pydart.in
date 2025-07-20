@@ -1,12 +1,13 @@
 // Type definitions for internship registration
 export interface Student {
-  studentName: string;  // Changed from 'name' to 'studentName'
-  studentEmail: string; // Changed from 'email' to 'studentEmail'
-  studentPhone: string; // Changed from 'phone' to 'studentPhone'
-  rollNumber: string;
-  department: string;
-  year: string;
-  skills: string;       // Added required 'skills' field
+  StudentName: string;    // Backend uses PascalCase
+  StudentEmail: string;   // Backend uses PascalCase
+  StudentPhone: string;   // Backend uses PascalCase
+  RollNumber: string;     // Backend uses PascalCase
+  Department: string;     // Backend uses PascalCase
+  Year: string;          // Backend uses PascalCase
+  InternshipName: string; // Backend uses PascalCase
+  Skills: string;        // Backend uses PascalCase
 }
 
 export interface PaymentDetails {
@@ -18,72 +19,73 @@ export interface PaymentDetails {
 }
 
 export interface InternshipRegistrationRequest {
-  email: string;
-  collegeName: string;
-  batch: string;
-  collegeDistrict: string;
-  pincode: string;
-  numberOfStudents: number;
-  students: Student[];
-  phoneNumber: string;
-  internshipDays: number;
-  internshipStartDate: Date;
-  internshipEndDate: Date;
-  paymentDetails?: PaymentDetails;
-  additionalNotes?: string;
+  Email: string;             // Backend uses PascalCase
+  CollegeName: string;       // Backend uses PascalCase
+  Batch: string;            // Backend uses PascalCase
+  CollegeDistrict: string;  // Backend uses PascalCase
+  Pincode: string;          // Backend uses PascalCase
+  NumberOfStudents: number; // Backend uses PascalCase
+  Students: Student[];      // Backend uses PascalCase
+  PhoneNumber: string;      // Backend uses PascalCase
+  InternshipDays: number;   // Backend uses PascalCase
+  InternshipStartDate: Date; // Backend uses PascalCase
+  InternshipEndDate: Date;   // Backend uses PascalCase
+  AdditionalNotes?: string;  // Backend uses PascalCase
 }
 
 export interface InternshipRegistrationWithPaymentRequest extends InternshipRegistrationRequest {
-  razorpayPaymentId: string;
-  razorpayOrderId: string;
-  razorpaySignature: string;
-  amount: number;
+  RazorpayPaymentId: string;  // Backend uses PascalCase
+  RazorpayOrderId: string;    // Backend uses PascalCase
+  RazorpaySignature: string;  // Backend uses PascalCase
+  Amount: number;             // Backend uses PascalCase (decimal in C#)
 }
 
 export interface CreateOrderRequest {
-  amount: number;
-  collegeName: string;
-  email: string;
-  numberOfStudents: number;
+  Amount: number;           // Backend uses PascalCase
+  CollegeName: string;      // Backend uses PascalCase
+  Email: string;           // Backend uses PascalCase
+  NumberOfStudents: number; // Backend uses PascalCase
 }
 
 export interface RazorpayOrderResponse {
-  success: boolean;
-  orderId: string;
-  amount: number;
-  currency: string;
-  keyId: string;
+  success: boolean;  // API actually returns camelCase
+  orderId: string;   // API actually returns camelCase
+  amount: number;    // API actually returns camelCase
+  currency: string;  // API actually returns camelCase
+  keyId: string;     // API actually returns camelCase
+  message?: string;  // API actually returns camelCase
 }
 
 export interface PaymentVerificationRequest {
-  razorpayOrderId: string;
-  razorpayPaymentId: string;
-  razorpaySignature: string;
-  amount: number;
-  email: string;
-  collegeName: string;
+  RazorpayOrderId: string;   // Backend uses PascalCase
+  RazorpayPaymentId: string; // Backend uses PascalCase
+  RazorpaySignature: string; // Backend uses PascalCase
+  Amount: number;            // Backend uses PascalCase
+  Email: string;            // Backend uses PascalCase
+  CollegeName: string;      // Backend uses PascalCase
 }
 
 export interface ApiResponse {
-  success: boolean;
-  response: string;
+  success: boolean;  // API actually returns camelCase
+  response: string;  // API actually returns camelCase
+  message?: string;  // API actually returns camelCase
 }
 
 export interface InternshipRegistrationResponse {
-  success: boolean;
-  message: string;
-  registrationId: string;
+  success: boolean;      // API actually returns camelCase
+  message: string;       // API actually returns camelCase
+  registrationId: string; // API actually returns camelCase
 }
 
 export interface BookedDate {
-  collegeName: string;
-  startDate: string;
-  endDate: string;
+  collegeName: string; // API actually returns camelCase
+  startDate: string;   // API actually returns camelCase
+  endDate: string;     // API actually returns camelCase
 }
 
 export interface BookedDatesResponse {
-  success: boolean;
-  bookedDates: BookedDate[];
+  success: boolean;        // API actually returns camelCase
+  bookedDates: BookedDate[]; // API actually returns camelCase
 }
 
 // Razorpay types

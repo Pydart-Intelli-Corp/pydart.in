@@ -10,242 +10,13 @@ export default function Footer() {
   return (
     <footer className="bg-gradient-to-b from-black to-gray-900 text-white pt-10 pb-6">
       <div className="max-w-[1800px] mx-auto px-4 md:px-6 lg:px-8">
-        {/* Mobile-First Aesthetic Footer Content */}
-        <div className="block md:hidden">
-          {/* Decorative Top Border */}
-          <div className="w-full h-1 bg-gradient-to-r from-transparent via-[#00b4ab] to-transparent mb-12"></div>
-
-          {/* Hero Logo Section */}
-          <div className="relative text-center mb-16">
-            {/* Background Glow Effect */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-32 h-32 bg-[#00b4ab]/20 rounded-full blur-3xl"></div>
-            </div>
-            
-            <div className="relative z-10">
-              <div className="mb-6 transform hover:scale-105 transition-transform duration-300">
-                <Image
-                  src="/pydart_logo.png"
-                  alt="Pydart Logo"
-                  width={140}
-                  height={70}
-                  className="mx-auto filter drop-shadow-2xl"
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <h3 className="text-2xl font-bold bg-gradient-to-r from-[#00b4ab] via-white to-[#00b4ab] bg-clip-text text-transparent">
-                  Pydart Intelli Corp
-                </h3>
-                <p className="text-gray-300 text-sm font-light tracking-wide">
-                  Innovate • Integrate • Inspire
-                </p>
-                <div className="w-24 h-0.5 bg-gradient-to-r from-[#00b4ab] to-[#008a82] mx-auto rounded-full"></div>
-              </div>
-            </div>
-          </div>
-
-          {/* Contact Section with Floating Cards */}
-          <div className="mb-12">
-            <div className="text-center mb-8">
-              <h4 className="text-xl font-bold text-white mb-2">Let's Connect</h4>
-              <p className="text-gray-400 text-sm">Ready to start your next project?</p>
-            </div>
-            
-            <div className="grid grid-cols-1 gap-4">
-              <Link 
-                href="mailto:info@pydart.in" 
-                className="group relative overflow-hidden bg-gradient-to-br from-gray-800/80 to-gray-900/80 backdrop-blur-md rounded-2xl p-6 border border-gray-700/50 hover:border-[#00b4ab]/50 transition-all duration-300 hover:shadow-lg hover:shadow-[#00b4ab]/10 hover:scale-[1.02]"
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-[#00b4ab]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="relative flex items-center space-x-4">
-                  <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-[#00b4ab] to-[#008a82] rounded-xl flex items-center justify-center shadow-lg">
-                    <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                      <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-                    </svg>
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-white font-semibold">Email Us</p>
-                    <p className="text-[#00b4ab] text-sm font-medium">info@pydart.in</p>
-                  </div>
-                  <div className="text-gray-400 group-hover:text-[#00b4ab] transition-colors">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </div>
-                </div>
-              </Link>
-
-              <Link 
-                href="tel:+917356765056" 
-                className="group relative overflow-hidden bg-gradient-to-br from-gray-800/80 to-gray-900/80 backdrop-blur-md rounded-2xl p-6 border border-gray-700/50 hover:border-[#00b4ab]/50 transition-all duration-300 hover:shadow-lg hover:shadow-[#00b4ab]/10 hover:scale-[1.02]"
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-[#00b4ab]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="relative flex items-center space-x-4">
-                  <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center shadow-lg">
-                    <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
-                    </svg>
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-white font-semibold">Call Us</p>
-                    <p className="text-green-400 text-sm font-medium">+91 73567-65056</p>
-                  </div>
-                  <div className="text-gray-400 group-hover:text-green-400 transition-colors">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </div>
-                </div>
-              </Link>
-            </div>
-          </div>
-
-          {/* Services Showcase */}
-          <div className="mb-12">
-            <div className="text-center mb-8">
-              <h4 className="text-xl font-bold text-white mb-2">Our Expertise</h4>
-              <p className="text-gray-400 text-sm">Cutting-edge solutions for your business</p>
-            </div>
-            
-            <div className="grid grid-cols-2 gap-3">
-              {[
-                { name: 'Web Development', icon: '🌐', color: 'from-blue-500 to-blue-600' },
-                { name: 'Mobile Apps', icon: '📱', color: 'from-purple-500 to-purple-600' },
-                { name: 'IoT Solutions', icon: '⚡', color: 'from-orange-500 to-orange-600' },
-                { name: 'AI Integration', icon: '🤖', color: 'from-pink-500 to-pink-600' }
-              ].map((service, index) => (
-                <button
-                  key={index}
-                  onClick={() => {
-                    const element = document.getElementById('services');
-                    if (element) {
-                      const headerOffset = 80;
-                      const elementPosition = element.getBoundingClientRect().top;
-                      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-                      window.scrollTo({
-                        top: offsetPosition,
-                        behavior: 'smooth'
-                      });
-                    }
-                  }}
-                  className="group relative overflow-hidden bg-gradient-to-br from-gray-800/60 to-gray-900/60 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/30 hover:border-[#00b4ab]/50 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#00b4ab]/20"
-                >
-                  <div className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}></div>
-                  <div className="relative text-center">
-                    <div className="text-3xl mb-3 group-hover:scale-110 transition-transform duration-300">
-                      {service.icon}
-                    </div>
-                    <p className="text-white font-semibold text-sm leading-tight">{service.name}</p>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Career & Opportunities */}
-          <div className="mb-12">
-            <div className="text-center mb-8">
-              <h4 className="text-xl font-bold text-white mb-2">Join Our Journey</h4>
-              <p className="text-gray-400 text-sm">Shape the future with us</p>
-            </div>
-            
-            {/* Hero-Style Buttons - Horizontal Layout */}
-            <div className="flex flex-row gap-3">
-              <Link
-                href="/careers"
-                className="flex-1 group relative overflow-hidden inline-flex items-center justify-center px-4 py-3 md:px-6 md:py-4 bg-transparent border border-white/20 text-white font-medium rounded-lg hover:border-[#00b4ab] hover:bg-[#00b4ab]/10 transition-all duration-300"
-              >
-                <span className="relative z-10 transition-colors duration-300 group-hover:text-[#00b4ab] flex items-center">
-                  <svg className="w-4 h-4 md:w-5 md:h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M6 6V5a3 3 0 013-3h2a3 3 0 013 3v1h2a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V8a2 2 0 012-2h2zm4-3a1 1 0 00-1 1v1h2V4a1 1 0 00-1-1z" clipRule="evenodd" />
-                  </svg>
-                  <span className="text-sm md:text-base">Careers</span>
-                </span>
-                <svg className="ml-2 w-3 h-3 md:w-4 md:h-4 transition-all duration-300 group-hover:translate-x-1 group-hover:text-[#00b4ab] relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-                {/* Animated background glow */}
-                <div className="absolute inset-0 bg-gradient-to-r from-[#00b4ab]/0 via-[#00b4ab]/5 to-[#00b4ab]/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </Link>
-
-              <Link
-                href="/internship"
-                className="flex-1 group relative overflow-hidden inline-flex items-center justify-center px-4 py-3 md:px-6 md:py-4 bg-transparent border border-white/20 text-white font-medium rounded-lg hover:border-[#00b4ab] hover:bg-[#00b4ab]/10 transition-all duration-300"
-              >
-                <span className="relative z-10 transition-colors duration-300 group-hover:text-[#00b4ab] flex items-center">
-                  <svg className="w-4 h-4 md:w-5 md:h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3z" />
-                  </svg>
-                  <span className="text-sm md:text-base">Internships</span>
-                </span>
-                <svg className="ml-2 w-3 h-3 md:w-4 md:h-4 transition-all duration-300 group-hover:translate-x-1 group-hover:text-[#00b4ab] relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-                {/* Animated background glow */}
-                <div className="absolute inset-0 bg-gradient-to-r from-[#00b4ab]/0 via-[#00b4ab]/5 to-[#00b4ab]/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </Link>
-            </div>
-          </div>
-
-          {/* Social Media with Modern Design */}
-          <div className="text-center mb-8">
-            <div className="mb-6">
-              <h4 className="text-lg font-bold text-white mb-2">Connect With Us</h4>
-              <div className="w-16 h-0.5 bg-gradient-to-r from-[#00b4ab] to-[#008a82] mx-auto rounded-full"></div>
-            </div>
-            
-            <div className="flex justify-center space-x-6">
-              {[
-                { 
-                  href: "https://github.com/Pydart-Intelli-Corp", 
-                  label: "GitHub",
-                  color: "hover:bg-gray-700",
-                  icon: "M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
-                },
-                { 
-                  href: "https://www.linkedin.com/company/pydart-intelli-corp/", 
-                  label: "LinkedIn",
-                  color: "hover:bg-blue-600",
-                  icon: "M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
-                },
-                { 
-                  href: "https://www.instagram.com/pydart.india?igsh=MTVwMWhlMm9qNWRydw==", 
-                  label: "Instagram",
-                  color: "hover:bg-gradient-to-br hover:from-purple-500 hover:to-pink-500",
-                  icon: "M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"
-                }
-              ].map((social, index) => (
-                <Link 
-                  key={index}
-                  href={social.href} 
-                  target="_blank"
-                  className={`group relative w-14 h-14 bg-gray-800/60 backdrop-blur-sm rounded-2xl flex items-center justify-center ${social.color} transition-all duration-300 transform hover:scale-110 hover:shadow-lg border border-gray-700/50 hover:border-[#00b4ab]/50`}
-                  aria-label={social.label}
-                >
-                  <svg className="w-7 h-7 fill-current text-white group-hover:text-white transition-colors duration-300" viewBox="0 0 24 24">
-                    <path d={social.icon}/>
-                  </svg>
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#00b4ab]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"></div>
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          {/* Decorative Bottom */}
-          <div className="text-center pt-8">
-            <div className="w-full h-0.5 bg-gradient-to-r from-transparent via-gray-600 to-transparent"></div>
-          </div>
-        </div>
-
-        {/* Desktop Footer Content - Hidden on Mobile */}
-        <div className="hidden md:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-6 mb-12">
+        {/* Main Footer Content */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-5 gap-6 sm:gap-8 lg:gap-6 mb-8 sm:mb-12">
           
           {/* Our Services */}
-          <div>
-            <h4 className="text-white text-base font-bold mb-4 tracking-wider">Our Services</h4>
-            <ul className="space-y-3">
+          <div className="order-1 sm:order-1 lg:order-1">
+            <h4 className="text-white text-sm sm:text-base font-bold mb-3 sm:mb-4 tracking-wider">Our Services</h4>
+            <ul className="space-y-2 sm:space-y-3">
               <li>
                 <button 
                   onClick={() => {
@@ -260,9 +31,9 @@ export default function Footer() {
                       });
                     }
                   }}
-                  className="text-gray-300 hover:text-[#00b4ab] transition-colors duration-300 text-sm flex items-center group w-full text-left"
+                  className="text-gray-300 hover:text-[#00b4ab] transition-colors duration-300 text-xs sm:text-sm flex items-center group w-full text-left"
                 >
-                  <svg className="w-4 h-4 mr-2 text-gray-400 group-hover:text-[#00b4ab]" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-3 h-3 sm:w-4 sm:h-4 mr-2 text-gray-400 group-hover:text-[#00b4ab]" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
                   </svg>
                   Website Development
@@ -282,9 +53,9 @@ export default function Footer() {
                       });
                     }
                   }}
-                  className="text-gray-300 hover:text-[#00b4ab] transition-colors duration-300 text-sm flex items-center group w-full text-left"
+                  className="text-gray-300 hover:text-[#00b4ab] transition-colors duration-300 text-xs sm:text-sm flex items-center group w-full text-left"
                 >
-                  <svg className="w-4 h-4 mr-2 text-gray-400 group-hover:text-[#00b4ab]" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-3 h-3 sm:w-4 sm:h-4 mr-2 text-gray-400 group-hover:text-[#00b4ab]" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
                   </svg>
                   iOS & Android Development
@@ -304,9 +75,9 @@ export default function Footer() {
                       });
                     }
                   }}
-                  className="text-gray-300 hover:text-[#00b4ab] transition-colors duration-300 text-sm flex items-center group w-full text-left"
+                  className="text-gray-300 hover:text-[#00b4ab] transition-colors duration-300 text-xs sm:text-sm flex items-center group w-full text-left"
                 >
-                  <svg className="w-4 h-4 mr-2 text-gray-400 group-hover:text-[#00b4ab]" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-3 h-3 sm:w-4 sm:h-4 mr-2 text-gray-400 group-hover:text-[#00b4ab]" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M3 4a1 1 0 011-1h4a1 1 0 010 2H6.414l2.293 2.293a1 1 0 11-1.414 1.414L5 6.414V8a1 1 0 11-2 0V4zm9 1a1 1 0 010-2h4a1 1 0 011 1v4a1 1 0 11-2 0V6.414l-2.293 2.293a1 1 0 11-1.414-1.414L13.586 5H12zm-9 7a1 1 0 112 0v1.586l2.293-2.293a1 1 0 111.414 1.414L6.414 15H8a1 1 0 110 2H4a1 1 0 01-1-1v-4zm13-1a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 110-2h1.586l-2.293-2.293a1 1 0 111.414-1.414L15 13.586V12a1 1 0 011-1z" clipRule="evenodd" />
                   </svg>
                   Embedded System Development
@@ -326,9 +97,9 @@ export default function Footer() {
                       });
                     }
                   }}
-                  className="text-gray-300 hover:text-[#00b4ab] transition-colors duration-300 text-sm flex items-center group w-full text-left"
+                  className="text-gray-300 hover:text-[#00b4ab] transition-colors duration-300 text-xs sm:text-sm flex items-center group w-full text-left"
                 >
-                  <svg className="w-4 h-4 mr-2 text-gray-400 group-hover:text-[#00b4ab]" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-3 h-3 sm:w-4 sm:h-4 mr-2 text-gray-400 group-hover:text-[#00b4ab]" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M5.5 16a3.5 3.5 0 01-.369-6.98 4 4 0 117.753-1.977A4.5 4.5 0 1113.5 16h-8z" />
                   </svg>
                   Cloud Solutions

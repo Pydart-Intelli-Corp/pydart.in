@@ -269,9 +269,8 @@ export default function Investments() {
                           Read More
                         </span>
                       </span>
-                      {/* Parenthesis effect - only on desktop (hidden on mobile) */}
-                      <span className="hidden md:block absolute left-1 md:left-1.5 lg:left-2 -top-1 md:-top-1.5 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-4 md:group-hover:translate-y-5 text-[#00b4ab]">(</span>
-                      <span className="hidden md:block absolute right-1 md:right-1.5 lg:right-2 -top-1 md:-top-1.5 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-4 md:group-hover:translate-y-5 text-[#00b4ab]">)</span>
+                      <span className="absolute left-1 md:left-1.5 lg:left-2 -top-1 md:-top-1.5 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-4 md:group-hover:translate-y-5 text-[#00b4ab]">(</span>
+                      <span className="absolute right-1 md:right-1.5 lg:right-2 -top-1 md:-top-1.5 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-4 md:group-hover:translate-y-5 text-[#00b4ab]">)</span>
                     </span>
                   </motion.button>
                 </div>

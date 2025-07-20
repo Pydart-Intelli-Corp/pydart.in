@@ -82,19 +82,46 @@ export default function DateRangePicker({
   const handleDateClick = (date: Date) => {
     const dateStr = date.toISOString().split('T')[0];
     const today = new Date();
-    today.setHours(0, 0, 0, 0);
     
-    // Don't allow past dates
-    if (date < today) return;
+    // Set both dates to start of day for fair comparison
+    today.setHours(0, 0, 0, 0);
+    const clickDate = new Date(date);
+    clickDate.setHours(0, 0, 0, 0);
+    
+    console.log('Date click debug:', {
+      clickedDate: dateStr,
+      clickDate: clickDate.toISOString(),
+      today: today.toISOString(),
+      isPast: clickDate < today,
+      isToday: clickDate.getTime() === today.getTime(),
+      dayOfWeek: date.getDay()
+    });
+    
+    // Allow today and future dates
+    if (clickDate < today) {
+      console.log('Date rejected: past date');
+      return;
+    }
     
     // Don't allow Sundays (day 0)
-    if (date.getDay() === 0) return;
+    if (date.getDay() === 0) {
+      console.log('Date rejected: Sunday');
+      return;
+    }
     
     // Don't allow disabled dates
-    if (disabledDates.has(dateStr)) return;
+    if (disabledDates.has(dateStr)) {
+      console.log('Date rejected: disabled/booked');
+      return;
+    }
     
     // Don't allow dates that don't have enough consecutive available days
-    if (!hasConsecutiveAvailableDays(date)) return;
+    if (!hasConsecutiveAvailableDays(date)) {
+      console.log('Date rejected: not enough consecutive days');
+      return;
+    }
+
+    console.log('Date accepted, proceeding...');
     
     // Calculate end date by counting working days (excluding Sundays)
     let workingDaysCount = 0;
@@ -253,7 +280,12 @@ export default function DateRangePicker({
                 const isValid = date.getTime() > 0;
                 const dateStr = isValid ? date.toISOString().split('T')[0] : '';
                 const isSunday = isValid && date.getDay() === 0;
-                const isPastDate = isValid && date < today;
+                
+                // Ensure consistent date comparison
+                const dateToCompare = new Date(date);
+                dateToCompare.setHours(0, 0, 0, 0);
+                const isPastDate = isValid && dateToCompare < today;
+                
                 const isBookedDate = isValid && disabledDates.has(dateStr);
                 const hasNoConsecutiveDays = isValid && !isSunday && !isPastDate && !isBookedDate && !hasConsecutiveAvailableDays(date);
                 const isDisabled = !isValid || isPastDate || isSunday || isBookedDate || hasNoConsecutiveDays;

@@ -1,7 +1,20 @@
 // API Configuration for PyDart Next.js Application
 export const API_CONFIG = {
-  // Email API - lactosure endpoint for email functionality (including careers and internships)
+  // PoornasreeAPI endpoint for email functionality (including careers and internships)
   emailApiUrl: "https://lactosure.azurewebsites.net/api",
+  
+  // Local PoornasreeAPI endpoint (when running locally)
+  localApiUrl: "http://localhost:5000/api",
+  
+  // Production PoornasreeAPI endpoint 
+  productionApiUrl: "https://lactosure.azurewebsites.net/api",
+  
+  // Use local API for development, production API for deployment
+  get apiUrl() {
+    return process.env.NODE_ENV === 'development' 
+      ? this.localApiUrl 
+      : this.productionApiUrl;
+  },
   
   // Local/PyDart APIs
   baseUrl: "", // Use relative URL for local APIs
@@ -9,8 +22,8 @@ export const API_CONFIG = {
   
   // Razorpay Configuration
   razorpay: {
-    keyId: "rzp_test_sewzXr1rtc9PGp",
-    keySecret: "wqrHlxk7QP5TY4TSQsyfugxO"
+    keyId: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_live_YK4ixrNgx0OUTC",
+    keySecret: process.env.RAZORPAY_KEY_SECRET || "m44QWZae8PiimDqDcTnhp6pA"
   },
   
   endpoints: {

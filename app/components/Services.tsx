@@ -67,6 +67,11 @@ export default function Services() {
   const [wheelProgress, setWheelProgress] = useState(0);
   const [contentProgress, setContentProgress] = useState(0);
   
+  // Scroll speed tracking states
+  const [scrollSpeed, setScrollSpeed] = useState(1); // Track scroll speed multiplier
+  const [lastScrollY, setLastScrollY] = useState(0);
+  const [lastScrollTime, setLastScrollTime] = useState(Date.now());
+  
   // Typewriter effect states
   const [currentLineIndex, setCurrentLineIndex] = useState(0);
   const [currentCharIndex, setCurrentCharIndex] = useState(0);
@@ -75,10 +80,24 @@ export default function Services() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { once: false, margin: "-100px" });
   const controls = useAnimation();
+  
+  // What we do typewriter states
+  const [whatWeDoLineIndex, setWhatWeDoLineIndex] = useState(0);
+  const [whatWeDoCharIndex, setWhatWeDoCharIndex] = useState(0);
+  const [whatWeDoComplete, setWhatWeDoComplete] = useState(false);
+  const [whatWeDoStarted, setWhatWeDoStarted] = useState(false);
+  
+  // Show description heading after "What we do" is complete
+  const [showDescriptionHeading, setShowDescriptionHeading] = useState(false);
+  
+  // What we do typewriter lines - matching project section style
+  const whatWeDoLines = [
+    { text: 'What we do?', color: 'text-white' }
+  ];
 
-  // Typewriter text lines - single paragraph with white text
+  // Typewriter text lines - shortened for mobile
   const typewriterLines = [
-    { text: 'Comprehensive Technology Solutions for Modern Business Challenges and Digital Innovation - Empowering Your Vision Through Advanced AI, Mobile Development, and Strategic Digital Transformation', color: 'text-white' }
+    { text: 'Comprehensive Technology Solutions for Modern Business - Empowering Your Vision Through AI, Mobile Development, and Digital Transformation', color: 'text-white' }
   ];
 
   useEffect(() => {
@@ -91,10 +110,58 @@ export default function Services() {
       }
     }
   }, [isInView, controls, hasStartedTyping]);
+
+  // Track scroll speed for dynamic animation speed
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      const currentTime = Date.now();
+      
+      // Calculate scroll speed
+      const scrollDistance = Math.abs(currentScrollY - lastScrollY);
+      const timeElapsed = currentTime - lastScrollTime;
+      
+      if (timeElapsed > 0) {
+        const speed = scrollDistance / timeElapsed; // pixels per millisecond
+        // Normalize and clamp speed multiplier between 1x and 5x
+        const speedMultiplier = Math.min(Math.max(1 + speed * 0.5, 1), 5);
+        setScrollSpeed(speedMultiplier);
+      }
+      
+      setLastScrollY(currentScrollY);
+      setLastScrollTime(currentTime);
+    };
+
+    // Debounce scroll speed reset
+    let resetTimer: NodeJS.Timeout;
+    const handleScrollWithReset = () => {
+      handleScroll();
+      clearTimeout(resetTimer);
+      resetTimer = setTimeout(() => {
+        setScrollSpeed(1); // Reset to normal speed after scrolling stops
+      }, 200);
+    };
+
+    window.addEventListener('scroll', handleScrollWithReset, { passive: true });
+    
+    return () => {
+      window.removeEventListener('scroll', handleScrollWithReset);
+      clearTimeout(resetTimer);
+    };
+  }, [lastScrollY, lastScrollTime]);
   
-  // Typewriter effect - optimized for long text
+  // Typewriter effect - optimized for long text with scroll-based speed
   useEffect(() => {
     if (!isClient || !hasStartedTyping) return;
+
+    // Calculate dynamic timing based on scroll speed - Much faster values
+    const baseTypingSpeed = 8;  // Reduced from 15 to 8
+    const basePauseSpeed = 80;  // Reduced from 150 to 80
+    const baseInitialDelay = 100; // Reduced from 200 to 100
+    
+    const typingSpeed = Math.max(baseTypingSpeed / scrollSpeed, 2); // Min 2ms (was 3ms)
+    const pauseSpeed = Math.max(basePauseSpeed / scrollSpeed, 15); // Min 15ms (was 30ms)
+    const initialDelay = Math.max(baseInitialDelay / scrollSpeed, 25); // Min 25ms (was 50ms)
 
     const timer = setTimeout(() => {
       if (currentLineIndex < typewriterLines.length) {
@@ -103,24 +170,78 @@ export default function Services() {
         if (currentCharIndex < currentLine.text.length) {
           // Still typing current line - type faster for longer text
           // Increment by different amounts based on text length for a smoother experience
-          const increment = currentLine.text.length > 100 ? 3 : 1;
+          const increment = currentLine.text.length > 100 ? Math.ceil(3 * scrollSpeed) : Math.ceil(1 * scrollSpeed);
           setCurrentCharIndex(prev => Math.min(prev + increment, currentLine.text.length));
         } else {
           // Current line complete, move to next line
           setTimeout(() => {
             setCurrentLineIndex(prev => prev + 1);
             setCurrentCharIndex(0);
-          }, 150);
+          }, pauseSpeed);
         }
       } else {
         // All lines complete
         setIsTypingComplete(true);
         setIsHeadingComplete(true);
       }
-    }, currentCharIndex === 0 ? 200 : 15); // Faster typing speed for longer text
+    }, currentCharIndex === 0 ? initialDelay : typingSpeed);
 
     return () => clearTimeout(timer);
-  }, [currentLineIndex, currentCharIndex, isClient, hasStartedTyping, typewriterLines]);
+  }, [currentLineIndex, currentCharIndex, isClient, hasStartedTyping, typewriterLines, scrollSpeed]);
+
+  // What we do typewriter effect with scroll-based speed
+  useEffect(() => {
+    if (!isClient || !whatWeDoStarted) return;
+
+    // Calculate dynamic timing based on scroll speed - Much faster values
+    const baseTypingSpeed = 25; // Reduced from 50 to 25
+    const basePauseSpeed = 30;  // Reduced from 50 to 30
+    const baseInitialDelay = 50; // Reduced from 100 to 50
+    const baseShowDelay = 100;  // Reduced from 200 to 100
+    
+    const typingSpeed = Math.max(baseTypingSpeed / scrollSpeed, 5); // Min 5ms (was 10ms)
+    const pauseSpeed = Math.max(basePauseSpeed / scrollSpeed, 8); // Min 8ms (was 10ms)
+    const initialDelay = Math.max(baseInitialDelay / scrollSpeed, 15); // Min 15ms (was 20ms)
+
+    const timer = setTimeout(() => {
+      if (whatWeDoLineIndex < whatWeDoLines.length) {
+        const currentLine = whatWeDoLines[whatWeDoLineIndex];
+        
+        if (whatWeDoCharIndex < currentLine.text.length) {
+          setWhatWeDoCharIndex(prev => prev + 1);
+        } else {
+          // Current line complete, move to next line
+          setTimeout(() => {
+            setWhatWeDoLineIndex(prev => prev + 1);
+            setWhatWeDoCharIndex(0);
+          }, pauseSpeed);
+        }
+      } else {
+        // All lines complete
+        setWhatWeDoComplete(true);
+        // Show description heading after a short delay
+        setTimeout(() => {
+          setShowDescriptionHeading(true);
+        }, Math.max(baseShowDelay / scrollSpeed, 30)); // Min 30ms delay (was 50ms)
+      }
+    }, whatWeDoCharIndex === 0 ? initialDelay : typingSpeed);
+
+    return () => clearTimeout(timer);
+  }, [whatWeDoLineIndex, whatWeDoCharIndex, isClient, whatWeDoStarted, whatWeDoLines, scrollSpeed]);
+
+  // Start "What we do" typewriter when section comes into view
+  useEffect(() => {
+    if (isInView && !whatWeDoStarted) {
+      setWhatWeDoStarted(true);
+    }
+  }, [isInView, whatWeDoStarted]);
+
+  // Start description heading typewriter after "What we do" is complete
+  useEffect(() => {
+    if (showDescriptionHeading && !hasStartedTyping) {
+      setHasStartedTyping(true);
+    }
+  }, [showDescriptionHeading, hasStartedTyping]);
 
   // No scroll locking needed
 
@@ -217,7 +338,7 @@ export default function Services() {
             progress = Math.max(0, Math.min(1, progress));
             
             // Start typewriter earlier in the view for longer text
-            if (progress > 0.1 && !hasStartedTyping) {
+            if (progress > 0.1 && showDescriptionHeading && !hasStartedTyping) {
               setHasStartedTyping(true);
             }
           }
@@ -275,7 +396,7 @@ export default function Services() {
   // Services data - our core offerings
   const services: Service[] = [
     {
-      title: "AI-Integrated Mobile Development",
+      title: "AI-Integrated Mobile Apps",
       description: "Native Android and iOS applications enhanced with cutting-edge AI capabilities for intelligent user experiences",
       category: "mobile",
       icon: "mobile",
@@ -301,7 +422,7 @@ export default function Services() {
       ]
     },
     {
-      title: "GEO & SEO Optimized Web Development",
+      title: "GEO & SEO  Web Development",
       description: "High-performance websites and web applications optimized for search engines and geographic targeting",
       category: "web",
       icon: "code",
@@ -314,7 +435,7 @@ export default function Services() {
       ]
     },
     {
-      title: "Digital Marketing Solutions",
+      title: "Digital Marketing",
       description: "Comprehensive digital marketing strategies that drive growth, engagement, and conversions across all platforms",
       category: "analytics",
       icon: "chart",
@@ -422,12 +543,84 @@ export default function Services() {
     <section 
       ref={sectionRef}
       id="services"
-      className="relative min-h-screen bg-gradient-to-tr from-gray-900 via-black to-gray-800 text-white overflow-hidden py-12 sm:py-16 md:py-20 lg:py-32"
+      className="relative min-h-screen bg-gradient-to-tr from-gray-900 via-black to-gray-800 text-white overflow-hidden py-8 sm:py-16 md:py-20 lg:py-32"
       style={{ 
         willChange: 'transform', // Hint browser for optimization
         transform: 'translateZ(0)' // Force hardware acceleration
       }}
     >
+      {/* Section Heading at Very Top - Left Aligned */}
+      <div className="relative z-30">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+          {/* Project-style heading with typewriter effect */}
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ 
+              duration: Math.max(0.8 / scrollSpeed, 0.2), 
+              delay: Math.max(0.2 / scrollSpeed, 0.05) 
+            }}
+            className="text-2xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-left leading-tight tracking-tight pt-1 sm:pt-4 min-h-[35px] sm:min-h-[60px] md:min-h-[60px] lg:min-h-[60px]"
+            style={{ fontFamily: 'Montserrat, sans-serif' }}
+          >
+            {whatWeDoLines.map((line, index) => {
+              // Show completed lines fully
+              if (index < whatWeDoLineIndex) {
+                return (
+                  <motion.span 
+                    key={index}
+                    className="block"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ opacity: { duration: 0.3 } }}
+                  >
+                    <span className="text-white">What we </span>
+                    <span className="text-[#00b4ab]">do?</span>
+                  </motion.span>
+                );
+              }
+              
+              // Show current typing line
+              if (index === whatWeDoLineIndex) {
+                const currentText = line.text.slice(0, whatWeDoCharIndex);
+                const whatWeText = "What we ";
+                const doText = "do?";
+                
+                return (
+                  <span key={index} className="block">
+                    {whatWeDoCharIndex <= whatWeText.length ? (
+                      // Still typing "What we "
+                      <>
+                        <span className="text-white">
+                          {whatWeText.slice(0, whatWeDoCharIndex)}
+                        </span>
+                        {whatWeDoCharIndex < line.text.length && (
+                          <span className="animate-pulse text-white">|</span>
+                        )}
+                      </>
+                    ) : (
+                      // Typing "do?"
+                      <>
+                        <span className="text-white">What we </span>
+                        <span className="text-[#00b4ab]">
+                          {doText.slice(0, whatWeDoCharIndex - whatWeText.length)}
+                        </span>
+                        {whatWeDoCharIndex < line.text.length && (
+                          <span className="animate-pulse text-[#00b4ab]">|</span>
+                        )}
+                      </>
+                    )}
+                  </span>
+                );
+              }
+              
+              // Don't show future lines
+              return null;
+            })}
+          </motion.h1>
+        </div>
+      </div>
+
       {/* Floating Particles */}
       {isClient && (
         <div className="absolute inset-0">
@@ -439,16 +632,22 @@ export default function Services() {
                 left: `${15 + i * 12}%`,
                 top: `${20 + i * 8}%`,
               }}
-              animate={{
-                scale: [1, 1.5, 1],
+              animate={isTypingComplete ? {
+                // Static state after typewriter completes
+                opacity: 0.3,
+              } : {
+                // Animated state during typewriter - speed up with scroll
                 opacity: [0.3, 0.7, 0.3],
               }}
-              transition={{
-                duration: 3 + i * 0.5,
+              transition={isTypingComplete ? {
+                duration: Math.max(0.5 / scrollSpeed, 0.1),
+                ease: "easeOut"
+              } : {
+                duration: Math.max((3 + i * 0.5) / scrollSpeed, 0.5 + i * 0.1), // Faster particle animation
                 repeat: Infinity,
                 repeatType: "reverse",
                 ease: "easeInOut",
-                delay: i * 0.2,
+                delay: Math.max((i * 0.2) / scrollSpeed, i * 0.05), // Faster delay
               }}
             />
           ))}
@@ -459,11 +658,25 @@ export default function Services() {
       <div className="absolute inset-0 overflow-hidden opacity-[0.1]">
         <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
           <defs>
-            <pattern id="neural-grid-services" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">
-              <path d="M 10 0 L 0 0 0 10" fill="none" stroke="#00b4ab" strokeWidth="0.2"/>
+            {/* Desktop/Tablet Grid Pattern */}
+            <pattern id="neural-grid-services-desktop" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">
+              {/* Vertical lines - normal thickness */}
+              <path d="M 0 0 L 0 10" fill="none" stroke="#00b4ab" strokeWidth="0.2"/>
+              {/* Horizontal lines - very reduced thickness */}
+              <path d="M 0 0 L 10 0" fill="none" stroke="#00b4ab" strokeWidth="0.05"/>
+            </pattern>
+            {/* Mobile Grid Pattern - Much more rows, same columns */}
+            <pattern id="neural-grid-services-mobile" x="0" y="0" width="10" height="2.5" patternUnits="userSpaceOnUse">
+              {/* Vertical lines - normal thickness */}
+              <path d="M 0 0 L 0 2.5" fill="none" stroke="#00b4ab" strokeWidth="0.2"/>
+              {/* Horizontal lines - very reduced thickness */}
+              <path d="M 0 0 L 10 0" fill="none" stroke="#00b4ab" strokeWidth="0.05"/>
             </pattern>
           </defs>
-          <rect width="100%" height="100%" fill="url(#neural-grid-services)" />
+          {/* Show desktop pattern on larger screens */}
+          <rect className="hidden sm:block" width="100%" height="100%" fill="url(#neural-grid-services-desktop)" />
+          {/* Show mobile pattern on mobile screens */}
+          <rect className="block sm:hidden" width="100%" height="100%" fill="url(#neural-grid-services-mobile)" />
         </svg>
       </div>
 
@@ -478,16 +691,18 @@ export default function Services() {
             x: -96,
             y: -96,
           }}
-          transition={{ type: "spring", stiffness: 40, damping: 25 }} // Optimized spring values
+          transition={{ 
+            type: "spring", 
+            stiffness: Math.min(40 * scrollSpeed, 100), // Increase responsiveness with scroll speed
+            damping: Math.max(25 - (scrollSpeed * 2), 15) // Reduce damping for faster movement
+          }} // Optimized spring values with scroll responsiveness
         />
       )}
 
-      <div className="relative z-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-          
-          {/* Header Section */}
+        <div className="relative z-20">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 w-full">          {/* Header Section */}
           <motion.div 
-            className="flex items-center justify-start min-h-[80vh] sm:min-h-screen"
+            className="flex items-center justify-start min-h-[30vh] sm:min-h-screen -mt-16 sm:-mt-40 md:-mt-48 lg:-mt-56"
             initial="hidden"
             animate={controls}
             variants={containerVariants}
@@ -497,189 +712,332 @@ export default function Services() {
               transform: 'translateZ(0)'
             }}
           >
-            {/* Main heading with Typewriter Effect + Dark/White reveal */}
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-normal mb-6 sm:mb-8 text-white leading-relaxed tracking-wide min-h-[100px] sm:min-h-[120px] md:min-h-[140px] lg:min-h-[160px] xl:min-h-[180px]"
-              style={{ fontFamily: 'Montserrat, sans-serif' }}
-              onMouseEnter={() => !isMobile && setIsHovering(true)}
-              onMouseLeave={() => !isMobile && setIsHovering(false)}
-            >
-              {typewriterLines.map((line, lineIndex) => {
-                // Split the text into words for the dark/white reveal effect
-                const words = line.text.split(' ');
-                // Calculate visible word count based on typing progress
-                const visibleWordCount = !isTypingComplete 
-                  ? Math.ceil((currentCharIndex / line.text.length) * words.length) 
-                  : words.length;
-                
-                return (
-                  <motion.span 
-                    key={lineIndex}
-                    className={`block ${line.color}`}
-                    initial={{ opacity: 1 }}
-                    animate={{ 
-                      opacity: 1,
-                      x: !isMobile && isHovering && isTypingComplete ? mousePosition.x * 1.5 : 0,
-                    }}
-                    transition={{ 
-                      opacity: { duration: 0.3 },
-                      x: { type: "spring", stiffness: 300, damping: 30 }
-                    }}
-                    style={{ color: '#374151' }} // Initial dark grey color for all text
-                  >
-                    {!isTypingComplete && currentLineIndex === lineIndex ? (
-                      <>
-                        {words.map((word, wordIndex) => {
-                          const isRevealed = wordIndex < visibleWordCount;
-                          
-                          return (
+            {/* Description heading with Typewriter Effect - only show after "What we do" is complete */}
+            {showDescriptionHeading && (
+              <motion.h1
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ 
+                  duration: Math.max(0.8 / scrollSpeed, 0.2), 
+                  delay: Math.max(0.2 / scrollSpeed, 0.05) 
+                }}
+                className="text-sm sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-normal mb-2 sm:mb-8 text-white leading-relaxed tracking-wide min-h-[40px] sm:min-h-[120px] md:min-h-[140px] lg:min-h-[160px] xl:min-h-[180px]"
+                style={{ fontFamily: 'Montserrat, sans-serif' }}
+              >
+                {typewriterLines.map((line, lineIndex) => {
+                  // Split the text into words for the dark/white reveal effect
+                  const words = line.text.split(' ');
+                  // Calculate visible word count based on typing progress
+                  const visibleWordCount = !isTypingComplete 
+                    ? Math.ceil((currentCharIndex / line.text.length) * words.length) 
+                    : words.length;
+                  
+                  return (
+                    <span 
+                      key={lineIndex}
+                      className="block text-white"
+                      style={{ color: '#ffffff' }}
+                    >
+                      {!isTypingComplete && currentLineIndex === lineIndex ? (
+                        <>
+                          {words.map((word, wordIndex) => {
+                            const isRevealed = wordIndex < visibleWordCount;
+                            
+                            return (
+                              <span
+                                key={wordIndex}
+                                className="inline-block mr-3"
+                                style={{ 
+                                  color: isRevealed ? '#ffffff' : '#374151',
+                                  transition: 'color 0.05s ease-out'
+                                }}
+                              >
+                                {word}
+                              </span>
+                            );
+                          })}
+                          {/* Typing cursor - only show during active typing */}
+                          {currentCharIndex < line.text.length && (
                             <motion.span
-                              key={wordIndex}
-                              className="inline-block mr-3"
-                              initial={{ opacity: 1 }}
-                              animate={{ 
-                                color: isRevealed ? '#ffffff' : '#374151', // White when revealed, dark grey when not
-                                opacity: 1 // Always visible
-                              }}
-                              transition={{ 
-                                duration: 0.08, // Much faster color transition
-                                delay: wordIndex * 0.002, // Much reduced stagger timing for fastest reveal
-                                ease: "easeOut"
-                              }}
-                            >
-                              {word}
-                            </motion.span>
-                          );
-                        })}
-                        {/* Typing cursor */}
-                        {currentCharIndex < line.text.length && (
-                          <motion.span
-                            className="inline-block w-1 h-[0.8em] bg-[#00b4ab] ml-1"
-                            animate={{ opacity: [1, 0] }}
-                            transition={{ duration: 0.8, repeat: Infinity, repeatType: "reverse" }}
-                          />
-                        )}
-                      </>
-                    ) : isTypingComplete ? (
-                      // All words revealed when typing is complete
-                      words.map((word, wordIndex) => (
-                        <motion.span
-                          key={wordIndex}
-                          className="inline-block mr-3"
-                          initial={{ opacity: 1 }}
-                          animate={{ 
-                            color: '#ffffff', // All white when typing is complete
-                            opacity: 1
-                          }}
-                          transition={{ 
-                            duration: 0.08,
-                            delay: wordIndex * 0.002,
-                            ease: "easeOut"
-                          }}
-                        >
-                          {word}
-                        </motion.span>
-                      ))
-                    ) : null}
-                  </motion.span>
-                );
-              })}
-            </motion.h1>
+                              className="inline-block w-1 h-[0.8em] bg-[#00b4ab] ml-1"
+                              animate={{ opacity: [1, 0] }}
+                              transition={{ duration: 0.8, repeat: Infinity, repeatType: "reverse" }}
+                            />
+                          )}
+                        </>
+                      ) : (
+                        // Final state - simple white text with no animations
+                        line.text
+                      )}
+                    </span>
+                  );
+                })}
+              </motion.h1>
+            )}
           </motion.div>
 
-          {/* Services Section */}
+          {/* Services Section - Timeline Layout */}
           <motion.div 
-            className="mb-16 sm:mb-20 -mt-4 sm:-mt-6 md:-mt-8 lg:-mt-12"
+            className="mb-6 sm:mb-20 -mt-16 sm:-mt-40 md:-mt-48 lg:-mt-56"
             initial={{ opacity: 0, y: 30 }}
             animate={{ 
               opacity: isTypingComplete ? 1 : 0,
               y: isTypingComplete ? 0 : 30
             }}
             transition={{ 
-              duration: 1.0, 
-              delay: isTypingComplete ? 0.8 : 0,
+              duration: Math.max(0.4 / scrollSpeed, 0.1),
+              delay: isTypingComplete ? Math.max(0.2 / scrollSpeed, 0.05) : 0,
               ease: "easeOut"
             }}
           >
-            {/* Services Grid - Mobile-friendly responsive layout */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
-              {services.map((service, index) => {
-                return (
-                  <motion.div
-                    key={index}
-                    className="group relative"
-                    initial={{ opacity: 0, y: 50 }}
-                    animate={{ 
-                      opacity: isTypingComplete ? 1 : 0,
-                      y: isTypingComplete ? 0 : 50
-                    }}
-                    transition={{ 
-                      duration: 0.6, 
-                      delay: isTypingComplete ? 1.4 + (index * 0.2) : 0, // Smoother stagger
-                      type: "spring",
-                      stiffness: 80,
-                      damping: 25
-                    }}
-                    whileHover={!isMobile ? { 
-                      y: -8,
-                      transition: { duration: 0.2, ease: "easeOut" }
-                    } : {}}
-                  >
-                  <div className="bg-gradient-to-br from-gray-800 via-gray-900 to-black rounded-2xl shadow-lg hover:shadow-xl hover:shadow-[#00b4ab]/20 transition-all duration-500 overflow-hidden border border-gray-700 hover:border-[#00b4ab]/50 h-full p-8 flex flex-col">
-                    
-                    {/* Icon and Category */}
-                    <div className="flex items-center justify-between mb-6">
-                      <div className={`p-3 rounded-xl bg-gradient-to-r ${getCategoryColor(service.category)} text-white shadow-lg`}>
-                        {getCategoryIcon(service.icon)}
-                      </div>
-                      <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold text-white bg-gradient-to-r ${getCategoryColor(service.category)} shadow-lg`}>
-                        {service.category.toUpperCase()}
-                      </span>
-                    </div>
-
-                    {/* Title and Description */}
-                    <h4 className="text-xl sm:text-2xl font-bold text-white mb-4 group-hover:text-[#00b4ab] transition-colors duration-300">
-                      {service.title}
-                    </h4>
-                    
-                    <p className="text-gray-300 mb-6 leading-relaxed flex-grow">
-                      {service.description}
-                    </p>
-
-                    {/* Features */}
-                    <div className="mb-6">
-                      <h5 className="text-sm font-semibold text-gray-200 mb-3">Key Features:</h5>
-                      <div className="space-y-3">
-                        {service.features.slice(0, 3).map((feature, featureIndex) => (
-                          <div key={featureIndex} className="flex items-start gap-3">
-                            <div className="w-1.5 h-1.5 rounded-full bg-[#00b4ab] mt-2 flex-shrink-0" />
-                            <span className="text-sm text-gray-400 leading-relaxed">{feature}</span>
+            {/* Mobile Timeline - Centered Vertical with Alternating Sides */}
+            <div className="block lg:hidden">
+              <div className="relative px-2 sm:px-4">
+                {/* Vertical Timeline Line - Centered */}
+                <div className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-[#00b4ab] via-[#00b4ab]/60 to-transparent transform -translate-x-1/2"></div>
+                
+                {/* Timeline Items */}
+                <div className="space-y-4 sm:space-y-6">
+                  {services.map((service, index) => {
+                    const isLeft = index % 2 === 0;
+                    return (
+                      <motion.div
+                        key={index}
+                        className={`relative flex ${isLeft ? 'justify-start pr-4 sm:pr-6' : 'justify-end pl-4 sm:pl-6'}`}
+                        initial={{ opacity: 0, x: isLeft ? -50 : 50 }}
+                        animate={{ 
+                          opacity: isTypingComplete ? 1 : 0,
+                          x: isTypingComplete ? 0 : (isLeft ? -50 : 50)
+                        }}
+                        transition={{ 
+                          duration: Math.max(0.6 / scrollSpeed, 0.15),
+                          delay: isTypingComplete ? Math.max((0.3 + index * 0.15) / scrollSpeed, 0.1 + index * 0.05) : 0,
+                          type: "spring",
+                          stiffness: Math.min(80 * scrollSpeed, 200),
+                          damping: Math.max(25 - (scrollSpeed * 2), 15)
+                        }}
+                      >
+                        {/* Timeline Node - Centered */}
+                        <div className="absolute left-1/2 top-3 sm:top-4 w-3 h-3 sm:w-4 sm:h-4 bg-[#00b4ab] rounded-full border-2 sm:border-3 border-gray-900 shadow-lg z-10 transform -translate-x-1/2">
+                          <div className="absolute inset-0.5 bg-white rounded-full animate-pulse"></div>
+                        </div>
+                        
+                        {/* Content Panel - Reduced content */}
+                        <div className={`w-[45%] bg-gradient-to-br from-gray-900/90 via-black/80 to-gray-800/90 backdrop-blur-sm rounded-lg sm:rounded-xl border border-gray-700/50 hover:border-[#00b4ab]/30 p-3 sm:p-4 shadow-xl hover:shadow-xl hover:shadow-[#00b4ab]/10 transition-all duration-500`}>
+                          {/* Icon and Category */}
+                          <div className="flex items-center justify-between mb-2 sm:mb-3">
+                            <div className={`p-1.5 sm:p-2 rounded-lg bg-gradient-to-r ${getCategoryColor(service.category)} text-white shadow-lg`}>
+                              <div className="w-4 h-4 sm:w-5 sm:h-5">
+                                {getCategoryIcon(service.icon)}
+                              </div>
+                            </div>
+                            <span className={`inline-flex items-center px-1.5 sm:px-2 py-0.5 rounded-full text-[9px] sm:text-xs font-semibold text-white bg-gradient-to-r ${getCategoryColor(service.category)} shadow-lg`}>
+                              {service.category.toUpperCase()}
+                            </span>
                           </div>
-                        ))}
-                      </div>
-                    </div>
 
-                    {/* Technologies */}
-                    <div className="mt-auto">
-                      <h5 className="text-sm font-semibold text-gray-200 mb-3">Technologies:</h5>
-                      <div className="flex flex-wrap gap-2">
-                        {service.technologies.slice(0, 4).map((tech, techIndex) => (
-                          <span
-                            key={techIndex}
-                            className="px-3 py-1 bg-gray-800/60 backdrop-blur-sm text-gray-300 text-xs rounded-lg border border-gray-700/50"
-                          >
-                            {tech}
-                          </span>
-                        ))}
+                          {/* Title - Full heading for mobile */}
+                          <h4 className="text-sm sm:text-base font-bold text-white mb-1.5 sm:mb-2 hover:text-[#00b4ab] transition-colors duration-300 line-clamp-2">
+                            {service.title}
+                          </h4>
+                          
+                          {/* Description - Shortened */}
+                          <p className="text-gray-300 mb-2 sm:mb-3 leading-relaxed text-[10px] sm:text-xs line-clamp-2">
+                            {service.description.slice(0, 80)}...
+                          </p>
+
+                          {/* Features - Only 1 feature */}
+                          <div className="mb-2 sm:mb-3">
+                            <div className="flex items-start gap-1.5 sm:gap-2">
+                              <div className="w-0.5 h-0.5 sm:w-1 sm:h-1 rounded-full bg-[#00b4ab] mt-1.5 flex-shrink-0" />
+                              <span className="text-[9px] sm:text-xs text-gray-400 leading-relaxed line-clamp-1">
+                                {service.features[0]}
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* Technologies - Only 2 technologies */}
+                          <div>
+                            <div className="flex flex-wrap gap-0.5 sm:gap-1">
+                              {service.technologies.slice(0, 2).map((tech, techIndex) => (
+                                <span
+                                  key={techIndex}
+                                  className="px-1.5 sm:px-2 py-0.5 bg-gray-800/60 backdrop-blur-sm text-gray-300 text-[8px] sm:text-xs rounded border border-gray-700/50"
+                                >
+                                  {tech}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Connection Line to Timeline */}
+                        <div className={`absolute top-4 sm:top-6 ${isLeft ? 'right-[45%]' : 'left-[45%]'} w-4 sm:w-6 h-0.5 bg-gradient-to-${isLeft ? 'r' : 'l'} from-[#00b4ab]/60 to-transparent`}></div>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            {/* Desktop Timeline - Horizontal */}
+            <div className="hidden lg:block">
+              <div className="relative">
+                {/* Horizontal Timeline Line */}
+                <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-[#00b4ab]/60 to-transparent transform -translate-y-1/2"></div>
+                
+                {/* Timeline Items - All same size and aligned */}
+                <div className="grid grid-cols-3 gap-8">
+                  {services.slice(0, 3).map((service, index) => (
+                    <motion.div
+                      key={index}
+                      className="relative"
+                      initial={{ opacity: 0, y: 50 }}
+                      animate={{ 
+                        opacity: isTypingComplete ? 1 : 0,
+                        y: isTypingComplete ? 0 : 50
+                      }}
+                      transition={{ 
+                        duration: Math.max(0.6 / scrollSpeed, 0.15),
+                        delay: isTypingComplete ? Math.max((0.4 + index * 0.2) / scrollSpeed, 0.1 + index * 0.1) : 0,
+                        type: "spring",
+                        stiffness: Math.min(80 * scrollSpeed, 200),
+                        damping: Math.max(25 - (scrollSpeed * 2), 15)
+                      }}
+                    >
+                      {/* Content Panel - Same height for all cards */}
+                      <div className="mt-16">
+                        <div className="bg-gradient-to-br from-gray-900/90 via-black/80 to-gray-800/90 backdrop-blur-sm rounded-2xl border border-gray-700/50 hover:border-[#00b4ab]/30 p-8 shadow-xl hover:shadow-2xl hover:shadow-[#00b4ab]/10 transition-all duration-500 h-[480px] flex flex-col">
+                          {/* Icon and Category */}
+                          <div className="flex items-center justify-between mb-6">
+                            <div className={`p-3 rounded-xl bg-gradient-to-r ${getCategoryColor(service.category)} text-white shadow-lg`}>
+                              {getCategoryIcon(service.icon)}
+                            </div>
+                            <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold text-white bg-gradient-to-r ${getCategoryColor(service.category)} shadow-lg`}>
+                              {service.category.toUpperCase()}
+                            </span>
+                          </div>
+
+                          {/* Title */}
+                          <h4 className="text-2xl font-bold text-white mb-4 hover:text-[#00b4ab] transition-colors duration-300">
+                            {service.title}
+                          </h4>
+                          
+                          {/* Description */}
+                          <p className="text-gray-300 mb-6 leading-relaxed text-sm">
+                            {service.description}
+                          </p>
+
+                          {/* Features */}
+                          <div className="mb-6 flex-1">
+                            <h5 className="text-sm font-semibold text-gray-200 mb-3">Key Features:</h5>
+                            <div className="space-y-3">
+                              {service.features.slice(0, 2).map((feature, featureIndex) => (
+                                <div key={featureIndex} className="flex items-start gap-3">
+                                  <div className="w-1.5 h-1.5 rounded-full bg-[#00b4ab] mt-2 flex-shrink-0" />
+                                  <span className="text-sm text-gray-400 leading-relaxed">{feature}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Technologies */}
+                          <div className="mt-auto">
+                            <h5 className="text-sm font-semibold text-gray-200 mb-3">Tech:</h5>
+                            <div className="flex flex-wrap gap-2">
+                              {service.technologies.slice(0, 3).map((tech, techIndex) => (
+                                <span
+                                  key={techIndex}
+                                  className="px-3 py-1 bg-gray-800/60 backdrop-blur-sm text-gray-300 text-xs rounded-lg border border-gray-700/50"
+                                >
+                                  {tech}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                    </div>
+                    </motion.div>
+                  ))}
+                </div>
+
+                {/* Second Row for remaining services - Same alignment */}
+                {services.length > 3 && (
+                  <div className="grid grid-cols-3 gap-8 mt-32">
+                    {services.slice(3).map((service, index) => (
+                      <motion.div
+                        key={index + 3}
+                        className="relative"
+                        initial={{ opacity: 0, y: 50 }}
+                        animate={{ 
+                          opacity: isTypingComplete ? 1 : 0,
+                          y: isTypingComplete ? 0 : 50
+                        }}
+                        transition={{ 
+                          duration: Math.max(0.6 / scrollSpeed, 0.15),
+                          delay: isTypingComplete ? Math.max((1.0 + index * 0.2) / scrollSpeed, 0.4 + index * 0.1) : 0,
+                          type: "spring",
+                          stiffness: Math.min(80 * scrollSpeed, 200),
+                          damping: Math.max(25 - (scrollSpeed * 2), 15)
+                        }}
+                      >
+                        {/* Content Panel - Same height for all cards */}
+                        <div className="mt-16">
+                          <div className="bg-gradient-to-br from-gray-900/90 via-black/80 to-gray-800/90 backdrop-blur-sm rounded-2xl border border-gray-700/50 hover:border-[#00b4ab]/30 p-8 shadow-xl hover:shadow-2xl hover:shadow-[#00b4ab]/10 transition-all duration-500 h-[480px] flex flex-col">
+                            {/* Icon and Category */}
+                            <div className="flex items-center justify-between mb-6">
+                              <div className={`p-3 rounded-xl bg-gradient-to-r ${getCategoryColor(service.category)} text-white shadow-lg`}>
+                                {getCategoryIcon(service.icon)}
+                              </div>
+                              <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold text-white bg-gradient-to-r ${getCategoryColor(service.category)} shadow-lg`}>
+                                {service.category.toUpperCase()}
+                              </span>
+                            </div>
+
+                            {/* Title */}
+                            <h4 className="text-2xl font-bold text-white mb-4 hover:text-[#00b4ab] transition-colors duration-300">
+                              {service.title}
+                            </h4>
+                            
+                            {/* Description */}
+                            <p className="text-gray-300 mb-6 leading-relaxed text-sm">
+                              {service.description}
+                            </p>
+
+                            {/* Features */}
+                            <div className="mb-6 flex-1">
+                              <h5 className="text-sm font-semibold text-gray-200 mb-3">Key Features:</h5>
+                              <div className="space-y-3">
+                                {service.features.slice(0, 2).map((feature, featureIndex) => (
+                                  <div key={featureIndex} className="flex items-start gap-3">
+                                    <div className="w-1.5 h-1.5 rounded-full bg-[#00b4ab] mt-2 flex-shrink-0" />
+                                    <span className="text-sm text-gray-400 leading-relaxed">{feature}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+
+                            {/* Technologies */}
+                            <div className="mt-auto">
+                              <h5 className="text-sm font-semibold text-gray-200 mb-3">Tech:</h5>
+                              <div className="flex flex-wrap gap-2">
+                                {service.technologies.slice(0, 3).map((tech, techIndex) => (
+                                  <span
+                                    key={techIndex}
+                                    className="px-3 py-1 bg-gray-800/60 backdrop-blur-sm text-gray-300 text-xs rounded-lg border border-gray-700/50"
+                                  >
+                                    {tech}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </motion.div>
+                    ))}
                   </div>
-                </motion.div>
-                );
-              })}
+                )}
+              </div>
             </div>
           </motion.div>
 
@@ -692,31 +1050,33 @@ export default function Services() {
               y: isTypingComplete ? 0 : 20
             }}
             transition={{ 
-              duration: 0.8, 
-              delay: isTypingComplete ? 2.2 : 0,
+              duration: Math.max(0.3 / scrollSpeed, 0.08), // Reduced from 0.6 to 0.3
+              delay: isTypingComplete ? Math.max(0.6 / scrollSpeed, 0.15) : 0, // Reduced from 1.2 to 0.6
               ease: "easeOut"
             }}
           >
             {/* CTA Section */}
             <motion.div 
-              className="bg-gradient-to-br from-gray-900/90 via-black/90 to-gray-800/90 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-700/50 hover:border-[#00b4ab]/30 transition-all duration-500 p-6 sm:p-8 lg:p-12 mb-8 sm:mb-12 max-w-4xl mx-auto"
+              className="bg-gradient-to-br from-gray-900/90 via-black/90 to-gray-800/90 backdrop-blur-sm rounded-lg sm:rounded-2xl shadow-xl border border-gray-700/50 hover:border-[#00b4ab]/30 transition-all duration-500 p-3 sm:p-8 lg:p-12 mb-3 sm:mb-12 max-w-4xl mx-auto"
               initial={{ opacity: 0, y: 30 }}
               animate={{ 
                 opacity: isTypingComplete ? 1 : 0,
                 y: isTypingComplete ? 0 : 30
               }}
-              transition={{ duration: 0.6, delay: isTypingComplete ? 2.6 : 0 }} // Smoother timing
-              whileHover={!isMobile ? { scale: isTypingComplete ? 1.02 : 1 } : {}}
+              transition={{ 
+                duration: Math.max(0.25 / scrollSpeed, 0.06), // Reduced from 0.4 to 0.25
+                delay: isTypingComplete ? Math.max(0.8 / scrollSpeed, 0.2) : 0 // Reduced from 1.4 to 0.8
+              }} // Much faster CTA card timing
             >
-              <h4 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-3 sm:mb-4">
+              <h4 className="text-lg sm:text-2xl lg:text-3xl font-bold text-white mb-2 sm:mb-4">
                 Ready to Transform Your Business?
               </h4>
-              <p className="text-gray-300 mb-6 sm:mb-8 leading-relaxed text-sm sm:text-base">
-                Let's discuss how our comprehensive digital solutions can accelerate your growth and drive innovation in your industry.
+              <p className="text-gray-300 mb-3 sm:mb-8 leading-relaxed text-xs sm:text-base">
+                Let's discuss how our digital solutions can accelerate your growth and drive innovation.
               </p>
               
-              {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+              {/* Action Buttons - Hero section style */}
+              <div className="flex flex-row gap-3 sm:gap-6 justify-center items-center">
                 <motion.button
                   onClick={() => {
                     const contactSection = document.getElementById('contact');
@@ -724,14 +1084,18 @@ export default function Services() {
                       contactSection.scrollIntoView({ behavior: 'smooth' });
                     }
                   }}
-                  className="inline-flex items-center px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-[#00b4ab] to-teal-600 text-white font-semibold rounded-xl hover:from-teal-600 hover:to-[#00b4ab] transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-[#00b4ab]/20 text-sm sm:text-base"
-                  whileHover={!isMobile ? { scale: 1.05 } : {}}
+                  className="inline-flex items-center px-3 py-1.5 sm:px-6 sm:py-3 bg-transparent border border-white/20 text-white font-medium rounded-lg hover:border-[#00b4ab] hover:bg-[#00b4ab]/10 transition-all duration-300 group relative overflow-hidden text-xs sm:text-base"
+                  whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  Start Your Project
-                  <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <span className="relative z-10 transition-colors duration-300 group-hover:text-[#00b4ab]">
+                    Start Your Project
+                  </span>
+                  <svg className="ml-1.5 sm:ml-2 w-3 h-3 sm:w-4 sm:h-4 transition-all duration-300 group-hover:translate-x-1 group-hover:text-[#00b4ab] relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                   </svg>
+                  {/* Animated background glow */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#00b4ab]/0 via-[#00b4ab]/5 to-[#00b4ab]/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </motion.button>
                 
                 <motion.button
@@ -747,14 +1111,23 @@ export default function Services() {
                       });
                     }
                   }}
-                  className="inline-flex items-center px-6 sm:px-8 py-3 sm:py-4 border-2 border-gray-600 text-gray-300 font-semibold rounded-xl hover:border-[#00b4ab] hover:text-[#00b4ab] hover:bg-[#00b4ab]/10 transition-all duration-300 text-sm sm:text-base"
-                  whileHover={!isMobile ? { scale: 1.05 } : {}}
+                  className="text-xs sm:text-base font-medium group relative overflow-hidden px-3 py-2 sm:px-5 sm:py-3 rounded-sm transition-colors duration-200 text-white hover:text-[#00b4ab]"
+                  style={{ pointerEvents: 'auto' }}
+                  whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  Learn More About Us
-                  <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
+                  <span className="inline-block px-0.5 sm:px-1.5">
+                    <span className="relative">
+                      <span className="inline-block transition-all duration-300 group-hover:opacity-0 group-hover:-translate-y-1.5">
+                        Learn More
+                      </span>
+                      <span className="absolute top-0 left-0 transition-all duration-300 translate-y-full opacity-0 text-[#00b4ab] group-hover:-translate-y-0.5 group-hover:opacity-100">
+                        Learn More
+                      </span>
+                    </span>
+                    <span className="absolute left-0.5 sm:left-2 -top-1 sm:-top-1.5 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-3 sm:group-hover:translate-y-5 text-[#00b4ab]">(</span>
+                    <span className="absolute right-0.5 sm:right-2 -top-1 sm:-top-1.5 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-3 sm:group-hover:translate-y-5 text-[#00b4ab]">)</span>
+                  </span>
                 </motion.button>
               </div>
             </motion.div>
@@ -764,13 +1137,14 @@ export default function Services() {
               className="flex justify-center items-center"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 3.2 }} // Smoother final timing
+              transition={{ 
+                duration: Math.max(0.25 / scrollSpeed, 0.06), // Reduced from 0.4 to 0.25
+                delay: Math.max(1.0 / scrollSpeed, 0.25) // Reduced from 1.8 to 1.0
+              }} // Much faster secondary links timing
             >
               <motion.a
                 href="/careers"
                 className="group relative inline-flex items-center text-base sm:text-lg font-medium text-gray-300 pb-1 hover:text-[#00b4ab] transition-colors duration-300"
-                whileHover={!isMobile ? { x: 5 } : {}}
-                transition={{ type: "spring", stiffness: 400, damping: 30 }}
               >
                 <span className="relative">
                   Join Our Team

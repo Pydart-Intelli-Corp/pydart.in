@@ -27,11 +27,12 @@ export default function InternshipRegistrationForm({
     internshipDays: 5,
     internshipStartDate: '',
     internshipEndDate: '',
+    internshipName: '',
     additionalNotes: ''
   });
 
   const [students, setStudents] = useState<Student[]>([
-    { studentName: '', studentEmail: '', studentPhone: '', rollNumber: '', department: '', year: '', skills: '' }
+    { StudentName: '', StudentEmail: '', StudentPhone: '', RollNumber: '', Department: '', Year: '', InternshipName: '', Skills: '' }
   ]);
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -70,7 +71,7 @@ export default function InternshipRegistrationForm({
 
     if (newCount > currentCount) {
       const newStudents = Array(newCount - currentCount).fill(null).map(() => ({
-        studentName: '', studentEmail: '', studentPhone: '', rollNumber: '', department: '', year: '', skills: ''
+        StudentName: '', StudentEmail: '', StudentPhone: '', RollNumber: '', Department: '', Year: '', InternshipName: '', Skills: ''
       }));
       setStudents(prev => [...prev, ...newStudents]);
     } else if (newCount < currentCount) {
@@ -88,7 +89,8 @@ export default function InternshipRegistrationForm({
       'pincode': 'pincode',
       'phoneNumber': 'phoneNumber',
       'internshipStartDate': 'internshipStartDate',
-      'internshipEndDate': 'internshipEndDate'
+      'internshipEndDate': 'internshipEndDate',
+      'internshipName': 'internshipName'
     };
 
     // Handle student field errors
@@ -133,6 +135,7 @@ export default function InternshipRegistrationForm({
     if (!formData.phoneNumber) newErrors.phoneNumber = 'Phone number is required';
     if (!formData.internshipStartDate) newErrors.internshipStartDate = 'Start date is required';
     if (!formData.internshipEndDate) newErrors.internshipEndDate = 'End date is required';
+    if (!formData.internshipName) newErrors.internshipName = 'Internship type is required';
 
     // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -157,8 +160,13 @@ export default function InternshipRegistrationForm({
       const startDate = new Date(formData.internshipStartDate);
       const endDate = new Date(formData.internshipEndDate);
       const today = new Date();
+      
+      // Set to start of day for fair comparison
       today.setHours(0, 0, 0, 0);
+      startDate.setHours(0, 0, 0, 0);
+      endDate.setHours(0, 0, 0, 0);
 
+      // Allow today and future dates
       if (startDate < today) {
         newErrors.internshipStartDate = 'Start date cannot be in the past';
       }
@@ -170,20 +178,20 @@ export default function InternshipRegistrationForm({
 
     // Student validation
     students.forEach((student, index) => {
-      if (!student.studentName) newErrors[`student_${index}_studentName`] = 'Student name is required';
-      if (!student.studentEmail) newErrors[`student_${index}_studentEmail`] = 'Student email is required';
-      if (!student.studentPhone) newErrors[`student_${index}_studentPhone`] = 'Student phone is required';
-      if (!student.rollNumber) newErrors[`student_${index}_rollNumber`] = 'Roll number is required';
-      if (!student.department) newErrors[`student_${index}_department`] = 'Department is required';
-      if (!student.year) newErrors[`student_${index}_year`] = 'Year is required';
-      if (!student.skills) newErrors[`student_${index}_skills`] = 'Skills are required';
+      if (!student.StudentName) newErrors[`student_${index}_StudentName`] = 'Student name is required';
+      if (!student.StudentEmail) newErrors[`student_${index}_StudentEmail`] = 'Student email is required';
+      if (!student.StudentPhone) newErrors[`student_${index}_StudentPhone`] = 'Student phone is required';
+      if (!student.RollNumber) newErrors[`student_${index}_RollNumber`] = 'Roll number is required';
+      if (!student.Department) newErrors[`student_${index}_Department`] = 'Department is required';
+      if (!student.Year) newErrors[`student_${index}_Year`] = 'Year is required';
+      if (!student.Skills) newErrors[`student_${index}_Skills`] = 'Skills are required';
 
-      if (student.studentEmail && !emailRegex.test(student.studentEmail)) {
-        newErrors[`student_${index}_studentEmail`] = 'Please enter a valid email address';
+      if (student.StudentEmail && !emailRegex.test(student.StudentEmail)) {
+        newErrors[`student_${index}_StudentEmail`] = 'Please enter a valid email address';
       }
 
-      if (student.studentPhone && !phoneRegex.test(student.studentPhone)) {
-        newErrors[`student_${index}_studentPhone`] = 'Please enter a valid 10-digit phone number';
+      if (student.StudentPhone && !phoneRegex.test(student.StudentPhone)) {
+        newErrors[`student_${index}_StudentPhone`] = 'Please enter a valid 10-digit phone number';
       }
     });
 
@@ -202,8 +210,8 @@ export default function InternshipRegistrationForm({
 
   const calculateAmount = (): number => {
     // Calculate based on number of students and days
-    const baseAmountPerStudent = 500;
-    const amountPerDay = 100;
+    const baseAmountPerStudent = 1000;
+    const amountPerDay = 0;
     return formData.numberOfStudents * (baseAmountPerStudent + (formData.internshipDays * amountPerDay));
   };
 
@@ -217,28 +225,44 @@ export default function InternshipRegistrationForm({
     try {
       const amount = calculateAmount();
       
+      console.log('📋 Form Data:', formData);
+      console.log('👥 Students Data:', students);
+      console.log('💰 Calculated Amount:', amount);
+      
       // Prepare registration data
       const registrationData = {
-        email: formData.email,
-        collegeName: formData.collegeName,
-        batch: formData.batch,
-        collegeDistrict: formData.collegeDistrict,
-        pincode: formData.pincode,
-        numberOfStudents: formData.numberOfStudents,
-        students,
-        phoneNumber: formData.phoneNumber,
-        internshipDays: formData.internshipDays,
-        internshipStartDate: new Date(formData.internshipStartDate),
-        internshipEndDate: new Date(formData.internshipEndDate),
-        additionalNotes: formData.additionalNotes
+        Email: formData.email,
+        CollegeName: formData.collegeName,
+        Batch: formData.batch,
+        CollegeDistrict: formData.collegeDistrict,
+        Pincode: formData.pincode,
+        NumberOfStudents: formData.numberOfStudents,
+        InternshipName: formData.internshipName, // Added missing InternshipName field
+        Students: students.map(student => ({
+          StudentName: student.StudentName,
+          StudentEmail: student.StudentEmail,
+          StudentPhone: student.StudentPhone,
+          RollNumber: student.RollNumber,
+          Department: student.Department,
+          Year: student.Year,
+          InternshipName: formData.internshipName,
+          Skills: student.Skills
+        })),
+        PhoneNumber: formData.phoneNumber,
+        InternshipDays: formData.internshipDays,
+        InternshipStartDate: new Date(formData.internshipStartDate),
+        InternshipEndDate: new Date(formData.internshipEndDate),
+        AdditionalNotes: formData.additionalNotes || 'No additional notes' // Ensure not empty
       };
+
+      console.log('📤 Registration Data Prepared:', registrationData);
 
       // Create order request
       const orderRequest = {
-        amount,
-        collegeName: formData.collegeName,
-        email: formData.email,
-        numberOfStudents: formData.numberOfStudents
+        Amount: amount,
+        CollegeName: formData.collegeName,
+        Email: formData.email,
+        NumberOfStudents: formData.numberOfStudents
       };
 
       // Initiate payment
@@ -246,15 +270,19 @@ export default function InternshipRegistrationForm({
         orderRequest,
         registrationData,
         (registrationId) => {
+          console.log('✅ Registration completed successfully with ID:', registrationId);
           onSuccess?.(registrationId);
         },
         (error) => {
+          console.error('❌ Registration failed with error:', error);
           onError?.(error);
         }
       );
 
     } catch (error) {
-      onError?.(error instanceof Error ? error.message : 'Registration failed');
+      console.error('❌ Form submission failed:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Registration failed';
+      onError?.(errorMessage);
     } finally {
       setSubmitting(false);
     }
@@ -408,7 +436,7 @@ export default function InternshipRegistrationForm({
         {/* Internship Details */}
         <div className="bg-gray-700 border border-gray-600 p-6 rounded-lg">
           <h2 className="text-xl font-semibold mb-4 text-white">Internship Details</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-1">
                 Number of Students *
@@ -441,6 +469,30 @@ export default function InternshipRegistrationForm({
 
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-1">
+                Internship Type *
+              </label>
+              <select
+                name="internshipName"
+                data-field="internshipName"
+                value={formData.internshipName}
+                onChange={(e) => setFormData(prev => ({ ...prev, internshipName: e.target.value }))}
+                className="w-full px-3 py-2 border border-gray-600 bg-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#00b4ab] focus:border-transparent"
+              >
+                <option value="">Select Internship Type</option>
+                <option value="Embedded Systems">Embedded Systems</option>
+                <option value="App Development">App Development</option>
+                <option value="Serial Communications (UART, SPI)">Serial Communications (UART, SPI)</option>
+                <option value="Raspberry Pi">Raspberry Pi</option>
+                <option value="Microprocessors">Microprocessors</option>
+                <option value="IoT Development">IoT Development</option>
+                <option value="Arduino Programming">Arduino Programming</option>
+                <option value="PCB Design">PCB Design</option>
+              </select>
+              {errors.internshipName && <p className="text-red-400 text-sm mt-1">{errors.internshipName}</p>}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-1">
                 Total Amount
               </label>
               <div className="px-3 py-2 bg-gray-800 border border-gray-600 text-white rounded-md text-lg font-semibold text-[#00b4ab]">
@@ -459,7 +511,11 @@ export default function InternshipRegistrationForm({
                   onStartDateChange={(date) => setFormData(prev => ({ ...prev, internshipStartDate: date }))}
                   onEndDateChange={(date) => setFormData(prev => ({ ...prev, internshipEndDate: date }))}
                   internshipDays={formData.internshipDays}
-                  bookedDates={bookedDates}
+                  bookedDates={bookedDates.map(date => ({
+                    startDate: date.startDate,
+                    endDate: date.endDate,
+                    collegeName: date.collegeName
+                  }))}
                   error={errors.internshipStartDate || errors.internshipEndDate}
                   className="w-full"
                 />
@@ -501,12 +557,12 @@ export default function InternshipRegistrationForm({
                     <input
                       type="text"
                       data-student-field={`${index}-studentName`}
-                      value={student.studentName}
-                      onChange={(e) => updateStudent(index, 'studentName', e.target.value)}
+                      value={student.StudentName}
+                      onChange={(e) => updateStudent(index, 'StudentName', e.target.value)}
                       className="w-full px-3 py-2 border border-gray-600 bg-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#00b4ab] focus:border-transparent"
                       placeholder="Student name"
                     />
-                    {errors[`student_${index}_studentName`] && <p className="text-red-400 text-sm mt-1">{errors[`student_${index}_studentName`]}</p>}
+                    {errors[`student_${index}_StudentName`] && <p className="text-red-400 text-sm mt-1">{errors[`student_${index}_StudentName`]}</p>}
                   </div>
 
                   <div>
@@ -516,12 +572,12 @@ export default function InternshipRegistrationForm({
                     <input
                       type="email"
                       data-student-field={`${index}-studentEmail`}
-                      value={student.studentEmail}
-                      onChange={(e) => updateStudent(index, 'studentEmail', e.target.value)}
+                      value={student.StudentEmail}
+                      onChange={(e) => updateStudent(index, 'StudentEmail', e.target.value)}
                       className="w-full px-3 py-2 border border-gray-600 bg-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#00b4ab] focus:border-transparent"
                       placeholder="student@example.com"
                     />
-                    {errors[`student_${index}_studentEmail`] && <p className="text-red-400 text-sm mt-1">{errors[`student_${index}_studentEmail`]}</p>}
+                    {errors[`student_${index}_StudentEmail`] && <p className="text-red-400 text-sm mt-1">{errors[`student_${index}_StudentEmail`]}</p>}
                   </div>
 
                   <div>
@@ -531,12 +587,12 @@ export default function InternshipRegistrationForm({
                     <input
                       type="tel"
                       data-student-field={`${index}-studentPhone`}
-                      value={student.studentPhone}
-                      onChange={(e) => updateStudent(index, 'studentPhone', e.target.value)}
+                      value={student.StudentPhone}
+                      onChange={(e) => updateStudent(index, 'StudentPhone', e.target.value)}
                       className="w-full px-3 py-2 border border-gray-600 bg-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#00b4ab] focus:border-transparent"
                       placeholder="10-digit phone"
                     />
-                    {errors[`student_${index}_studentPhone`] && <p className="text-red-400 text-sm mt-1">{errors[`student_${index}_studentPhone`]}</p>}
+                    {errors[`student_${index}_StudentPhone`] && <p className="text-red-400 text-sm mt-1">{errors[`student_${index}_StudentPhone`]}</p>}
                   </div>
 
                   <div>
@@ -546,12 +602,12 @@ export default function InternshipRegistrationForm({
                     <input
                       type="text"
                       data-student-field={`${index}-rollNumber`}
-                      value={student.rollNumber}
-                      onChange={(e) => updateStudent(index, 'rollNumber', e.target.value)}
+                      value={student.RollNumber}
+                      onChange={(e) => updateStudent(index, 'RollNumber', e.target.value)}
                       className="w-full px-3 py-2 border border-gray-600 bg-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#00b4ab] focus:border-transparent"
                       placeholder="Roll number"
                     />
-                    {errors[`student_${index}_rollNumber`] && <p className="text-red-400 text-sm mt-1">{errors[`student_${index}_rollNumber`]}</p>}
+                    {errors[`student_${index}_RollNumber`] && <p className="text-red-400 text-sm mt-1">{errors[`student_${index}_RollNumber`]}</p>}
                   </div>
 
                   <div>
@@ -560,8 +616,8 @@ export default function InternshipRegistrationForm({
                     </label>
                     <select
                       data-student-field={`${index}-department`}
-                      value={student.department}
-                      onChange={(e) => updateStudent(index, 'department', e.target.value)}
+                      value={student.Department}
+                      onChange={(e) => updateStudent(index, 'Department', e.target.value)}
                       className="w-full px-3 py-2 border border-gray-600 bg-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#00b4ab] focus:border-transparent"
                     >
                       <option value="">Select Department</option>
@@ -654,7 +710,7 @@ export default function InternshipRegistrationForm({
                       <option value="Other Engineering">Other Engineering</option>
                       <option value="Non-Engineering">Non-Engineering</option>
                     </select>
-                    {errors[`student_${index}_department`] && <p className="text-red-400 text-sm mt-1">{errors[`student_${index}_department`]}</p>}
+                    {errors[`student_${index}_Department`] && <p className="text-red-400 text-sm mt-1">{errors[`student_${index}_Department`]}</p>}
                   </div>
 
                   <div>
@@ -663,8 +719,8 @@ export default function InternshipRegistrationForm({
                     </label>
                     <select
                       data-student-field={`${index}-year`}
-                      value={student.year}
-                      onChange={(e) => updateStudent(index, 'year', e.target.value)}
+                      value={student.Year}
+                      onChange={(e) => updateStudent(index, 'Year', e.target.value)}
                       className="w-full px-3 py-2 border border-gray-600 bg-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#00b4ab] focus:border-transparent"
                     >
                       <option value="">Select Year</option>
@@ -673,7 +729,7 @@ export default function InternshipRegistrationForm({
                       <option value="3rd Year">3rd Year</option>
                       <option value="4th Year">4th Year</option>
                     </select>
-                    {errors[`student_${index}_year`] && <p className="text-red-400 text-sm mt-1">{errors[`student_${index}_year`]}</p>}
+                    {errors[`student_${index}_Year`] && <p className="text-red-400 text-sm mt-1">{errors[`student_${index}_Year`]}</p>}
                   </div>
 
                   <div>
@@ -683,12 +739,12 @@ export default function InternshipRegistrationForm({
                     <input
                       type="text"
                       data-student-field={`${index}-skills`}
-                      value={student.skills}
-                      onChange={(e) => updateStudent(index, 'skills', e.target.value)}
+                      value={student.Skills}
+                      onChange={(e) => updateStudent(index, 'Skills', e.target.value)}
                       className="w-full px-3 py-2 border border-gray-600 bg-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#00b4ab] focus:border-transparent"
                       placeholder="e.g., Java, Python, Web Development"
                     />
-                    {errors[`student_${index}_skills`] && <p className="text-red-400 text-sm mt-1">{errors[`student_${index}_skills`]}</p>}
+                    {errors[`student_${index}_Skills`] && <p className="text-red-400 text-sm mt-1">{errors[`student_${index}_Skills`]}</p>}
                   </div>
                 </div>
               </div>

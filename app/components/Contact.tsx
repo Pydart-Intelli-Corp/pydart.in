@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, useInView, useAnimation } from 'framer-motion';
+import { motion, useInView, useAnimation, AnimatePresence } from 'framer-motion';
+import { API_CONFIG } from '../../lib/api/config';
 
 // Types
 interface ContactFormData {
@@ -20,8 +21,17 @@ interface ContactInfo {
 // Mouse tracking hook
 const useMouseTracking = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isMobile, setIsMobile] = useState(false);
   
   useEffect(() => {
+    // Detect if device is mobile
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768 || 'ontouchstart' in window);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
     const updateMousePosition = (e: MouseEvent) => {
       setMousePosition({ 
         x: e.clientX / window.innerWidth, 
@@ -29,17 +39,23 @@ const useMouseTracking = () => {
       });
     };
     
-    if (typeof window !== 'undefined') {
+    if (typeof window !== 'undefined' && !isMobile) {
       window.addEventListener('mousemove', updateMousePosition);
-      return () => window.removeEventListener('mousemove', updateMousePosition);
     }
-  }, []);
+    
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+      if (!isMobile) {
+        window.removeEventListener('mousemove', updateMousePosition);
+      }
+    };
+  }, [isMobile]);
   
-  return { mousePosition };
+  return { mousePosition, isMobile };
 };
 
 export default function Contact() {
-  const { mousePosition } = useMouseTracking();
+  const { mousePosition, isMobile } = useMouseTracking();
   const [isClient, setIsClient] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const [formData, setFormData] = useState<ContactFormData>({
@@ -50,6 +66,13 @@ export default function Contact() {
     purpose: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submissionStatus, setSubmissionStatus] = useState<{
+    type: 'success' | 'error' | null;
+    message: string;
+  }>({
+    type: null,
+    message: ''
+  });
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
   const controls = useAnimation();
@@ -60,6 +83,14 @@ export default function Contact() {
       controls.start("visible");
     }
   }, [isInView, controls]);
+
+  // Reset form function
+  const resetForm = () => {
+    setSubmissionStatus({
+      type: null,
+      message: ''
+    });
+  };
 
   // Animation variants
   const containerVariants = {
@@ -95,7 +126,7 @@ export default function Contact() {
         </svg>
       ),
       title: "Email",
-      details: ["hello@pydart.in", "support@pydart.in"]
+      details: ["founder@pydart.in", "info.pydart@gmail.com"]
     },
     {
       icon: (
@@ -104,7 +135,7 @@ export default function Contact() {
         </svg>
       ),
       title: "Phone",
-      details: ["+91 XXXXX XXXXX", "Available 24/7"]
+      details: ["+91 73567 65036", "Available 24/7"]
     },
     {
       icon: (
@@ -120,10 +151,18 @@ export default function Contact() {
 
   // Services
   const services = [
-    "AI Development",
-    "Mobile Apps", 
-    "Web Development",
-    "UI/UX Design",
+    "Mobile Application",
+    "Web Application", 
+    "AI Services",
+    "IOT Projects",
+    "GUI application",
+    "Computer Software",
+    "Website",
+    "Smart Home",
+    "Embedded System",
+    "Digital Marketing",
+    "Branding",
+    "Graphics Design",
     "Consulting",
     "Other"
   ];
@@ -141,12 +180,24 @@ export default function Contact() {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch('/api/contact', {
+      // Prepare query parameters following the same pattern as Career component
+      const queryParams = new URLSearchParams({
+        recipientEmail: formData.email,
+        recipientName: formData.name,
+        mobile: formData.mobile,
+        selectedService: formData.service,
+        purpose: formData.purpose
+      });
+
+      // Construct API URL with query parameters using API_CONFIG
+      const apiUrl = `${API_CONFIG.emailApiUrl}/Email/EnquiryMail?${queryParams.toString()}`;
+      console.log('🚀 Making API call to:', apiUrl);
+
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
       });
 
       if (response.ok) {
@@ -157,13 +208,28 @@ export default function Contact() {
           service: '',
           purpose: ''
         });
-        alert('Message sent successfully!');
+        setSubmissionStatus({
+          type: 'success',
+          message: 'Inquiry received successfully! We\'ll contact you within 24 hours.'
+        });
+        // Scroll to top to show success message
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
-        alert('Failed to send message. Please try again.');
+        setSubmissionStatus({
+          type: 'error',
+          message: 'Submission failed. Please try again.'
+        });
+        // Scroll to top to show error message
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     } catch (error) {
       console.error('Error sending message:', error);
-      alert('Failed to send message. Please try again.');
+      setSubmissionStatus({
+        type: 'error',
+        message: 'Server error. Please try later.'
+      });
+      // Scroll to top to show error message
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } finally {
       setIsSubmitting(false);
     }
@@ -173,10 +239,10 @@ export default function Contact() {
     <section 
       ref={sectionRef}
       id="contact"
-      className="relative min-h-screen bg-gradient-to-br from-neutral-200 via-neutral-100 to-neutral-300 overflow-hidden"
+      className="relative min-h-screen bg-gradient-to-b from-neutral-100 to-neutral-200 overflow-hidden"
     >
-      {/* Floating orange dot */}
-      {isClient && (
+      {/* Floating teal dot */}
+      {isClient && !isMobile && (
         <motion.div
           className="absolute w-3 h-3 rounded-full bg-[#00b4ab] shadow-lg shadow-teal-500/30 pointer-events-none z-30"
           animate={{
@@ -192,15 +258,14 @@ export default function Contact() {
         />
       )}
 
-      {/* Neural Network Background Pattern */}
-      <div className="absolute inset-0 overflow-hidden opacity-[0.03]">
+      {/* Geometric pattern background */}
+      <div className="absolute inset-0 overflow-hidden opacity-[0.04]">
         <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-          <defs>
-            <pattern id="neural-grid-contact" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">
-              <path d="M 10 0 L 0 0 0 10" fill="none" stroke="currentColor" strokeWidth="0.5"/>
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#neural-grid-contact)" />
+          <pattern id="contact-pattern" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+            <circle cx="10" cy="10" r="1" fill="#00b4ab" />
+            <path d="M0 10H20M10 0V20" stroke="#00b4ab" strokeWidth="0.2" />
+          </pattern>
+          <rect width="100%" height="100%" fill="url(#contact-pattern)" />
         </svg>
       </div>
 
@@ -218,100 +283,33 @@ export default function Contact() {
 
       <div className="relative z-20 min-h-screen flex items-center">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-8 sm:py-12 lg:py-20">
-          {/* Header Section */}
-          <motion.div 
-            className="text-center mb-12 sm:mb-16 lg:mb-20"
-            initial="hidden"
-            animate={controls}
-            variants={containerVariants}
-          >
-            {/* Main heading */}
-            <motion.h2
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-neutral-900 mb-4 sm:mb-6 leading-tight tracking-tight"
-              variants={itemVariants}
-              onMouseEnter={() => setIsHovering(true)}
-              onMouseLeave={() => setIsHovering(false)}
-            >
-              <motion.span 
-                className="block"
-                animate={{
-                  x: isHovering ? mousePosition.x * 3 : 0,
-                }}
-                transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              >
-                Get In
-              </motion.span>
-              <motion.span 
-                className="block text-[#00b4ab]"
-                animate={{
-                  x: isHovering ? mousePosition.x * -2 : 0,
-                }}
-                transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              >
-                Touch
-              </motion.span>
-            </motion.h2>
-
-            <motion.p
-              className="text-base sm:text-lg md:text-xl text-neutral-600 max-w-4xl mx-auto leading-relaxed font-light px-4 sm:px-0"
-              variants={itemVariants}
-            >
-              Ready to build something amazing together? Let's discuss your project 
-              and explore how we can bring your ideas to life.
-            </motion.p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 px-4 sm:px-0">
-            {/* Contact Information */}
+          <div className="flex flex-col lg:flex-row gap-12 items-center">
+            {/* Left Column - Contact Header */}
             <motion.div 
-              className="space-y-8"
+              className="w-full lg:w-2/5"
               initial="hidden"
               animate={controls}
               variants={containerVariants}
             >
-              <motion.h3 
-                className="text-xl sm:text-2xl font-bold text-neutral-800 mb-6 sm:mb-8"
-                variants={itemVariants}
-              >
-                Contact Information
-              </motion.h3>
-
-              {contactInfo.map((info, index) => (
-                <motion.div
-                  key={index}
-                  className="group"
-                  variants={itemVariants}
-                  whileHover={{ x: 5 }}
-                  transition={{ type: "spring", stiffness: 300 }}
-                >
-                  <div className="bg-neutral-200/90 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-neutral-300/50">
-                    <div className="flex items-start space-x-3 sm:space-x-4">
-                      <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[#00b4ab] rounded-full flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300">
-                        {info.icon}
-                      </div>
-                      
-                      <div>
-                        <h4 className="text-base sm:text-lg font-semibold text-neutral-800 mb-1 sm:mb-2 group-hover:text-[#00b4ab] transition-colors duration-300">
-                          {info.title}
-                        </h4>
-                        {info.details.map((detail, i) => (
-                          <p key={i} className="text-neutral-600 text-xs sm:text-sm">
-                            {detail}
-                          </p>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-
-              {/* Quick Connect */}
-              <motion.div variants={itemVariants}>
-                <div className="bg-neutral-200/80 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-neutral-300/50">
-                  <h4 className="text-base sm:text-lg font-semibold text-neutral-800 mb-3 sm:mb-4">Quick Connect</h4>
-                  <div className="flex space-x-3 sm:space-x-4">
+              <motion.div variants={itemVariants} className="text-left">
+                <h2 className="text-4xl sm:text-5xl font-bold text-neutral-900 mb-6 leading-tight">
+                  Get In <span className="text-[#00b4ab]">Touch</span>
+                </h2>
+                <div className="h-1 w-20 bg-[#00b4ab] mb-6"></div>
+                <p className="text-lg text-neutral-600 mb-8 leading-relaxed">
+                  Ready to build something amazing together? Let's discuss your project 
+                  and explore how we can bring your ideas to life.
+                </p>
+                
+                {/* Quick Contact Info */}
+                <div className="bg-neutral-50 border-l-4 border-[#00b4ab] pl-4 py-4 mb-8">
+                  <h4 className="text-lg font-semibold text-neutral-800 mb-2">Quick Connect</h4>
+                  <p className="text-neutral-600 mb-2">
+                    Reach out to us directly for immediate assistance
+                  </p>
+                  <div className="flex space-x-3 mt-3">
                     <motion.a
-                      href="mailto:hello@pydart.in"
+                      href="mailto:founder@pydart.in"
                       className="w-10 h-10 bg-[#00b4ab] rounded-full flex items-center justify-center text-white hover:scale-110 transition-transform duration-300"
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.95 }}
@@ -322,7 +320,7 @@ export default function Contact() {
                     </motion.a>
                     
                     <motion.a
-                      href="tel:+91XXXXXXXXXX"
+                      href="tel:+917356765036"
                       className="w-10 h-10 bg-[#00b4ab] rounded-full flex items-center justify-center text-white hover:scale-110 transition-transform duration-300"
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.95 }}
@@ -336,122 +334,217 @@ export default function Contact() {
               </motion.div>
             </motion.div>
 
-            {/* Contact Form */}
+            {/* Right Column - Contact Cards & Form */}
             <motion.div 
-              className=""
+              className="w-full lg:w-3/5"
               initial="hidden"
               animate={controls}
               variants={containerVariants}
             >
+              {/* Contact Information Cards */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                {contactInfo.map((info, index) => (
+                  <motion.div 
+                    key={index}
+                    className="relative overflow-hidden bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300"
+                    variants={itemVariants}
+                    whileHover={{ y: -5 }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                  >
+                    {/* Colored accent top bar */}
+                    <div className={`h-1.5 w-full ${index === 0 ? 'bg-purple-500' : index === 1 ? 'bg-blue-500' : 'bg-green-500'}`}></div>
+                    
+                    <div className="p-6">
+                      <div className="flex items-center mb-3">
+                        <div className={`w-10 h-10 rounded-full flex items-center justify-center text-white mr-3 ${
+                          index === 0 ? 'bg-purple-500' : index === 1 ? 'bg-blue-500' : 'bg-green-500'
+                        }`}>
+                          {info.icon}
+                        </div>
+                        <h4 className="text-lg font-semibold text-neutral-800">{info.title}</h4>
+                      </div>
+                      {info.details.map((detail, i) => (
+                        <p key={i} className="text-neutral-600 text-sm mb-1">
+                          {detail}
+                        </p>
+                      ))}
+                      
+                      <div className={`absolute -bottom-8 -right-8 w-24 h-24 rounded-full opacity-10 ${
+                        index === 0 ? 'bg-purple-400' : index === 1 ? 'bg-blue-400' : 'bg-green-400'
+                      }`}></div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+              
+              {/* Contact Form */}
               <motion.div 
-                className="bg-neutral-200/90 backdrop-blur-sm rounded-xl sm:rounded-2xl p-6 sm:p-8 shadow-lg border border-neutral-300/50"
+                className="bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden"
                 variants={itemVariants}
               >
-                <h3 className="text-xl sm:text-2xl font-bold text-neutral-800 mb-4 sm:mb-6">Send a Message</h3>
+                {/* Colored accent top bar */}
+                <div className="h-1.5 w-full bg-[#00b4ab]"></div>
                 
-                <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                <div className="p-6 sm:p-8">
+                  <h3 className="text-xl sm:text-2xl font-bold text-neutral-800 mb-4 sm:mb-6">Send a Message</h3>
+                  
+                  <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                      <div>
+                        <label htmlFor="name" className="block text-xs sm:text-sm font-medium text-neutral-700 mb-1 sm:mb-2">
+                          Full Name *
+                        </label>
+                        <input
+                          type="text"
+                          id="name"
+                          name="name"
+                          value={formData.name}
+                          onChange={handleInputChange}
+                          required
+                          className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-neutral-300 focus:border-[#00b4ab] focus:ring-2 focus:ring-[#00b4ab]/20 outline-none transition-colors bg-white text-neutral-900 text-sm sm:text-base"
+                          placeholder="Your full name"
+                        />
+                      </div>
+                      
+                      <div>
+                        <label htmlFor="email" className="block text-xs sm:text-sm font-medium text-neutral-700 mb-1 sm:mb-2">
+                          Email Address *
+                        </label>
+                        <input
+                          type="email"
+                          id="email"
+                          name="email"
+                          value={formData.email}
+                          onChange={handleInputChange}
+                          required
+                          className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-neutral-300 focus:border-[#00b4ab] focus:ring-2 focus:ring-[#00b4ab]/20 outline-none transition-colors bg-white text-neutral-900 text-sm sm:text-base"
+                          placeholder="your.email@example.com"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                      <div>
+                        <label htmlFor="mobile" className="block text-xs sm:text-sm font-medium text-neutral-700 mb-1 sm:mb-2">
+                          Mobile Number
+                        </label>
+                        <input
+                          type="tel"
+                          id="mobile"
+                          name="mobile"
+                          value={formData.mobile}
+                          onChange={handleInputChange}
+                          className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-neutral-300 focus:border-[#00b4ab] focus:ring-2 focus:ring-[#00b4ab]/20 outline-none transition-colors bg-white text-neutral-900 text-sm sm:text-base"
+                          placeholder="+91 73567 65036"
+                        />
+                      </div>
+                      
+                      <div>
+                        <label htmlFor="service" className="block text-xs sm:text-sm font-medium text-neutral-700 mb-1 sm:mb-2">
+                          Service Interest
+                        </label>
+                        <select
+                          id="service"
+                          name="service"
+                          value={formData.service}
+                          onChange={handleInputChange}
+                          className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-neutral-300 focus:border-[#00b4ab] focus:ring-2 focus:ring-[#00b4ab]/20 outline-none transition-colors bg-white text-neutral-900 text-sm sm:text-base"
+                        >
+                          <option value="">Select a service</option>
+                          {services.map((service, index) => (
+                            <option key={index} value={service}>
+                              {service}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+
                     <div>
-                      <label htmlFor="name" className="block text-xs sm:text-sm font-medium text-neutral-700 mb-1 sm:mb-2">
-                        Full Name *
+                      <label htmlFor="purpose" className="block text-xs sm:text-sm font-medium text-neutral-700 mb-1 sm:mb-2">
+                        Message *
                       </label>
-                      <input
-                        type="text"
-                        id="name"
-                        name="name"
-                        value={formData.name}
+                      <textarea
+                        id="purpose"
+                        name="purpose"
+                        value={formData.purpose}
                         onChange={handleInputChange}
                         required
-                        className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-neutral-300 focus:border-[#00b4ab] focus:ring-2 focus:ring-[#00b4ab]/20 outline-none transition-colors bg-neutral-100/70 text-sm sm:text-base"
-                        placeholder="Your full name"
+                        rows={4}
+                        className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-neutral-300 focus:border-[#00b4ab] focus:ring-2 focus:ring-[#00b4ab]/20 outline-none transition-colors bg-white resize-none text-neutral-900 text-sm sm:text-base"
+                        placeholder="Tell us about your project and how we can help..."
                       />
                     </div>
-                    
-                    <div>
-                      <label htmlFor="email" className="block text-xs sm:text-sm font-medium text-neutral-700 mb-1 sm:mb-2">
-                        Email Address *
-                      </label>
-                      <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleInputChange}
-                        required
-                        className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-neutral-300 focus:border-[#00b4ab] focus:ring-2 focus:ring-[#00b4ab]/20 outline-none transition-colors bg-neutral-100/70 text-sm sm:text-base"
-                        placeholder="your.email@example.com"
-                      />
-                    </div>
-                  </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                    <div>
-                      <label htmlFor="mobile" className="block text-xs sm:text-sm font-medium text-neutral-700 mb-1 sm:mb-2">
-                        Mobile Number
-                      </label>
-                      <input
-                        type="tel"
-                        id="mobile"
-                        name="mobile"
-                        value={formData.mobile}
-                        onChange={handleInputChange}
-                        className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-neutral-300 focus:border-[#00b4ab] focus:ring-2 focus:ring-[#00b4ab]/20 outline-none transition-colors bg-neutral-100/70 text-sm sm:text-base"
-                        placeholder="+91 XXXXX XXXXX"
-                      />
-                    </div>
-                    
-                    <div>
-                      <label htmlFor="service" className="block text-xs sm:text-sm font-medium text-neutral-700 mb-1 sm:mb-2">
-                        Service Interest
-                      </label>
-                      <select
-                        id="service"
-                        name="service"
-                        value={formData.service}
-                        onChange={handleInputChange}
-                        className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-neutral-300 focus:border-[#00b4ab] focus:ring-2 focus:ring-[#00b4ab]/20 outline-none transition-colors bg-neutral-100/70 text-sm sm:text-base"
-                      >
-                        <option value="">Select a service</option>
-                        {services.map((service, index) => (
-                          <option key={index} value={service}>
-                            {service}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-
-                  <div>
-                    <label htmlFor="purpose" className="block text-xs sm:text-sm font-medium text-neutral-700 mb-1 sm:mb-2">
-                      Message *
-                    </label>
-                    <textarea
-                      id="purpose"
-                      name="purpose"
-                      value={formData.purpose}
-                      onChange={handleInputChange}
-                      required
-                      rows={4}
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-neutral-300 focus:border-[#00b4ab] focus:ring-2 focus:ring-[#00b4ab]/20 outline-none transition-colors bg-neutral-100/70 resize-none text-sm sm:text-base"
-                      placeholder="Tell us about your project and how we can help..."
-                    />
-                  </div>
-
-                  <motion.button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="w-full bg-[#00b4ab] text-white font-semibold py-2 sm:py-3 px-4 sm:px-6 rounded-lg hover:bg-teal-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    {isSubmitting ? 'Sending...' : 'Send Message'}
-                  </motion.button>
-                </form>
+                    <motion.button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="w-full bg-[#00b4ab] text-white font-semibold py-2 sm:py-3 px-4 sm:px-6 rounded-lg hover:bg-teal-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      {isSubmitting ? 'Sending...' : 'Send Message'}
+                    </motion.button>
+                  </form>
+                  
+                  {/* Decorative circle */}
+                  <div className="absolute -bottom-8 -right-8 w-24 h-24 rounded-full opacity-10 bg-teal-400"></div>
+                </div>
               </motion.div>
             </motion.div>
           </div>
         </div>
       </div>
+
+      {/* Status Messages - Similar to Internship Screen */}
+      <AnimatePresence>
+        {submissionStatus.type && (
+          <motion.div
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -50 }}
+            className={`fixed top-8 left-4 right-4 sm:left-auto sm:right-8 sm:max-w-md z-50 p-6 rounded-2xl ${
+              submissionStatus.type === 'success' 
+                ? 'bg-green-900/90 border border-green-500 backdrop-blur-sm' 
+                : 'bg-red-900/90 border border-red-500 backdrop-blur-sm'
+            }`}
+          >
+            <div className="flex items-center">
+              <div className="flex-shrink-0">
+                {submissionStatus.type === 'success' ? (
+                  <svg className="h-8 w-8 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                ) : (
+                  <svg className="h-8 w-8 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                  </svg>
+                )}
+              </div>
+              <div className="ml-4 flex-1">
+                <h3 className={`text-lg font-medium ${
+                  submissionStatus.type === 'success' ? 'text-green-300' : 'text-red-300'
+                }`}>
+                  {submissionStatus.type === 'success' ? 'Message Sent Successfully!' : 'Message Failed'}
+                </h3>
+                <div className={`mt-2 text-sm ${
+                  submissionStatus.type === 'success' ? 'text-green-200' : 'text-red-200'
+                }`}>
+                  <p>{submissionStatus.message}</p>
+                </div>
+              </div>
+              <button
+                onClick={resetForm}
+                className="flex-shrink-0 ml-4 text-white/60 hover:text-white transition-colors duration-200"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

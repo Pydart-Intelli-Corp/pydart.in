@@ -34,6 +34,7 @@ A comprehensive internship registration system built with Next.js 13+, TypeScrip
 - Email and phone number validation
 - Date range validation
 - Student count verification
+- Internship type selection validation
 
 ## File Structure
 
@@ -134,6 +135,8 @@ Main form component that handles:
 - Individual student validation
 - Email and phone validation
 - Department and year selection
+- Internship type selection
+- Skills input validation
 
 ### Date Validation
 - Past date prevention
@@ -153,9 +156,26 @@ Main form component that handles:
 ## Pricing Structure
 
 The system calculates costs based on:
-- Base amount per student: ₹500
-- Additional per day: ₹100
-- Formula: `numberOfStudents × (500 + (days × 100))`
+- Base amount per student: ₹1
+- Additional per day: ₹1
+- Formula: `numberOfStudents × (1 + (days × 1))`
+
+**Example**: 10 students × 5 days = 10 × (1 + 5) = ₹60
+
+## Available Internship Types
+
+The system offers the following internship specializations (selected at the batch level):
+
+- **Embedded Systems** - Core embedded programming and hardware integration
+- **App Development** - Mobile and web application development
+- **Serial Communications (UART, SPI)** - Hardware communication protocols
+- **Raspberry Pi** - Single-board computer programming and projects
+- **Microprocessors** - Low-level processor programming and architecture
+- **IoT Development** - Internet of Things applications and connectivity
+- **Arduino Programming** - Arduino-based project development
+- **PCB Design** - Printed Circuit Board design and prototyping
+
+*Note: The internship type is selected once for the entire batch in the Internship Details section.*
 
 ## Error Handling
 
@@ -195,6 +215,11 @@ The system calculates costs based on:
 3. Update validation logic
 4. Test with API integration
 
+### Adding New Internship Types
+1. Add new options to the internship dropdown in `InternshipRegistrationForm.tsx`
+2. Update documentation in README.md
+3. Coordinate with backend API to handle new types
+
 ### Customizing Pricing
 Modify the `calculateAmount` function in the form component.
 
@@ -228,4 +253,4 @@ Extend the payment hooks to support additional gateways.
 
 ## Support
 
-For technical issues or feature requests, contact the development team at `hello@pydart.com`.
+For technical issues or feature requests, contact the development team at `info.pydart@gmail.com`.

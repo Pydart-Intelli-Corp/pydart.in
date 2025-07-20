@@ -45,7 +45,7 @@ export default function DetailedAbout() {
     {
       year: "Feb 2025",
       title: "Company Founded",
-      description: "Pydart Intelli Corp was established in India with a vision to transform industries through innovative AI solutions."
+      description: "Pydart Intelli Corp was established in Kerala, India with a vision to transform industries through innovative AI solutions."
     },
     {
       year: "Apr 2025",
@@ -79,7 +79,7 @@ export default function DetailedAbout() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-gray-950 to-black text-white">
       {/* Hero section with parallax effect */}
-      <div className="relative h-[60vh] md:h-[80vh] w-full overflow-hidden">
+      <div className="relative h-[60vh] sm:h-[70vh] md:h-[80vh] lg:h-[85vh] w-full overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image 
             src="/assets/images/others/whoweare.png" 
@@ -98,38 +98,38 @@ export default function DetailedAbout() {
           <div className="absolute inset-0 bg-[url('/assets/images/patterns/grid.svg')] opacity-10"></div>
         </div>
         
-        <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col justify-center">
+        <div className="container relative z-10 mx-auto px-3 sm:px-6 lg:px-8 xl:px-12 h-full flex flex-col justify-center">
           <motion.div
             initial={{ y: 50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 1, ease: "easeOut" }}
-            className="max-w-4xl"
+            className="max-w-5xl mx-auto lg:mx-0"
           >
-            <div className="inline-flex items-center mb-6">
-              <div className="h-px w-12 bg-[#00b4ab] mr-4"></div>
-              <span className="text-[#00b4ab] font-medium tracking-widest text-sm uppercase">Our Story</span>
+            <div className="inline-flex items-center mb-3 sm:mb-6">
+              <div className="h-px w-6 sm:w-10 md:w-12 bg-[#00b4ab] mr-2 sm:mr-4"></div>
+              <span className="text-[#00b4ab] font-medium tracking-widest text-xs sm:text-sm uppercase">Our Story</span>
             </div>
             
-            <h1 className="text-5xl md:text-7xl font-bold text-white leading-tight mb-8" style={{ fontFamily: 'Montserrat, sans-serif' }}>
+            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-tight mb-4 sm:mb-8" style={{ fontFamily: 'Montserrat, sans-serif' }}>
               <span className="block">Defining the future of</span>
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#00b4ab] to-[#008a82]">AI innovation</span>
             </h1>
             
-            <p className="text-xl md:text-2xl text-white/80 mb-10 max-w-2xl">
+            <p className="text-base sm:text-xl md:text-xl lg:text-2xl text-white/80 mb-6 sm:mb-10 max-w-3xl leading-relaxed">
               Pioneers in technology innovation, delivering transformative solutions that empower businesses to achieve their boldest ambitions.
             </p>
             
-            <div className="flex items-center space-x-4">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-3 sm:space-y-0 sm:space-x-6 md:space-x-8">
               <motion.div
                 initial={{ scale: 0.95, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ delay: 0.3, duration: 0.5 }}
                 className="flex items-center"
               >
-                <div className="h-14 w-1 bg-[#00b4ab] mr-4"></div>
+                <div className="h-10 sm:h-14 w-1 bg-[#00b4ab] mr-2 sm:mr-4"></div>
                 <div>
-                  <p className="text-white/60 text-sm">Founded</p>
-                  <p className="text-white font-bold">February 2025</p>
+                  <p className="text-white/60 text-xs sm:text-sm">Founded</p>
+                  <p className="text-white font-bold text-sm sm:text-base">February 2025</p>
                 </div>
               </motion.div>
               
@@ -139,19 +139,19 @@ export default function DetailedAbout() {
                 transition={{ delay: 0.4, duration: 0.5 }}
                 className="flex items-center"
               >
-                <div className="h-14 w-1 bg-[#00b4ab] mr-4"></div>
+                <div className="h-10 sm:h-14 w-1 bg-[#00b4ab] mr-2 sm:mr-4"></div>
                 <div>
-                  <p className="text-white/60 text-sm">Location</p>
-                  <p className="text-white font-bold">India</p>
+                  <p className="text-white/60 text-xs sm:text-sm">Location</p>
+                  <p className="text-white font-bold text-sm sm:text-base">Kochi</p>
                 </div>
               </motion.div>
             </div>
           </motion.div>
         </div>
         
-        {/* Scroll indicator */}
+        {/* Scroll indicator - Hidden on mobile */}
         <motion.div 
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center"
+          className="hidden sm:flex absolute bottom-8 left-1/2 transform -translate-x-1/2 flex-col items-center"
           animate={{ y: [0, 10, 0] }}
           transition={{ repeat: Infinity, duration: 2 }}
         >
@@ -163,14 +163,14 @@ export default function DetailedAbout() {
       </div>
       
       {/* Our Story section with modern card layout */}
-      <section ref={ref} className="py-24 relative">
+      <section ref={ref} className="py-12 sm:py-20 md:py-24 lg:py-28 relative">
         <div className="absolute inset-0 bg-gradient-to-b from-gray-950 to-black"></div>
         
         {/* Decorative elements */}
-        <div className="absolute top-0 right-0 w-1/3 h-64 bg-gradient-to-r from-[#00b4ab]/10 to-[#008a82]/10 blur-3xl rounded-full"></div>
-        <div className="absolute bottom-0 left-0 w-1/4 h-48 bg-gradient-to-r from-[#008a82]/10 to-[#00b4ab]/10 blur-3xl rounded-full"></div>
+        <div className="absolute top-0 right-0 w-1/3 h-32 sm:h-56 md:h-64 bg-gradient-to-r from-[#00b4ab]/10 to-[#008a82]/10 blur-3xl rounded-full"></div>
+        <div className="absolute bottom-0 left-0 w-1/4 h-24 sm:h-40 md:h-48 bg-gradient-to-r from-[#008a82]/10 to-[#00b4ab]/10 blur-3xl rounded-full"></div>
         
-        <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="container relative z-10 mx-auto px-3 sm:px-6 lg:px-8 xl:px-12">
           <motion.div
             initial={{ opacity: 0 }}
             animate={controls}
@@ -178,18 +178,18 @@ export default function DetailedAbout() {
               visible: { opacity: 1, transition: { duration: 0.8, ease: "easeOut" } },
             }}
           >
-            <div className="max-w-5xl mx-auto">
-              <div className="mb-16 text-center">
+            <div className="max-w-6xl mx-auto">
+              <div className="mb-8 sm:mb-16 text-center">
                 <motion.div 
                   initial={{ y: 20, opacity: 0 }}
                   whileInView={{ y: 0, opacity: 1 }} 
                   viewport={{ once: true }}
                   transition={{ duration: 0.6 }}
-                  className="inline-flex items-center mb-3"
+                  className="inline-flex items-center mb-2 sm:mb-3"
                 >
-                  <div className="h-px w-6 bg-[#00b4ab] mr-3"></div>
-                  <span className="text-[#00b4ab] font-medium text-sm uppercase tracking-wider">Our Journey</span>
-                  <div className="h-px w-6 bg-[#00b4ab] ml-3"></div>
+                  <div className="h-px w-3 sm:w-6 bg-[#00b4ab] mr-2 sm:mr-3"></div>
+                  <span className="text-[#00b4ab] font-medium text-xs sm:text-sm uppercase tracking-wider">Our Journey</span>
+                  <div className="h-px w-3 sm:w-6 bg-[#00b4ab] ml-2 sm:ml-3"></div>
                 </motion.div>
                 
                 <motion.h2
@@ -197,23 +197,23 @@ export default function DetailedAbout() {
                   whileInView={{ y: 0, opacity: 1 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: 0.1 }}
-                  className="text-3xl md:text-5xl font-bold text-white mb-6"
+                  className="text-xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3 sm:mb-6"
                   style={{ fontFamily: 'Montserrat, sans-serif' }}
                 >
                   A Journey of <span className="text-[#00b4ab]">Innovation</span> and <span className="text-[#008a82]">Growth</span>
                 </motion.h2>
               </div>
               
-              <div className="bg-gradient-to-br from-gray-900 to-gray-950 rounded-2xl overflow-hidden shadow-2xl border border-gray-800/50 p-8 md:p-12">
+              <div className="bg-gradient-to-br from-gray-900 to-gray-950 rounded-lg sm:rounded-2xl overflow-hidden shadow-2xl border border-gray-800/50 p-4 sm:p-8 md:p-10 lg:p-12">
                 <div className="prose prose-lg mx-auto prose-invert max-w-none">
                   <motion.p
                     initial={{ y: 20, opacity: 0 }}
                     whileInView={{ y: 0, opacity: 1 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: 0.2 }}
-                    className="text-lg md:text-xl text-white/90 leading-relaxed mb-6"
+                    className="text-sm sm:text-lg md:text-xl text-white/90 leading-relaxed mb-3 sm:mb-6"
                   >
-                    Founded in February 2025, Pydart Intelli Corp is an AI startup based in India with a simple yet ambitious vision: to create innovative AI-powered technology solutions that transform industries and empower businesses to achieve their boldest ambitions.
+                    Founded in February 2025, Pydart Intelli Corp is an AI startup based in Kerala, India with a simple yet ambitious vision: to create innovative AI-powered technology solutions that transform industries and empower businesses to achieve their boldest ambitions.
                   </motion.p>
                   
                   <motion.p 
@@ -221,7 +221,7 @@ export default function DetailedAbout() {
                     whileInView={{ y: 0, opacity: 1 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: 0.3 }}
-                    className="text-lg md:text-xl text-white/90 leading-relaxed mb-6"
+                    className="text-sm sm:text-lg md:text-xl text-white/90 leading-relaxed mb-3 sm:mb-6"
                   >
                     Currently, we're focused on developing two groundbreaking projects that leverage cutting-edge artificial intelligence to solve complex business challenges. Our team of AI specialists, developers, and strategists works collaboratively to deliver digital solutions that drive business development and create lasting competitive advantages.
                   </motion.p>
@@ -231,7 +231,7 @@ export default function DetailedAbout() {
                     whileInView={{ y: 0, opacity: 1 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: 0.4 }}
-                    className="text-lg md:text-xl text-white/90 leading-relaxed"
+                    className="text-sm sm:text-lg md:text-xl text-white/90 leading-relaxed"
                   >
                     At Pydart Intelli Corp, we believe that AI technology should be a catalyst for positive change, making businesses more efficient, innovative, and responsive to market demands. This belief guides our approach to developing tailored AI solutions for our clients across industries.
                   </motion.p>
@@ -240,62 +240,90 @@ export default function DetailedAbout() {
             </div>
             
             {/* Timeline section with modern design */}
-            <div className="mt-24 max-w-6xl mx-auto">
+            <div className="mt-10 sm:mt-20 md:mt-24 max-w-7xl mx-auto">
               <motion.div
                 initial={{ y: 20, opacity: 0 }}
                 whileInView={{ y: 0, opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
-                className="mb-16 text-center"
+                className="mb-8 sm:mb-16 text-center"
               >
-                <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
+                <h3 className="text-lg sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-2 sm:mb-4">
                   Our Journey Through the Years
                 </h3>
-                <p className="text-white/70 max-w-2xl mx-auto">
+                <p className="text-xs sm:text-base md:text-lg text-white/70 max-w-3xl mx-auto px-3">
                   From our founding to our future vision, explore the key milestones that have shaped our growth.
                 </p>
               </motion.div>
               
-              <div className="relative">
-                {/* Modern timeline design */}
-                <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 w-0.5 h-full bg-gradient-to-b from-[#00b4ab] via-[#00b4ab]/70 to-[#008a82]"></div>
+              <div className="relative px-3 sm:px-6 lg:px-8">
+                {/* Desktop timeline line */}
+                <div className="hidden lg:block absolute left-1/2 transform -translate-x-1/2 w-0.5 h-full bg-gradient-to-b from-[#00b4ab] via-[#00b4ab]/70 to-[#008a82]"></div>
+                
+                {/* Mobile timeline line */}
+                <div className="lg:hidden absolute left-5 sm:left-8 top-0 w-0.5 h-full bg-gradient-to-b from-[#00b4ab] via-[#00b4ab]/70 to-[#008a82]"></div>
                 
                 {/* Timeline items */}
-                {achievements.map((item, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-50px 0px" }}
-                    transition={{ duration: 0.6, delay: index * 0.1 }}
-                    className={`relative flex md:items-center mb-16 md:mb-24 ${
-                      index % 2 === 0 
-                        ? 'md:flex-row flex-col' 
-                        : 'md:flex-row-reverse flex-col'
-                    }`}
-                  >
-                    <div className="md:w-1/2 hidden md:block"></div>
-                    
-                    {/* Timeline node */}
-                    <div className="absolute md:left-1/2 left-4 md:transform md:-translate-x-1/2 flex items-center justify-center w-8 h-8 md:w-16 md:h-16 rounded-full bg-gradient-to-r from-[#00b4ab] to-[#008a82] z-10 shadow-lg shadow-[#00b4ab]/20 md:top-0 top-0">
-                      <span className="text-white font-bold text-xs md:text-sm">{item.year}</span>
-                    </div>
-                    
-                    {/* Content card with glass effect */}
-                    <div className={`md:w-1/2 w-full p-6 md:p-8 bg-gray-900/80 backdrop-blur-sm rounded-xl shadow-xl border border-gray-800/50 hover:border-[#00b4ab]/50 transition-all duration-300 md:mt-0 mt-4 ml-12 md:ml-0 md:mr-0 ${
-                      index % 2 === 0 
-                        ? 'md:ml-8' 
-                        : 'md:mr-8'
-                    }`}
-                    style={{
-                      background: 'radial-gradient(circle at top right, rgba(59, 130, 246, 0.03), transparent 250px)'
-                    }}
+                <div className="space-y-6 sm:space-y-12 lg:space-y-16">
+                  {achievements.map((item, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, y: 30 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: "-50px 0px" }}
+                      transition={{ duration: 0.6, delay: index * 0.1 }}
+                      className={`relative flex items-start lg:items-center ${
+                        index % 2 === 0 
+                          ? 'lg:flex-row' 
+                          : 'lg:flex-row-reverse'
+                      }`}
                     >
-                      <h4 className="text-xl md:text-2xl font-bold text-white mb-3">{item.title}</h4>
-                      <p className="text-white/80 leading-relaxed">{item.description}</p>
-                    </div>
-                  </motion.div>
-                ))}
+                      {/* Desktop spacer */}
+                      <div className="hidden lg:block lg:w-1/2"></div>
+                      
+                      {/* Timeline node */}
+                      <div className={`absolute flex items-center justify-center rounded-full bg-gradient-to-r from-[#00b4ab] to-[#008a82] z-10 shadow-lg shadow-[#00b4ab]/20 ${
+                        // Mobile positioning
+                        'left-3 sm:left-6 top-1 w-7 h-7 sm:w-10 sm:h-10 ' +
+                        // Desktop positioning  
+                        'lg:left-1/2 lg:transform lg:-translate-x-1/2 lg:w-16 lg:h-16'
+                      }`}>
+                        <span className="text-white font-bold text-[9px] sm:text-xs lg:text-sm xl:text-base px-0.5 sm:px-1 text-center leading-none break-words max-w-full">
+                          {item.year}
+                        </span>
+                      </div>
+                      
+                      {/* Content card */}
+                      <div className={`w-full bg-gray-900/80 backdrop-blur-sm rounded-lg sm:rounded-xl shadow-xl border border-gray-800/50 hover:border-[#00b4ab]/50 transition-all duration-300 ${
+                        // Mobile styling
+                        'ml-10 sm:ml-16 p-3 sm:p-6 ' +
+                        // Desktop styling
+                        'lg:w-1/2 lg:p-6 xl:p-8 lg:ml-0 lg:mr-0 ' +
+                        (index % 2 === 0 
+                          ? 'lg:ml-8 xl:ml-12' 
+                          : 'lg:mr-8 xl:mr-12')
+                      }`}
+                      style={{
+                        background: 'radial-gradient(circle at top right, rgba(59, 130, 246, 0.03), transparent 250px)'
+                      }}
+                      >
+                        <div className="relative">
+                          {/* Year badge for mobile */}
+                          <div className="lg:hidden inline-block bg-[#00b4ab]/20 text-[#00b4ab] px-2 py-1 rounded-md text-xs font-semibold mb-2">
+                            {item.year}
+                          </div>
+                          
+                          <h4 className="text-base sm:text-xl lg:text-2xl font-bold text-white mb-1 sm:mb-3 leading-tight">
+                            {item.title}
+                          </h4>
+                          <p className="text-xs sm:text-base lg:text-lg text-white/80 leading-relaxed">
+                            {item.description}
+                          </p>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
               </div>
             </div>
           </motion.div>
@@ -303,26 +331,26 @@ export default function DetailedAbout() {
       </section>
       
       {/* Leadership Team - Modern Cards with Hover Effects */}
-      <section className="py-28 relative">
+      <section className="py-12 sm:py-20 md:py-24 lg:py-28 relative">
         <div className="absolute inset-0 bg-gradient-to-b from-black to-gray-950"></div>
         
         {/* Decorative elements */}
-        <div className="absolute top-40 left-0 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 right-10 w-80 h-80 bg-purple-500/5 rounded-full blur-3xl"></div>
+        <div className="absolute top-20 sm:top-40 left-0 w-32 sm:w-64 h-32 sm:h-64 bg-blue-500/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-10 sm:bottom-20 right-2 sm:right-10 w-48 sm:w-80 h-48 sm:h-80 bg-purple-500/5 rounded-full blur-3xl"></div>
         
-        <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="container relative z-10 mx-auto px-3 sm:px-6 lg:px-8 xl:px-12">
           <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-20">
+            <div className="text-center mb-8 sm:mb-16 lg:mb-20">
               <motion.div
                 initial={{ y: 20, opacity: 0 }}
                 whileInView={{ y: 0, opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
-                className="inline-flex items-center mb-3"
+                className="inline-flex items-center mb-2 sm:mb-3"
               >
-                <div className="h-px w-6 bg-[#00b4ab] mr-3"></div>
-                <span className="text-[#00b4ab] font-medium text-sm uppercase tracking-wider">Our Team</span>
-                <div className="h-px w-6 bg-[#00b4ab] ml-3"></div>
+                <div className="h-px w-3 sm:w-6 bg-[#00b4ab] mr-2 sm:mr-3"></div>
+                <span className="text-[#00b4ab] font-medium text-xs sm:text-sm uppercase tracking-wider">Our Team</span>
+                <div className="h-px w-3 sm:w-6 bg-[#00b4ab] ml-2 sm:ml-3"></div>
               </motion.div>
               
               <motion.h2
@@ -330,7 +358,7 @@ export default function DetailedAbout() {
                 whileInView={{ y: 0, opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.1 }}
-                className="text-3xl md:text-5xl font-bold text-white mb-6"
+                className="text-xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3 sm:mb-6"
                 style={{ fontFamily: 'Montserrat, sans-serif' }}
               >
                 Meet Our <span className="text-[#00b4ab]">Leadership</span> Team
@@ -341,13 +369,13 @@ export default function DetailedAbout() {
                 whileInView={{ y: 0, opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.2 }}
-                className="text-lg text-white/70 max-w-2xl mx-auto"
+                className="text-xs sm:text-base md:text-lg lg:text-xl text-white/70 max-w-3xl mx-auto px-3"
               >
                 Visionary experts leading the way in AI innovation and technological advancement
               </motion.p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8 lg:gap-10 xl:gap-12">
               {team.map((member, index) => (
                 <motion.div
                   key={index}
@@ -355,10 +383,10 @@ export default function DetailedAbout() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: index * 0.2 }}
-                  className="group relative"
+                  className="group relative w-full max-w-sm mx-auto"
                 >
                   {/* Modern card with hover effect */}
-                  <div className="relative overflow-hidden rounded-2xl shadow-xl">
+                  <div className="relative overflow-hidden rounded-lg sm:rounded-2xl shadow-xl">
                     <div className="absolute inset-0 bg-gradient-to-tr from-[#00b4ab]/80 to-[#008a82]/80 opacity-0 group-hover:opacity-70 transition-opacity duration-500 z-10"></div>
                     
                     {/* Image container with aspect ratio */}
@@ -372,35 +400,35 @@ export default function DetailedAbout() {
                     </div>
                     
                     {/* Content overlay that slides up on hover */}
-                    <div className="absolute inset-x-0 bottom-0 p-6 md:p-8 bg-gradient-to-t from-black/90 via-black/70 to-transparent transform translate-y-6 group-hover:translate-y-0 transition-transform duration-500 z-20">
-                      <h3 className="text-2xl font-bold text-white mb-2">
+                    <div className="absolute inset-x-0 bottom-0 p-3 sm:p-6 lg:p-8 bg-gradient-to-t from-black/90 via-black/70 to-transparent transform translate-y-1 sm:translate-y-4 lg:translate-y-6 group-hover:translate-y-0 transition-transform duration-500 z-20">
+                      <h3 className="text-base sm:text-xl lg:text-2xl font-bold text-white mb-1 sm:mb-2 leading-tight">
                         {member.name}
                       </h3>
                       
-                      <p className="text-[#00b4ab] font-medium mb-4">
+                      <p className="text-[#00b4ab] font-medium mb-2 sm:mb-4 text-xs sm:text-base">
                         {member.position}
                       </p>
                       
-                      <p className="text-white/80 mb-6 text-sm transition-opacity duration-500 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0">
+                      <p className="text-white/80 mb-3 sm:mb-6 text-xs sm:text-sm lg:text-base transition-opacity duration-500 opacity-0 group-hover:opacity-100 transform translate-y-1 sm:translate-y-4 group-hover:translate-y-0 leading-relaxed">
                         {member.quote}
                       </p>
                       
-                      <div className="flex items-center space-x-4 transition-opacity duration-500 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0">
+                      <div className="flex items-center space-x-2 sm:space-x-4 transition-opacity duration-500 opacity-0 group-hover:opacity-100 transform translate-y-1 sm:translate-y-4 group-hover:translate-y-0">
                         <a 
                           href={member.linkedin} 
                           target="_blank" 
                           rel="noopener noreferrer"
-                          className="p-2 bg-white/10 hover:bg-[#00b4ab] rounded-full transition-colors duration-300"
+                          className="p-1.5 sm:p-2.5 bg-white/10 hover:bg-[#00b4ab] rounded-full transition-colors duration-300"
                         >
-                          <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                          <svg className="w-3 h-3 sm:w-5 sm:h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
                           </svg>
                         </a>
                         <a 
                           href={`mailto:${member.email}`} 
-                          className="p-2 bg-white/10 hover:bg-[#00b4ab] rounded-full transition-colors duration-300"
+                          className="p-1.5 sm:p-2.5 bg-white/10 hover:bg-[#00b4ab] rounded-full transition-colors duration-300"
                         >
-                          <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                          <svg className="w-3 h-3 sm:w-5 sm:h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M20 4h-16c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2v-12c0-1.1-.9-2-2-2zm0 4l-8 5-8-5v-2l8 5 8-5v2z"/>
                           </svg>
                         </a>
@@ -415,25 +443,25 @@ export default function DetailedAbout() {
       </section>
       
       {/* Vision & Values section - Modern Split Design */}
-      <section className="py-28 relative overflow-hidden">
+      <section className="py-12 sm:py-20 md:py-24 lg:py-28 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-gray-950 to-black"></div>
         
         {/* Decorative elements */}
-        <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full" style={{ background: 'radial-gradient(circle, rgba(255, 77, 0, 0.1) 0%, rgba(230, 68, 0, 0.05) 50%, transparent 70%)' }}></div>
+        <div className="absolute -top-20 sm:-top-40 -right-20 sm:-right-40 w-48 sm:w-96 h-48 sm:h-96 rounded-full" style={{ background: 'radial-gradient(circle, rgba(255, 77, 0, 0.1) 0%, rgba(230, 68, 0, 0.05) 50%, transparent 70%)' }}></div>
         
-        <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="container relative z-10 mx-auto px-3 sm:px-6 lg:px-8 xl:px-12">
           <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-20">
+            <div className="text-center mb-8 sm:mb-16 lg:mb-20">
               <motion.div
                 initial={{ y: 20, opacity: 0 }}
                 whileInView={{ y: 0, opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
-                className="inline-flex items-center mb-3"
+                className="inline-flex items-center mb-2 sm:mb-3"
               >
-                <div className="h-px w-6 bg-[#00b4ab] mr-3"></div>
-                <span className="text-[#00b4ab] font-medium text-sm uppercase tracking-wider">Our Philosophy</span>
-                <div className="h-px w-6 bg-[#00b4ab] ml-3"></div>
+                <div className="h-px w-3 sm:w-6 bg-[#00b4ab] mr-2 sm:mr-3"></div>
+                <span className="text-[#00b4ab] font-medium text-xs sm:text-sm uppercase tracking-wider">Our Philosophy</span>
+                <div className="h-px w-3 sm:w-6 bg-[#00b4ab] ml-2 sm:ml-3"></div>
               </motion.div>
               
               <motion.h2
@@ -441,14 +469,14 @@ export default function DetailedAbout() {
                 whileInView={{ y: 0, opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.1 }}
-                className="text-3xl md:text-5xl font-bold text-white mb-6"
+                className="text-xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3 sm:mb-6"
                 style={{ fontFamily: 'Montserrat, sans-serif' }}
               >
                 What <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#00b4ab] to-[#008a82]">Drives Us</span>
               </motion.h2>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-stretch">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-8 lg:gap-12 items-stretch">
               {/* Vision Card */}
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
@@ -457,26 +485,26 @@ export default function DetailedAbout() {
                 transition={{ duration: 0.8 }}
                 className="flex flex-col h-full"
               >
-                <div className="relative bg-gradient-to-br from-gray-900 to-gray-950 p-8 md:p-12 rounded-2xl shadow-xl border border-gray-800/50 h-full overflow-hidden group hover:border-[#00b4ab]/30 transition-all duration-500">
+                <div className="relative bg-gradient-to-br from-gray-900 to-gray-950 p-4 sm:p-8 lg:p-10 xl:p-12 rounded-lg sm:rounded-2xl shadow-xl border border-gray-800/50 h-full overflow-hidden group hover:border-[#00b4ab]/30 transition-all duration-500">
                   {/* Accent corner */}
-                  <div className="absolute -top-20 -right-20 w-40 h-40 bg-[#00b4ab]/10 rounded-full blur-xl group-hover:bg-[#00b4ab]/20 transition-colors duration-500"></div>
+                  <div className="absolute -top-10 sm:-top-20 -right-10 sm:-right-20 w-20 sm:w-40 h-20 sm:h-40 bg-[#00b4ab]/10 rounded-full blur-xl group-hover:bg-[#00b4ab]/20 transition-colors duration-500"></div>
                   
-                  <div className="p-4 bg-[#00b4ab]/10 w-16 h-16 rounded-xl flex items-center justify-center mb-8">
-                    <svg className="w-8 h-8 text-[#00b4ab]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="p-2 sm:p-4 bg-[#00b4ab]/10 w-10 h-10 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-lg sm:rounded-xl flex items-center justify-center mb-4 sm:mb-8">
+                    <svg className="w-5 h-5 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-[#00b4ab]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                     </svg>
                   </div>
                   
-                  <h3 className="text-2xl md:text-3xl font-bold text-white mb-6">Our Vision</h3>
+                  <h3 className="text-lg sm:text-2xl lg:text-3xl font-bold text-white mb-3 sm:mb-6">Our Vision</h3>
                   
-                  <div className="mb-8 h-1 w-16 bg-gradient-to-r from-[#00b4ab] to-[#008a82]"></div>
+                  <div className="mb-4 sm:mb-8 h-1 w-8 sm:w-16 bg-gradient-to-r from-[#00b4ab] to-[#008a82]"></div>
                   
-                  <p className="text-lg text-white/90 mb-6 leading-relaxed">
+                  <p className="text-sm sm:text-lg lg:text-xl text-white/90 mb-3 sm:mb-6 leading-relaxed">
                     To be the global leader in creating transformative AI technology solutions that reshape industries and improve lives around the world.
                   </p>
                   
-                  <p className="text-white/70 leading-relaxed mt-auto">
+                  <p className="text-xs sm:text-base lg:text-lg text-white/70 leading-relaxed mt-auto">
                     We envision a future where AI technology serves humanity's highest aspirations, empowering organizations to solve the world's most pressing challenges through innovation, creativity, and technical excellence.
                   </p>
                 </div>
@@ -490,25 +518,25 @@ export default function DetailedAbout() {
                 transition={{ duration: 0.8, delay: 0.2 }}
                 className="flex flex-col h-full"
               >
-                <div className="relative bg-gradient-to-br from-gray-900 to-gray-950 p-8 md:p-12 rounded-2xl shadow-xl border border-gray-800/50 h-full overflow-hidden group hover:border-[#008a82]/30 transition-all duration-500">
+                <div className="relative bg-gradient-to-br from-gray-900 to-gray-950 p-4 sm:p-8 lg:p-10 xl:p-12 rounded-lg sm:rounded-2xl shadow-xl border border-gray-800/50 h-full overflow-hidden group hover:border-[#008a82]/30 transition-all duration-500">
                   {/* Accent corner */}
-                  <div className="absolute -top-20 -right-20 w-40 h-40 bg-[#008a82]/10 rounded-full blur-xl group-hover:bg-[#008a82]/20 transition-colors duration-500"></div>
+                  <div className="absolute -top-10 sm:-top-20 -right-10 sm:-right-20 w-20 sm:w-40 h-20 sm:h-40 bg-[#008a82]/10 rounded-full blur-xl group-hover:bg-[#008a82]/20 transition-colors duration-500"></div>
                   
-                  <div className="p-4 bg-[#008a82]/10 w-16 h-16 rounded-xl flex items-center justify-center mb-8">
-                    <svg className="w-8 h-8 text-[#008a82]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="p-2 sm:p-4 bg-[#008a82]/10 w-10 h-10 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-lg sm:rounded-xl flex items-center justify-center mb-4 sm:mb-8">
+                    <svg className="w-5 h-5 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-[#008a82]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
                     </svg>
                   </div>
                   
-                  <h3 className="text-2xl md:text-3xl font-bold text-white mb-6">Our Mission</h3>
+                  <h3 className="text-lg sm:text-2xl lg:text-3xl font-bold text-white mb-3 sm:mb-6">Our Mission</h3>
                   
-                  <div className="mb-8 h-1 w-16 bg-gradient-to-r from-[#008a82] to-[#00b4ab]"></div>
+                  <div className="mb-4 sm:mb-8 h-1 w-8 sm:w-16 bg-gradient-to-r from-[#008a82] to-[#00b4ab]"></div>
                   
-                  <p className="text-lg text-white/90 mb-6 leading-relaxed">
+                  <p className="text-sm sm:text-lg lg:text-xl text-white/90 mb-3 sm:mb-6 leading-relaxed">
                     To drive transformative growth for our clients by delivering innovative AI technology solutions that bridge present limitations and future possibilities.
                   </p>
                   
-                  <p className="text-white/70 leading-relaxed mt-auto">
+                  <p className="text-xs sm:text-base lg:text-lg text-white/70 leading-relaxed mt-auto">
                     We create enduring value while upholding the highest standards of excellence and integrity, ensuring that every solution we deliver advances our clients' strategic objectives and contributes to their long-term success.
                   </p>
                 </div>
@@ -519,7 +547,7 @@ export default function DetailedAbout() {
       </section>
       
       {/* Technology Stack - Modern Design with Gradient */}
-      <section className="py-28 relative">
+      <section className="py-12 sm:py-20 md:py-24 lg:py-28 relative">
         <div className="absolute inset-0 bg-black"></div>
         
         {/* Decorative background */}
@@ -527,80 +555,81 @@ export default function DetailedAbout() {
           <div className="absolute inset-0 bg-[url('/assets/images/patterns/circuit.svg')] opacity-20"></div>
         </div>
         
-        <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-gray-950 to-transparent"></div>
-        <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-gray-950 to-transparent"></div>
+        <div className="absolute top-0 left-0 w-full h-12 sm:h-16 md:h-20 bg-gradient-to-b from-gray-950 to-transparent"></div>
+        <div className="absolute bottom-0 left-0 w-full h-12 sm:h-16 md:h-20 bg-gradient-to-t from-gray-950 to-transparent"></div>
         
-        <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="container relative z-10 mx-auto px-3 sm:px-6 lg:px-8 xl:px-12">
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="max-w-5xl mx-auto"
+            className="max-w-6xl mx-auto"
           >
-            <div className="bg-gradient-to-r from-gray-900 to-gray-950 p-8 md:p-16 rounded-3xl shadow-2xl border border-gray-800/50 overflow-hidden relative">
+            <div className="bg-gradient-to-r from-gray-900 to-gray-950 p-4 sm:p-8 md:p-12 lg:p-16 rounded-lg sm:rounded-2xl md:rounded-3xl shadow-2xl border border-gray-800/50 overflow-hidden relative">
               {/* Gradient orb */}
-              <div className="absolute -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-[#00b4ab]/20 to-[#008a82]/20 rounded-full blur-3xl"></div>
-              <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-[#008a82]/20 to-[#00b4ab]/20 rounded-full blur-3xl"></div>
+              <div className="absolute -top-20 sm:-top-32 md:-top-40 -right-20 sm:-right-32 md:-right-40 w-48 sm:w-72 md:w-96 h-48 sm:h-72 md:h-96 bg-gradient-to-br from-[#00b4ab]/20 to-[#008a82]/20 rounded-full blur-3xl"></div>
+              <div className="absolute -bottom-20 sm:-bottom-32 md:-bottom-40 -left-20 sm:-left-32 md:-left-40 w-48 sm:w-72 md:w-96 h-48 sm:h-72 md:h-96 bg-gradient-to-tr from-[#008a82]/20 to-[#00b4ab]/20 rounded-full blur-3xl"></div>
               
               {/* Circuit pattern overlay */}
               <div className="absolute inset-0 bg-[url('/assets/images/patterns/circuit.svg')] opacity-5"></div>
               
               <div className="relative z-10 text-center">
-                <h2 className="text-3xl md:text-5xl font-bold mb-8 text-white" style={{ fontFamily: 'Montserrat, sans-serif' }}>
+                <h2 className="text-lg sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-8 text-white" style={{ fontFamily: 'Montserrat, sans-serif' }}>
                   Our <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#00b4ab] to-[#008a82]">Technology</span> Stack
                 </h2>
                 
-                <p className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto">
+                <p className="text-xs sm:text-lg lg:text-xl text-white/80 mb-6 sm:mb-10 max-w-3xl mx-auto leading-relaxed">
                   We leverage cutting-edge technologies to deliver powerful AI solutions that drive business transformation.
                 </p>
                 
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10 mt-12">
+                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-8 xl:gap-10 mt-6 sm:mt-12">
                   {/* Tech stack items */}
                   <div className="flex flex-col items-center">
-                    <div className="w-16 h-16 md:w-20 md:h-20 bg-white/10 rounded-xl flex items-center justify-center mb-4">
-                      <svg className="w-10 h-10 text-[#00b4ab]" viewBox="0 0 24 24" fill="currentColor">
+                    <div className="w-10 h-10 sm:w-16 sm:h-16 lg:w-20 lg:h-20 bg-white/10 rounded-lg sm:rounded-xl flex items-center justify-center mb-2 sm:mb-4">
+                      <svg className="w-5 h-5 sm:w-8 sm:h-8 lg:w-10 lg:h-10 text-[#00b4ab]" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M11.35,17.13C11.23,17.13 11.09,17.07 10.99,16.95L7.81,13.77C7.61,13.56 7.61,13.24 7.81,13.04C8.02,12.83 8.34,12.83 8.54,13.04L11.35,15.85L18.11,9.1C18.31,8.89 18.63,8.89 18.84,9.1C19.05,9.31 19.05,9.63 18.84,9.83L11.71,16.95C11.61,17.07 11.47,17.13 11.35,17.13Z" />
                       </svg>
                     </div>
-                    <h3 className="text-lg md:text-xl font-bold text-white mb-1">AI & ML</h3>
-                    <p className="text-white/60 text-sm text-center">Advanced machine learning algorithms</p>
+                    <h3 className="text-xs sm:text-lg lg:text-xl font-bold text-white mb-1">AI & ML</h3>
+                    <p className="text-white/60 text-[10px] sm:text-sm text-center leading-tight">Advanced machine learning algorithms</p>
                   </div>
                   
                   <div className="flex flex-col items-center">
-                    <div className="w-16 h-16 md:w-20 md:h-20 bg-white/10 rounded-xl flex items-center justify-center mb-4">
-                      <svg className="w-10 h-10 text-[#00b4ab]" viewBox="0 0 24 24" fill="currentColor">
+                    <div className="w-10 h-10 sm:w-16 sm:h-16 lg:w-20 lg:h-20 bg-white/10 rounded-lg sm:rounded-xl flex items-center justify-center mb-2 sm:mb-4">
+                      <svg className="w-5 h-5 sm:w-8 sm:h-8 lg:w-10 lg:h-10 text-[#00b4ab]" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M21,16.5C21,16.88 20.79,17.21 20.47,17.38L12.57,21.82C12.41,21.94 12.21,22 12,22C11.79,22 11.59,21.94 11.43,21.82L3.53,17.38C3.21,17.21 3,16.88 3,16.5V7.5C3,7.12 3.21,6.79 3.53,6.62L11.43,2.18C11.59,2.06 11.79,2 12,2C12.21,2 12.41,2.06 12.57,2.18L20.47,6.62C20.79,6.79 21,7.12 21,7.5V16.5M12,4.15L6.04,7.5L12,10.85L17.96,7.5L12,4.15Z" />
                       </svg>
                     </div>
-                    <h3 className="text-lg md:text-xl font-bold text-white mb-1">Cloud</h3>
-                    <p className="text-white/60 text-sm text-center">Scalable cloud infrastructure</p>
+                    <h3 className="text-xs sm:text-lg lg:text-xl font-bold text-white mb-1">Cloud</h3>
+                    <p className="text-white/60 text-[10px] sm:text-sm text-center leading-tight">Scalable cloud infrastructure</p>
                   </div>
                   
                   <div className="flex flex-col items-center">
-                    <div className="w-16 h-16 md:w-20 md:h-20 bg-white/10 rounded-xl flex items-center justify-center mb-4">
-                      <svg className="w-10 h-10 text-[#00b4ab]" viewBox="0 0 24 24" fill="currentColor">
+                    <div className="w-10 h-10 sm:w-16 sm:h-16 lg:w-20 lg:h-20 bg-white/10 rounded-lg sm:rounded-xl flex items-center justify-center mb-2 sm:mb-4">
+                      <svg className="w-5 h-5 sm:w-8 sm:h-8 lg:w-10 lg:h-10 text-[#00b4ab]" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M17.45,15.18L22,7.31V19L22,21H2V3H4V15.54L9.5,6L16,9.78L20.24,2.45L21.97,3.45L16.74,12.5L10.23,8.75L4.31,19H6.57L10.96,11.44L17.45,15.18Z" />
                       </svg>
                     </div>
-                    <h3 className="text-lg md:text-xl font-bold text-white mb-1">Analytics</h3>
-                    <p className="text-white/60 text-sm text-center">Advanced data analytics solutions</p>
+                    <h3 className="text-xs sm:text-lg lg:text-xl font-bold text-white mb-1">Analytics</h3>
+                    <p className="text-white/60 text-[10px] sm:text-sm text-center leading-tight">Advanced data analytics solutions</p>
                   </div>
                   
                   <div className="flex flex-col items-center">
-                    <div className="w-16 h-16 md:w-20 md:h-20 bg-white/10 rounded-xl flex items-center justify-center mb-4">
-                      <svg className="w-10 h-10 text-[#00b4ab]" viewBox="0 0 24 24" fill="currentColor">
+                    <div className="w-10 h-10 sm:w-16 sm:h-16 lg:w-20 lg:h-20 bg-white/10 rounded-lg sm:rounded-xl flex items-center justify-center mb-2 sm:mb-4">
+                      <svg className="w-5 h-5 sm:w-8 sm:h-8 lg:w-10 lg:h-10 text-[#00b4ab]" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M12,5A3,3 0 0,1 15,8A3,3 0 0,1 12,11A3,3 0 0,1 9,8A3,3 0 0,1 12,5M17.13,17C15.92,18.85 14.11,20.24 12,20.92C9.89,20.24 8.08,18.85 6.87,17C6.53,16.5 6.24,16 6,15.47C6,13.82 8.71,12.47 12,12.47C15.29,12.47 18,13.79 18,15.47C17.76,16 17.47,16.5 17.13,17Z" />
                       </svg>
                     </div>
-                    <h3 className="text-lg md:text-xl font-bold text-white mb-1">Security</h3>
-                    <p className="text-white/60 text-sm text-center">Enterprise-grade security protocols</p>
+                    <h3 className="text-xs sm:text-lg lg:text-xl font-bold text-white mb-1">Security</h3>
+                    <p className="text-white/60 text-[10px] sm:text-sm text-center leading-tight">Enterprise-grade security protocols</p>
                   </div>
                 </div>
               </div>
             </div>
           </motion.div>
-        </div>      </section>
+        </div>
+      </section>
       
       {/* Footer */}
       <Footer />
