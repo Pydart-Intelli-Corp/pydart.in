@@ -188,7 +188,7 @@ const mobileImages = [
       setIsMouseInHero(isWithinHero);
       
       if (isWithinHero) {
-        // For absolute positioning (custom cursor)
+        // For absolute positioning (custom cursor) - exact cursor position
         setAbsoluteMousePosition({
           x: e.clientX,
           y: e.clientY,
@@ -300,8 +300,9 @@ const mobileImages = [
         <motion.div
           className="fixed pointer-events-none z-[9999]"
           animate={{
-            x: absoluteMousePosition.x - 16,
-            y: absoluteMousePosition.y - 16,
+            // Sync exactly with the native cursor position without offset
+            x: absoluteMousePosition.x,
+            y: absoluteMousePosition.y,
             scale: cursorVariant === 'hover' ? 1.5 : 1,
             opacity: isMouseInHero && mousePosition.x >= 0 && mousePosition.y >= 0 && mousePosition.x <= 1 && mousePosition.y <= 1 ? 1 : 0,
           }}
@@ -313,8 +314,8 @@ const mobileImages = [
             opacity: { duration: 0.1 }
           }}
         >
-          {/* Main cursor core */}
-          <div className="relative w-8 h-8">
+          {/* Main cursor core - centered on cursor position */}
+          <div className="relative w-8 h-8" style={{ transform: 'translate(-50%, -50%)' }}>
             {/* Central glowing core */}
             <motion.div 
               className="absolute inset-0 w-3 h-3 left-2.5 top-2.5 bg-[#00b4ab] rounded-full shadow-lg shadow-[#00b4ab]/50"

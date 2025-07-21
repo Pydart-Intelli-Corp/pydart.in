@@ -117,7 +117,7 @@ export default function Header() {
           {/* Desktop Navigation - Hidden on Mobile */}
           <div className="hidden md:flex flex-1 justify-center items-center relative min-w-0 px-2 sm:px-4 md:px-6 lg:px-8">
             {/* Navigation with individual button backgrounds */}
-            <nav className="bg-neutral-100/90 backdrop-blur-sm rounded-full pl-0.5 sm:pl-1 md:pl-1 lg:pl-1.5 pr-0.5 sm:pr-1 py-0.5 sm:py-0.5 md:py-1 lg:py-1 flex items-center space-x-0.5 sm:space-x-2 md:space-x-3 lg:space-x-4 xl:space-x-6 relative max-w-fit">
+            <nav className="bg-neutral-100 rounded-full pl-0.5 sm:pl-1 md:pl-1 lg:pl-1.5 pr-0.5 sm:pr-1 py-0.5 sm:py-0.5 md:py-1 lg:py-1 flex items-center space-x-0.5 sm:space-x-2 md:space-x-3 lg:space-x-4 xl:space-x-6 relative max-w-fit">
               
               {/* Animated dot that moves horizontally */}
               <div 
@@ -248,14 +248,75 @@ export default function Header() {
             </nav>
           </div>
 
-          {/* Mobile Menu Button - Visible only on Mobile */}
+          {/* Mobile Menu - Visible only on Mobile */}
           <div className="flex md:hidden items-center gap-2">
-            <button
-              onClick={toggleMenu}
-              className="bg-white text-black px-6 py-3 rounded-full text-sm font-medium transition-all duration-300 hover:scale-105 relative z-[100]"
-            >
-              {isMenuOpen ? 'Close' : 'Menu'}
-            </button>
+            {/* Combined Menu Button and Dropdown */}
+            <div className="relative">
+              {/* Menu Button - Always visible at top */}
+              <button
+                onClick={toggleMenu}
+                className={`bg-white rounded-full shadow-xl px-6 py-3 text-sm font-medium relative transition-all duration-300 ${isMenuOpen ? '' : 'hover:scale-105'} z-[100]`}
+              >
+                <span className={`block transition-opacity duration-300 text-black ${isMenuOpen ? 'opacity-0' : 'opacity-100'}`}>
+                  Menu
+                </span>
+                <span className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 text-black ${isMenuOpen ? 'opacity-100' : 'opacity-0'}`}>
+                  Close
+                </span>
+              </button>
+              
+              {/* Menu Content - Appears below button */}
+              <div 
+                className={`absolute top-full right-0 mt-2 bg-white rounded-2xl shadow-xl transition-all duration-500 ease-out overflow-hidden origin-top-right z-[100] ${
+                  isMenuOpen 
+                    ? 'w-[280px] max-h-[400px] opacity-100 transform scale-y-100 pointer-events-auto' 
+                    : 'w-[280px] max-h-0 opacity-0 transform scale-y-0 pointer-events-none'
+                }`}
+              >
+                <div className="px-6 pb-6 pt-4">
+                  {/* Navigation Items */}
+                  <nav className="space-y-5">
+                    {['projects', 'services', 'investments', 'about', 'contact'].map((section, index) => (
+                      <button 
+                        key={section}
+                        onClick={() => smoothScrollTo(section)} 
+                        className={`block w-full text-left text-lg font-normal transition-all duration-300 cursor-pointer ${
+                          isMenuOpen ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'
+                        } ${
+                          activeSection === section 
+                            ? 'text-[#00b4ab] font-medium' 
+                            : 'text-gray-900 hover:text-[#00b4ab]'
+                        }`}
+                        style={{
+                          transitionDelay: isMenuOpen ? `${index * 70 + 100}ms` : '0ms'
+                        }}
+                      >
+                        {section.charAt(0).toUpperCase() + section.slice(1)}
+                      </button>
+                    ))}
+                  </nav>
+
+                  {/* Divider */}
+                  <div className={`w-full h-px bg-gray-200 my-5 transition-all duration-300 ${
+                    isMenuOpen ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0'
+                  }`} style={{ transitionDelay: isMenuOpen ? '450ms' : '0ms' }} />
+
+                  {/* Mobile Email Us Button */}
+                  <a
+                    href="https://mail.google.com/mail/?view=cm&fs=1&to=info.pydart@gmail.com&su=Inquiry%20from%20Website&body=Hello%20Pydart%20Team,%0A%0AI%20would%20like%20to%20inquire%20about%20your%20services.%0A%0AThank%20you!"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`block w-full text-left text-lg font-normal text-[#00b4ab] hover:text-[#00a199] transition-all duration-300 cursor-pointer ${
+                      isMenuOpen ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'
+                    }`}
+                    style={{ transitionDelay: isMenuOpen ? '500ms' : '0ms' }}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Email Us
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Desktop Email Us Button - Hidden on Mobile */}
@@ -266,113 +327,29 @@ export default function Header() {
               rel="noopener noreferrer"
               className="text-[8px] sm:text-[10px] md:text-xs lg:text-sm xl:text-[14px] font-medium group relative overflow-hidden px-1.5 sm:px-2 md:px-3 py-1 sm:py-1.5 md:py-2 rounded-sm transition-colors duration-200 text-white/90 hover:text-white z-[100] whitespace-nowrap"
             >
-            <span className="inline-block px-0.5 md:px-1 lg:px-1.5">
-              <span className="relative">
-                <span className="inline-block transition-all duration-300 group-hover:opacity-0 group-hover:-translate-y-1.5">
-                  Email Us
+              <span className="inline-block px-0.5 md:px-1 lg:px-1.5">
+                <span className="relative">
+                  <span className="inline-block transition-all duration-300 group-hover:opacity-0 group-hover:-translate-y-1.5">
+                    Email Us
+                  </span>
+                  <span className="absolute top-0 left-0 transition-all duration-300 translate-y-full opacity-0 text-[#00b4ab] group-hover:-translate-y-0.5 group-hover:opacity-100">
+                    Email Us
+                  </span>
                 </span>
-                <span className="absolute top-0 left-0 transition-all duration-300 translate-y-full opacity-0 text-[#00b4ab] group-hover:-translate-y-0.5 group-hover:opacity-100">
-                  Email Us
-                </span>
+                <span className="absolute left-1 md:left-1.5 lg:left-2 -top-1 md:-top-1.5 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-2.5 md:group-hover:translate-y-3 text-[#00b4ab]">(</span>
+                <span className="absolute right-1 md:right-1.5 lg:right-2 -top-1 md:-top-1.5 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-2.5 md:group-hover:translate-y-3 text-[#00b4ab]">)</span>
               </span>
-              <span className="absolute left-1 md:left-1.5 lg:left-2 -top-1 md:-top-1.5 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-2.5 md:group-hover:translate-y-3 text-[#00b4ab]">(</span>
-              <span className="absolute right-1 md:right-1.5 lg:right-2 -top-1 md:-top-1.5 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-2.5 md:group-hover:translate-y-3 text-[#00b4ab]">)</span>
-            </span>
-          </a>
+            </a>
           </div>
         </div>
 
-        {/* Mobile Dropdown Menu - BlinkPath Style */}
-        <div className={`md:hidden fixed inset-0 z-[90] transition-all duration-300 ease-in-out ${
-          isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-        }`}>
-          {/* Backdrop */}
-          <div 
-            className={`absolute inset-0 bg-black/20 transition-opacity duration-300 ${
-              isMenuOpen ? 'opacity-100' : 'opacity-0'
-            }`}
-            onClick={() => setIsMenuOpen(false)}
-          />
-          
-          {/* Menu Content */}
-          <div className={`absolute top-20 right-4 bg-white rounded-2xl shadow-xl transform transition-all duration-300 ease-out ${
-            isMenuOpen ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 -translate-y-4'
-          }`}>
-            <div className="py-4 px-6 min-w-[200px]">
-              {/* Navigation Items */}
-              <nav className="space-y-4">
-                <button 
-                  onClick={() => smoothScrollTo('projects')} 
-                  className={`block w-full text-left text-lg font-normal transition-all duration-200 hover:text-[#00b4ab] ${
-                    activeSection === 'projects' 
-                      ? 'text-[#00b4ab] font-medium' 
-                      : 'text-gray-900'
-                  }`}
-                >
-                  Projects
-                </button>
-                
-                <button 
-                  onClick={() => smoothScrollTo('services')} 
-                  className={`block w-full text-left text-lg font-normal transition-all duration-200 hover:text-[#00b4ab] ${
-                    activeSection === 'services' 
-                      ? 'text-[#00b4ab] font-medium' 
-                      : 'text-gray-900'
-                  }`}
-                >
-                  Services
-                </button>
-                
-                <button 
-                  onClick={() => smoothScrollTo('investments')} 
-                  className={`block w-full text-left text-lg font-normal transition-all duration-200 hover:text-[#00b4ab] ${
-                    activeSection === 'investments' 
-                      ? 'text-[#00b4ab] font-medium' 
-                      : 'text-gray-900'
-                  }`}
-                >
-                  Investments
-                </button>
-                
-                <button 
-                  onClick={() => smoothScrollTo('about')} 
-                  className={`block w-full text-left text-lg font-normal transition-all duration-200 hover:text-[#00b4ab] ${
-                    activeSection === 'about' 
-                      ? 'text-[#00b4ab] font-medium' 
-                      : 'text-gray-900'
-                  }`}
-                >
-                  About
-                </button>
-                
-                <button 
-                  onClick={() => smoothScrollTo('contact')} 
-                  className={`block w-full text-left text-lg font-normal transition-all duration-200 hover:text-[#00b4ab] ${
-                    activeSection === 'contact' 
-                      ? 'text-[#00b4ab] font-medium' 
-                      : 'text-gray-900'
-                  }`}
-                >
-                  Contact
-                </button>
-              </nav>
-
-              {/* Divider */}
-              <div className="w-full h-px bg-gray-200 my-4"></div>
-
-              {/* Mobile Email Us Button */}
-              <a
-                href="https://mail.google.com/mail/?view=cm&fs=1&to=info.pydart@gmail.com&su=Inquiry%20from%20Website&body=Hello%20Pydart%20Team,%0A%0AI%20would%20like%20to%20inquire%20about%20your%20services.%0A%0AThank%20you!"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block w-full text-left text-lg font-normal text-[#00b4ab] hover:text-[#00a199] transition-colors duration-200"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Email Us
-              </a>
-            </div>
-          </div>
-        </div>
+        {/* Mobile Backdrop - only visible when menu is open */}
+        <div 
+          className={`fixed md:hidden inset-0 bg-black/20 z-[90] transition-opacity duration-500 ${
+            isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+          }`}
+          onClick={() => setIsMenuOpen(false)}
+        />
       </div>
     </header>
   );
