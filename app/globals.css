@@ -39,13 +39,52 @@ button, a, [role="button"], input, select, textarea, .cursor-pointer {
   transition: none !important;
 }
 
-/* Specific override for hero section - will be controlled by the Hero component */
+/* Specific override for hero section ONLY - will be controlled by the Hero component */
 #hero {
   cursor: none !important;
 }
 
 #hero *, #hero *::before, #hero *::after {
   cursor: none !important;
+}
+
+/* Mobile landscape responsive utilities */
+@media screen and (max-width: 1023px) and (orientation: landscape) {
+  .landscape-mobile\:grid-cols-12 {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
+  
+  .landscape-mobile\:col-span-8 {
+    grid-column: span 8 / span 8;
+  }
+  
+  .landscape-mobile\:col-span-4 {
+    grid-column: span 4 / span 4;
+  }
+  
+  .landscape-mobile\:block {
+    display: block;
+  }
+  
+  .landscape-mobile\:hidden {
+    display: none;
+  }
+}
+
+/* Ensure normal cursor behavior outside of hero section */
+body:not(#hero) {
+  cursor: auto !important;
+}
+
+/* Ensure custom cursor has highest priority and perfect positioning in hero section only */
+.custom-cursor {
+  pointer-events: none !important;
+  z-index: 9999 !important;
+  position: fixed !important;
+  will-change: transform !important;
+  contain: layout style paint !important;
+  width: 32px !important;
+  height: 32px !important;
 }
 
 #hero button, #hero a, #hero [role="button"], #hero .cursor-pointer {

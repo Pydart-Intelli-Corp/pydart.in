@@ -6,8 +6,12 @@ import { motion, useInView, useAnimation } from 'framer-motion';
 const useMouseTracking = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isMobile, setIsMobile] = useState(false);
-  
-  useEffect(() => {
+       <div className="relative z-20">
+        <div className="max-w-7xl mx-auto px-4 xs:px-6 sm:px-8 md:px-12 lg:px-16 xl:px-20 w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start landscape-mobile:grid-cols-12">
+            
+            {/* Left Content */}
+            <div className="lg:col-span-8 landscape-mobile:col-span-8 text-left space-y-6 md:space-y-8 lg:space-y-10">{seEffect(() => {
     // Detect if device is mobile
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768 || 'ontouchstart' in window);
@@ -253,7 +257,7 @@ export default function Projects() {
     <section 
       ref={sectionRef}
       id="projects"
-      className="relative min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white overflow-hidden py-4 xs:py-6 sm:py-20 lg:py-32"
+      className="relative min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white overflow-hidden py-8 xs:py-12 sm:py-16 md:py-20 lg:py-24 projects-responsive"
       style={{ cursor: 'auto' }}
     >
       {/* Neural Network Background Pattern */}
@@ -326,20 +330,20 @@ export default function Projects() {
 
       <div className="relative z-20">
         <div className="max-w-7xl mx-auto px-3 xs:px-4 sm:px-6 lg:px-8 w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-8 items-center min-h-[60vh] sm:min-h-screen landscape-mobile:grid-cols-12">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center landscape-mobile:grid-cols-12">
             
             {/* Left Content */}
-            <div className="lg:col-span-8 landscape-mobile:col-span-8 text-left">
+            <div className="lg:col-span-8 landscape-mobile:col-span-8 text-left pt-0 xs:pt-0 sm:pt-0 md:pt-4 projects-content mt-16 xs:mt-20 sm:mt-24 md:-mt-32 lg:-mt-40 xl:-mt-48">
               
               {/* Main Headline with Typewriter Effect */}
               <motion.h1
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ 
-                  duration: Math.max(0.8 / scrollSpeed, 0.2), 
+                  duration: Math.max(0.4 / scrollSpeed, 0.1), 
                   delay: Math.max(0.2 / scrollSpeed, 0.05) 
                 }}
-                className="text-2xl xs:text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-2 sm:mb-6 text-white leading-tight tracking-tight min-h-[80px] xs:min-h-[100px] sm:min-h-[200px] md:min-h-[240px] lg:min-h-[320px]"
+                className="text-3xl xs:text-4xl sm:text-4xl md:text-6xl lg:text-7xl font-black mb-6 text-white leading-tight tracking-tight min-h-[120px] xs:min-h-[140px] sm:min-h-[160px] md:min-h-[220px] lg:min-h-[260px] -mt-2 xs:-mt-3 sm:-mt-4 md:mt-0 projects-heading"
                 style={{ fontFamily: 'Montserrat, sans-serif' }}
                 onMouseEnter={() => setIsHovering(true)}
                 onMouseLeave={() => setIsHovering(false)}
@@ -419,32 +423,32 @@ export default function Projects() {
                   y: isTypingComplete ? 0 : 30 
                 }}
                 transition={{ 
-                  duration: Math.max(0.4 / scrollSpeed, 0.1), 
-                  delay: isTypingComplete ? Math.max(0.1 / scrollSpeed, 0.02) : 0 
+                  duration: Math.max(0.2 / scrollSpeed, 0.05), 
+                  delay: isTypingComplete ? Math.max(0.05 / scrollSpeed, 0.01) : 0 
                 }}
-                className="text-xs xs:text-sm sm:text-lg lg:text-xl text-gray-300 mb-4 sm:mb-12 leading-relaxed max-w-3xl"
+                className="text-sm xs:text-base sm:text-base md:text-lg lg:text-xl text-gray-300 mb-8 md:mb-12 leading-relaxed max-w-3xl projects-subheading"
                 onMouseEnter={() => setIsHovering(true)}
                 onMouseLeave={() => setIsHovering(false)}
               >
                 AI-powered grooming companion bringing instant bookings and personalized recommendations.
               </motion.p>
 
-              {/* Pitch Deck Card - Mobile positioned here */}
+              {/* Pitch Deck Card - Mobile Portrait Only */}
               <motion.div
-                initial={{ opacity: 0, x: 30 }}
+                initial={{ opacity: 0, y: 30 }}
                 animate={{ 
                   opacity: isTypingComplete ? 1 : 0, 
-                  x: isTypingComplete ? 0 : 30 
+                  y: isTypingComplete ? 0 : 30 
                 }}
                 transition={{ 
-                  duration: Math.max(0.5 / scrollSpeed, 0.12), 
-                  delay: isTypingComplete ? Math.max(0.3 / scrollSpeed, 0.08) : 0 
+                  duration: Math.max(0.3 / scrollSpeed, 0.08), 
+                  delay: isTypingComplete ? Math.max(0.2 / scrollSpeed, 0.04) : 0 
                 }}
-                className="relative max-w-sm mx-auto lg:hidden landscape-mobile:hidden mb-4 xs:mb-6 sm:mb-8"
+                className="mt-6 xs:mt-8 sm:mt-10 md:hidden landscape-mobile:hidden w-full max-w-xs xs:max-w-sm sm:max-w-md"
               >
                 {/* Pitch Deck Card */}
                 <motion.div
-                  className="bg-gradient-to-br from-gray-900 via-black to-gray-900 rounded-lg sm:rounded-xl p-3 xs:p-4 sm:p-6 shadow-lg border border-gray-800 hover:border-[#00b4ab]/50 transition-all duration-300 group relative overflow-hidden"
+                  className="bg-gradient-to-br from-gray-900 via-black to-gray-900 rounded-lg sm:rounded-xl p-3 xs:p-4 sm:p-6 shadow-lg border border-gray-800 hover:border-[#00b4ab]/50 transition-all duration-300 group relative overflow-hidden w-full"
                   animate={{
                     y: !isMobile ? mousePosition.y * -5 : 0,
                     rotateX: !isMobile ? mousePosition.y * 2 : 0,
@@ -473,10 +477,10 @@ export default function Projects() {
                   </p>
                   
                   {/* Features */}
-                  <div className="space-y-0.5 sm:space-y-2 mb-2 sm:mb-4">
+                  <div className="space-y-0.5 xs:space-y-1 sm:space-y-2 mb-2 xs:mb-3 sm:mb-4">
                     {['Market Research', 'Business Model', 'Growth Strategy'].map((feature, index) => (
-                      <div key={feature} className="flex items-center text-[7px] sm:text-xs text-gray-400">
-                        <div className="w-0.5 h-0.5 sm:w-1 sm:h-1 bg-[#00b4ab] rounded-full mr-1 sm:mr-2" />
+                      <div key={feature} className="flex items-center text-[8px] xs:text-[9px] sm:text-xs text-gray-400">
+                        <div className="w-0.5 h-0.5 xs:w-0.5 xs:h-0.5 sm:w-1 sm:h-1 bg-[#00b4ab] rounded-full mr-1 xs:mr-1.5 sm:mr-2" />
                         {feature}
                       </div>
                     ))}
@@ -487,7 +491,7 @@ export default function Projects() {
                     href="https://lactosure.azurewebsites.net/api/Email/DownloadStibePdf"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="relative z-20 w-full px-2 py-1 sm:px-3 sm:py-2 bg-[#00b4ab] text-white text-[7px] sm:text-xs font-medium rounded sm:rounded-lg hover:bg-[#008a82] transition-colors duration-300 group-hover:shadow-lg group-hover:shadow-[#00b4ab]/20 block text-center"
+                    className="relative z-20 w-full px-2 py-1 xs:px-2.5 xs:py-1.5 sm:px-3 sm:py-2 bg-[#00b4ab] text-white text-[8px] xs:text-[9px] sm:text-xs font-medium rounded xs:rounded-md sm:rounded-lg hover:bg-[#008a82] transition-colors duration-300 group-hover:shadow-lg group-hover:shadow-[#00b4ab]/20 block text-center"
                     style={{ pointerEvents: 'auto' }}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
@@ -496,9 +500,9 @@ export default function Projects() {
                   </motion.a>
                   
                   {/* Status */}
-                  <div className="flex items-center mt-1 sm:mt-3 pt-1 sm:pt-3 border-t border-gray-800">
-                    <div className="w-0.5 h-0.5 sm:w-1.5 sm:h-1.5 bg-blue-400 rounded-full mr-1 sm:mr-2 animate-pulse" />
-                    <span className="text-[7px] sm:text-[10px] text-gray-500 uppercase tracking-wider">Business Overview</span>
+                  <div className="flex items-center mt-1 xs:mt-2 sm:mt-3 pt-1 xs:pt-2 sm:pt-3 border-t border-gray-800">
+                    <div className="w-0.5 h-0.5 xs:w-1 xs:h-1 sm:w-1.5 sm:h-1.5 bg-blue-400 rounded-full mr-1 xs:mr-1.5 sm:mr-2 animate-pulse" />
+                    <span className="text-[7px] xs:text-[8px] sm:text-[10px] text-gray-500 uppercase tracking-wider">Business Overview</span>
                   </div>
                 </motion.div>
               </motion.div>
@@ -507,7 +511,7 @@ export default function Projects() {
             </div>
 
             {/* Right Content - Pitch Deck Card (Desktop only) */}
-            <div className="hidden lg:block landscape-mobile:block lg:col-span-4 landscape-mobile:col-span-4">
+            <div className="hidden lg:block lg:col-span-4">
               <motion.div
                 initial={{ opacity: 0, x: 30 }}
                 animate={{ 
@@ -522,7 +526,7 @@ export default function Projects() {
               >
                 {/* Pitch Deck Card */}
                 <motion.div
-                  className="bg-gradient-to-br from-gray-900 via-black to-gray-900 rounded-lg sm:rounded-xl p-3 xs:p-4 sm:p-6 shadow-lg border border-gray-800 hover:border-[#00b4ab]/50 transition-all duration-300 group relative overflow-hidden"
+                  className="bg-gradient-to-br from-gray-900 via-black to-gray-900 rounded-lg sm:rounded-xl p-3 sm:p-6 shadow-lg border border-gray-800 hover:border-[#00b4ab]/50 transition-all duration-300 group relative overflow-hidden"
                   animate={{
                     y: !isMobile ? mousePosition.y * -5 : 0,
                     rotateX: !isMobile ? mousePosition.y * 2 : 0,
@@ -708,7 +712,7 @@ export default function Projects() {
                       </div>
                       
                       {/* Content Card */}
-                      <div className="mt-20 bg-gradient-to-br from-gray-800/40 to-gray-900/50 backdrop-blur-sm border border-gray-700/40 rounded-2xl p-8 hover:border-[#00b4ab]/50 hover:from-gray-800/60 hover:to-gray-900/70 transition-all duration-500 group-hover:shadow-2xl group-hover:shadow-[#00b4ab]/20 h-[520px] flex flex-col">
+                      <div className="mt-20 bg-gradient-to-br from-gray-800/40 to-gray-900/50 backdrop-blur-sm border border-gray-700/40 rounded-2xl p-8 hover:border-[#00b4ab]/50 hover:from-gray-800/60 hover:to-gray-900/70 transition-all duration-500 group-hover:shadow-2xl group-hover:shadow-[#00b4ab]/20 min-h-[460px] flex flex-col">
                         
                         {/* Category Badge */}
                         <div className="flex justify-center mb-6">

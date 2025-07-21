@@ -22,23 +22,23 @@ export default function Hero() {
 
   // Hero background images - Desktop (Landscape) and Mobile (Portrait)
 const desktopImages = [
-  'https://images.unsplash.com/photo-1627389955805-5bf2447e9a75?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  'https://images.unsplash.com/photo-1645839078449-124db8a049fd?q=80&w=1632&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  'https://images.unsplash.com/photo-1639322537231-2f206e06af84?q=80&w=1632&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  'https://images.unsplash.com/photo-1495592822108-9e6261896da8?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  // 'https://images.unsplash.com/photo-1627389955805-5bf2447e9a75?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  // 'https://images.unsplash.com/photo-1645839078449-124db8a049fd?q=80&w=1632&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  // 'https://images.unsplash.com/photo-1639322537231-2f206e06af84?q=80&w=1632&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  // 'https://images.unsplash.com/photo-1495592822108-9e6261896da8?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
   'https://images.unsplash.com/photo-1617396900799-f4ec2b43c7ae?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  'https://images.unsplash.com/photo-1515355252367-42ae86cb92f9?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  'https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=1120&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+//   'https://images.unsplash.com/photo-1515355252367-42ae86cb92f9?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+//   'https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=1120&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
 ];
 
 
-const mobileImages = [
-  'https://images.unsplash.com/photo-1685034759882-34583cece8e1?q=80&w=701&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  'https://images.unsplash.com/photo-1665602878676-219e01293b51?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  'https://images.unsplash.com/photo-1703750960115-47292be36300?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  'https://images.unsplash.com/photo-1608306448197-e83633f1261c?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  'https://images.unsplash.com/photo-1625314887424-9f190599bd56?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  'https://images.unsplash.com/photo-1677685854218-94b2b0250575?q=80&w=764&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+const mobileImages = ['https://images.unsplash.com/photo-1617396900799-f4ec2b43c7ae?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+  // 'https://images.unsplash.com/photo-1685034759882-34583cece8e1?q=80&w=701&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  // 'https://images.unsplash.com/photo-1665602878676-219e01293b51?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  // 'https://images.unsplash.com/photo-1703750960115-47292be36300?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  // 'https://images.unsplash.com/photo-1608306448197-e83633f1261c?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  // 'https://images.unsplash.com/photo-1625314887424-9f190599bd56?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  // 'https://images.unsplash.com/photo-1677685854218-94b2b0250575?q=80&w=764&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
 ];
 
 
@@ -175,60 +175,128 @@ const mobileImages = [
   }, [isMobile]);
 
   useEffect(() => {
+    let animationFrameId: number | null = null;
+    
     const handleMouseMove = (e: MouseEvent) => {
-      // Only track cursor if mouse is within the hero section and not on mobile
-      if (!heroRef.current || isMobile) return;
+      // Only track cursor if not on mobile
+      if (isMobile) return;
       
-      const heroRect = heroRef.current.getBoundingClientRect();
-      const isWithinHero = e.clientX >= heroRect.left && 
-                          e.clientX <= heroRect.right && 
-                          e.clientY >= heroRect.top && 
-                          e.clientY <= heroRect.bottom;
+      // Cancel previous animation frame to ensure smooth tracking
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
       
-      setIsMouseInHero(isWithinHero);
-      
-      if (isWithinHero) {
-        // For absolute positioning (custom cursor) - exact cursor position
-        setAbsoluteMousePosition({
-          x: e.clientX,
-          y: e.clientY,
-        });
-
-        // For relative positioning (existing effects)
-        setMousePosition({
-          x: (e.clientX - heroRect.left) / heroRect.width,
-          y: (e.clientY - heroRect.top) / heroRect.height,
-        });
-
-        // Detect hoverable elements within hero section
-        const target = e.target as HTMLElement;
-        const isClickable = target.tagName === 'BUTTON' || 
-                           target.tagName === 'A' || 
-                           target.closest('button') || 
-                           target.closest('a') ||
-                           target.classList.contains('cursor-pointer');
-        
-        if (isClickable) {
-          setCursorVariant('hover');
-        } else {
+      // Use requestAnimationFrame for immediate and smooth cursor updates
+      animationFrameId = requestAnimationFrame(() => {
+        if (!heroRef.current) {
+          // If hero ref is not available, hide cursor
+          setIsMouseInHero(false);
+          setMousePosition({ x: -1, y: -1 });
+          setAbsoluteMousePosition({ x: -100, y: -100 });
           setCursorVariant('default');
+          return;
         }
-      } else {
-        // Reset cursor when outside hero section and hide it
-        setCursorVariant('default');
-        setMousePosition({ x: -1, y: -1 }); // Set to invalid position to hide cursor
-        setAbsoluteMousePosition({ x: -100, y: -100 }); // Move cursor off-screen
+        
+        const heroRect = heroRef.current.getBoundingClientRect();
+        const isWithinHero = e.clientX >= heroRect.left && 
+                            e.clientX <= heroRect.right && 
+                            e.clientY >= heroRect.top && 
+                            e.clientY <= heroRect.bottom;
+        
+        setIsMouseInHero(isWithinHero);
+        
+        if (isWithinHero) {
+          // Mouse is in hero section - show custom cursor with exact position
+          setAbsoluteMousePosition({
+            x: e.clientX,
+            y: e.clientY,
+          });
+
+          // Calculate relative position for other effects
+          setMousePosition({
+            x: (e.clientX - heroRect.left) / heroRect.width,
+            y: (e.clientY - heroRect.top) / heroRect.height,
+          });
+
+          // Detect hoverable elements within hero section
+          const target = e.target as HTMLElement;
+          const isClickable = target.tagName === 'BUTTON' || 
+                             target.tagName === 'A' || 
+                             target.closest('button') || 
+                             target.closest('a') ||
+                             target.classList.contains('cursor-pointer');
+          
+          setCursorVariant(isClickable ? 'hover' : 'default');
+        } else {
+          // Mouse is outside hero section - hide custom cursor and reset values
+          setCursorVariant('default');
+          setMousePosition({ x: -1, y: -1 });
+          setAbsoluteMousePosition({ x: -100, y: -100 });
+        }
+      });
+    };
+
+    const handleMouseLeave = () => {
+      // When mouse leaves the document, ensure cursor is hidden
+      setIsMouseInHero(false);
+      setMousePosition({ x: -1, y: -1 });
+      setAbsoluteMousePosition({ x: -100, y: -100 });
+      setCursorVariant('default');
+      
+      // Clean up animation frame
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
       }
     };
 
     // Add global mouse move listener for custom cursor (desktop only)
     if (!isMobile) {
-      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mousemove', handleMouseMove, { passive: true });
+      document.addEventListener('mouseleave', handleMouseLeave, { passive: true });
     }
     
     return () => {
       if (!isMobile) {
         document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('mouseleave', handleMouseLeave);
+      }
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+    };
+  }, [isMobile]);
+
+  // Handle page visibility changes and window focus to hide cursor when needed
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        // Page is not visible, hide custom cursor
+        setIsMouseInHero(false);
+        setMousePosition({ x: -1, y: -1 });
+        setAbsoluteMousePosition({ x: -100, y: -100 });
+        setCursorVariant('default');
+      }
+    };
+
+    const handleWindowBlur = () => {
+      // Window lost focus, hide custom cursor
+      setIsMouseInHero(false);
+      setMousePosition({ x: -1, y: -1 });
+      setAbsoluteMousePosition({ x: -100, y: -100 });
+      setCursorVariant('default');
+    };
+
+    // Only add listeners on desktop
+    if (!isMobile) {
+      document.addEventListener('visibilitychange', handleVisibilityChange);
+      window.addEventListener('blur', handleWindowBlur);
+    }
+
+    return () => {
+      if (!isMobile) {
+        document.removeEventListener('visibilitychange', handleVisibilityChange);
+        window.removeEventListener('blur', handleWindowBlur);
       }
     };
   }, [isMobile]);
@@ -295,27 +363,33 @@ const mobileImages = [
       {/* Dark overlay for text readability */}
       <div className="absolute inset-0 bg-black/60" />
 
-      {/* Futuristic Interactive Cursor - Custom Mouse Pointer (Desktop Only) */}
-      {isClient && !isMobile && isMouseInHero && (
-        <motion.div
-          className="fixed pointer-events-none z-[9999]"
-          animate={{
-            // Sync exactly with the native cursor position without offset
-            x: absoluteMousePosition.x,
-            y: absoluteMousePosition.y,
-            scale: cursorVariant === 'hover' ? 1.5 : 1,
+      {/* Futuristic Interactive Cursor - Desktop Only & Hero Section Only */}
+      {isClient && !isMobile && isMouseInHero && mousePosition.x >= 0 && mousePosition.y >= 0 && (
+        <div
+          className="custom-cursor"
+          style={{
+            position: 'fixed',
+            left: `${absoluteMousePosition.x}px`,
+            top: `${absoluteMousePosition.y}px`,
+            transform: 'translate(-50%, -50%)',
+            pointerEvents: 'none',
+            zIndex: 9999,
             opacity: isMouseInHero && mousePosition.x >= 0 && mousePosition.y >= 0 && mousePosition.x <= 1 && mousePosition.y <= 1 ? 1 : 0,
-          }}
-          transition={{ 
-            type: "spring", 
-            stiffness: 400, 
-            damping: 20,
-            mass: 0.1,
-            opacity: { duration: 0.1 }
+            transition: 'opacity 0.15s ease-out',
+            width: '32px',
+            height: '32px',
           }}
         >
-          {/* Main cursor core - centered on cursor position */}
-          <div className="relative w-8 h-8" style={{ transform: 'translate(-50%, -50%)' }}>
+          {/* Main cursor core - perfectly centered on cursor position */}
+          <motion.div 
+            className="relative w-8 h-8"
+            animate={{
+              scale: cursorVariant === 'hover' ? 1.5 : 1,
+            }}
+            transition={{ 
+              scale: { type: "spring", stiffness: 500, damping: 30, mass: 0.1 }
+            }}
+          >
             {/* Central glowing core */}
             <motion.div 
               className="absolute inset-0 w-3 h-3 left-2.5 top-2.5 bg-[#00b4ab] rounded-full shadow-lg shadow-[#00b4ab]/50"
@@ -444,8 +518,8 @@ const mobileImages = [
                 />
               </>
             )}
-          </div>
-        </motion.div>
+          </motion.div>
+        </div>
       )}
 
       {/* Floating Particles */}
@@ -488,12 +562,12 @@ const mobileImages = [
       )}
 
       {/* Main Content */}
-      <div className="relative z-20 min-h-screen flex items-start md:items-center pt-8 xs:pt-10 sm:pt-12 md:pt-0">
+      <div className="relative z-20 min-h-screen flex items-start md:items-center pt-4 xs:pt-6 sm:pt-8 md:pt-0">
         <div className="max-w-7xl mx-auto px-3 xs:px-4 sm:px-6 lg:px-8 w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center landscape-mobile:grid-cols-12">
             
             {/* Left Content */}
-            <div className="lg:col-span-8 text-left pt-0 xs:pt-0 sm:pt-0 md:pt-4 hero-content">
+            <div className="lg:col-span-8 landscape-mobile:col-span-8 text-left pt-0 xs:pt-0 sm:pt-0 md:pt-4 hero-content mt-16 xs:mt-20 sm:mt-24 md:-mt-32 lg:-mt-40 xl:-mt-48">
               
               {/* Main Headline with Typewriter Effect */}
               <motion.h1
@@ -659,10 +733,10 @@ const mobileImages = [
                   duration: Math.max(0.3 / scrollSpeed, 0.08), 
                   delay: isTypingComplete ? Math.max(0.2 / scrollSpeed, 0.04) : 0 
                 }}
-                className="mt-8 md:hidden"
+                className="mt-6 xs:mt-8 sm:mt-10 md:hidden landscape-mobile:hidden"
               >
                 <motion.div
-                  className="bg-gradient-to-br from-gray-900 via-black to-gray-900 rounded-lg p-4 shadow-lg border border-gray-800 hover:border-[#00b4ab]/50 transition-all duration-300 group relative overflow-hidden max-w-xs mx-auto hero-card-mobile"
+                  className="bg-gradient-to-br from-gray-900 via-black to-gray-900 rounded-lg p-4 xs:p-5 sm:p-6 landscape:p-3 shadow-lg border border-gray-800 hover:border-[#00b4ab]/50 transition-all duration-300 group relative overflow-hidden w-[92vw] max-w-sm xs:max-w-md sm:max-w-lg landscape:w-[75vw] landscape:max-w-xs mx-auto hero-card-mobile min-h-[32vh] xs:min-h-[36vh] sm:min-h-[40vh] landscape:min-h-[60vh] flex flex-col justify-between"
                   onMouseEnter={() => setIsHovering(true)}
                   onMouseLeave={() => setIsHovering(false)}
                   whileHover={{ scale: 1.02 }}
@@ -670,52 +744,58 @@ const mobileImages = [
                   {/* Gradient Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-br from-[#00b4ab]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   
-                  {/* Stibe Logo/Icon */}
-                  <div className="relative w-10 h-10 bg-gradient-to-br from-[#00b4ab] to-[#008a82] rounded-lg flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
-                    <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                    </svg>
-                    {/* Glow effect */}
-                    <div className="absolute inset-0 bg-[#00b4ab]/20 rounded-lg blur-lg"></div>
-                  </div>
-                  
-                  <h3 className="text-lg font-bold text-white mb-2 group-hover:text-[#00b4ab] transition-colors duration-300">Stibe</h3>
-                  <p className="text-gray-300 text-sm leading-relaxed mb-3">
-                    AI-powered grooming platform
-                  </p>
-                  
-                  {/* Features */}
-                  <div className="space-y-1 mb-3">
-                    {['Smart Booking', 'AI Recommendations'].map((feature, index) => (
-                      <div key={feature} className="flex items-center text-xs text-gray-400">
-                        <div className="w-1 h-1 bg-[#00b4ab] rounded-full mr-2" />
-                        {feature}
+                  <div className="flex-1 flex flex-col justify-between">
+                    {/* Stibe Logo/Icon */}
+                    <div className="relative w-10 h-10 xs:w-12 xs:h-12 sm:w-14 sm:h-14 landscape:w-8 landscape:h-8 bg-gradient-to-br from-[#00b4ab] to-[#008a82] rounded-lg flex items-center justify-center mb-3 xs:mb-4 sm:mb-5 landscape:mb-2 group-hover:scale-110 transition-transform duration-300">
+                      <svg className="w-5 h-5 xs:w-6 xs:h-6 sm:w-7 sm:h-7 landscape:w-4 landscape:h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                      </svg>
+                      {/* Glow effect */}
+                      <div className="absolute inset-0 bg-[#00b4ab]/20 rounded-lg blur-lg"></div>
+                    </div>
+                    
+                    <div className="flex-1">
+                      <h3 className="text-lg xs:text-xl sm:text-2xl landscape:text-base font-bold text-white mb-2 xs:mb-3 sm:mb-4 landscape:mb-1 group-hover:text-[#00b4ab] transition-colors duration-300">Stibe</h3>
+                      <p className="text-gray-300 text-sm xs:text-base sm:text-lg landscape:text-xs leading-relaxed mb-3 xs:mb-4 sm:mb-5 landscape:mb-2">
+                        AI-powered grooming platform
+                      </p>
+                      
+                      {/* Features */}
+                      <div className="space-y-1.5 xs:space-y-2 landscape:space-y-1 mb-4 xs:mb-5 sm:mb-6 landscape:mb-3">
+                        {['Smart Booking', 'AI Recommendations'].map((feature, index) => (
+                          <div key={feature} className="flex items-center text-xs xs:text-sm sm:text-base landscape:text-[10px] text-gray-400">
+                            <div className="w-1.5 h-1.5 xs:w-2 xs:h-2 landscape:w-1 landscape:h-1 bg-[#00b4ab] rounded-full mr-2.5 xs:mr-3 landscape:mr-2" />
+                            {feature}
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
-                  
-                  {/* CTA Button */}
-                  <motion.button
-                    onClick={scrollToProjects}
-                    className="relative z-20 w-full px-3 py-2 bg-[#00b4ab] text-white text-xs font-medium rounded hover:bg-[#008a82] transition-colors duration-300 group-hover:shadow-lg group-hover:shadow-[#00b4ab]/20"
-                    style={{ pointerEvents: 'auto' }}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    Learn More
-                  </motion.button>
-                  
-                  {/* Status */}
-                  <div className="flex items-center mt-2 pt-2 border-t border-gray-800">
-                    <div className="w-1.5 h-1.5 bg-green-400 rounded-full mr-2 animate-pulse" />
-                    <span className="text-[10px] text-gray-500 uppercase tracking-wider">Featured</span>
+                    </div>
+                    
+                    <div className="mt-auto">
+                      {/* CTA Button */}
+                      <motion.button
+                        onClick={scrollToProjects}
+                        className="relative z-20 w-full px-4 py-3 xs:px-5 xs:py-3.5 sm:px-6 sm:py-4 landscape:px-3 landscape:py-2 bg-[#00b4ab] text-white text-sm xs:text-base sm:text-lg landscape:text-xs font-medium rounded hover:bg-[#008a82] transition-colors duration-300 group-hover:shadow-lg group-hover:shadow-[#00b4ab]/20"
+                        style={{ pointerEvents: 'auto' }}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        Learn More
+                      </motion.button>
+                      
+                      {/* Status */}
+                      <div className="flex items-center mt-3 xs:mt-3.5 sm:mt-4 landscape:mt-2 pt-3 landscape:pt-2 border-t border-gray-800">
+                        <div className="w-2 h-2 xs:w-2.5 xs:h-2.5 landscape:w-1.5 landscape:h-1.5 bg-green-400 rounded-full mr-2.5 xs:mr-3 landscape:mr-2 animate-pulse" />
+                        <span className="text-xs xs:text-sm sm:text-base landscape:text-[10px] text-gray-500 uppercase tracking-wider">Featured</span>
+                      </div>
+                    </div>
                   </div>
                 </motion.div>
               </motion.div>
             </div>
 
             {/* Right Content - Stibe Spotlight Card */}
-            <div className="lg:col-span-4 hidden md:block">
+            <div className="lg:col-span-4 landscape-mobile:col-span-4 hidden md:block landscape-mobile:block">
               <motion.div
                 initial={{ opacity: 0, x: 30 }}
                 animate={{ 
@@ -730,7 +810,7 @@ const mobileImages = [
               >
                 {/* Stibe Product Card with Career Theme Styling */}
                 <motion.div
-                  className="bg-transparent md:bg-gradient-to-br md:from-gray-900 md:via-black md:to-gray-900 rounded-lg p-3 md:p-4 shadow-none md:shadow-lg border border-white/10 md:border-gray-800 hover:border-white/20 md:hover:border-[#00b4ab]/50 transition-all duration-300 group relative overflow-hidden max-w-xs md:max-w-sm mx-auto"
+                  className="bg-gradient-to-br from-gray-900 via-black to-gray-900 rounded-lg p-3 md:p-4 shadow-lg border border-gray-800 hover:border-[#00b4ab]/50 transition-all duration-300 group relative overflow-hidden max-w-xs md:max-w-sm mx-auto landscape-mobile:p-3 landscape-mobile:max-w-xs"
                   animate={{
                     y: mousePosition.y * -5,
                     rotateX: mousePosition.y * 2,
@@ -742,27 +822,27 @@ const mobileImages = [
                   whileHover={{ scale: 1.02 }}
                 >
                   {/* Gradient Overlay */}
-                  <div className="absolute inset-0 bg-transparent md:bg-gradient-to-br md:from-[#00b4ab]/5 md:to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#00b4ab]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   
                   {/* Stibe Logo/Icon */}
-                  <div className="relative w-8 h-8 md:w-10 md:h-10 bg-transparent md:bg-gradient-to-br md:from-[#00b4ab] md:to-[#008a82] rounded-lg flex items-center justify-center mb-2 md:mb-3 group-hover:scale-110 transition-transform duration-300">
-                    <svg className="w-4 h-4 md:w-5 md:h-5 text-white/60 md:text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <div className="relative w-8 h-8 md:w-10 md:h-10 landscape-mobile:w-8 landscape-mobile:h-8 bg-gradient-to-br from-[#00b4ab] to-[#008a82] rounded-lg flex items-center justify-center mb-2 md:mb-3 landscape-mobile:mb-2 group-hover:scale-110 transition-transform duration-300">
+                    <svg className="w-4 h-4 md:w-5 md:h-5 landscape-mobile:w-4 landscape-mobile:h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                     </svg>
                     {/* Glow effect */}
-                    <div className="absolute inset-0 bg-transparent md:bg-[#00b4ab]/20 rounded-lg blur-lg"></div>
+                    <div className="absolute inset-0 bg-[#00b4ab]/20 rounded-lg blur-lg"></div>
                   </div>
                   
-                  <h3 className="text-base md:text-lg font-bold text-white/70 md:text-white mb-1 md:mb-2 group-hover:text-white/90 md:group-hover:text-[#00b4ab] transition-colors duration-300">Stibe</h3>
-                  <p className="text-gray-300/70 md:text-gray-300 text-xs leading-relaxed mb-2 md:mb-3">
+                  <h3 className="text-base md:text-lg landscape-mobile:text-base font-bold text-white mb-1 md:mb-2 landscape-mobile:mb-1 group-hover:text-[#00b4ab] transition-colors duration-300">Stibe</h3>
+                  <p className="text-gray-300 text-xs landscape-mobile:text-xs leading-relaxed mb-2 md:mb-3 landscape-mobile:mb-2">
                     AI-powered grooming platform
                   </p>
                   
                   {/* Features */}
-                  <div className="space-y-1 mb-2 md:mb-3">
+                  <div className="space-y-1 mb-2 md:mb-3 landscape-mobile:mb-2">
                     {['Smart Booking', 'AI Recommendations'].map((feature, index) => (
-                      <div key={feature} className="flex items-center text-[10px] md:text-xs text-gray-400/60 md:text-gray-400">
-                        <div className="w-0.5 h-0.5 md:w-1 md:h-1 bg-white/30 md:bg-[#00b4ab] rounded-full mr-1.5 md:mr-2" />
+                      <div key={feature} className="flex items-center text-[10px] md:text-xs landscape-mobile:text-[10px] text-gray-400">
+                        <div className="w-0.5 h-0.5 md:w-1 md:h-1 landscape-mobile:w-1 landscape-mobile:h-1 bg-[#00b4ab] rounded-full mr-1.5 md:mr-2 landscape-mobile:mr-2" />
                         {feature}
                       </div>
                     ))}
@@ -771,7 +851,7 @@ const mobileImages = [
                   {/* CTA Button */}
                   <motion.button
                     onClick={scrollToProjects}
-                    className="relative z-20 w-full px-2 py-1.5 md:px-3 md:py-2 bg-transparent md:bg-[#00b4ab] text-white/80 md:text-white text-[10px] md:text-xs font-medium rounded border border-white/20 md:border-none hover:bg-white/5 md:hover:bg-[#008a82] transition-colors duration-300 group-hover:shadow-none md:group-hover:shadow-lg md:group-hover:shadow-[#00b4ab]/20"
+                    className="relative z-20 w-full px-2 py-1.5 md:px-3 md:py-2 landscape-mobile:px-3 landscape-mobile:py-2 bg-[#00b4ab] text-white text-[10px] md:text-xs landscape-mobile:text-[10px] font-medium rounded hover:bg-[#008a82] transition-colors duration-300 group-hover:shadow-lg group-hover:shadow-[#00b4ab]/20"
                     style={{ pointerEvents: 'auto' }}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
@@ -780,9 +860,9 @@ const mobileImages = [
                   </motion.button>
                   
                   {/* Status */}
-                  <div className="flex items-center mt-2 pt-2 border-t border-white/10 md:border-gray-800">
-                    <div className="w-1 h-1 md:w-1.5 md:h-1.5 bg-white/40 md:bg-green-400 rounded-full mr-1.5 md:mr-2 animate-pulse" />
-                    <span className="text-[8px] md:text-[10px] text-gray-500/60 md:text-gray-500 uppercase tracking-wider">Featured</span>
+                  <div className="flex items-center mt-2 pt-2 border-t border-gray-800">
+                    <div className="w-1 h-1 md:w-1.5 md:h-1.5 landscape-mobile:w-1.5 landscape-mobile:h-1.5 bg-green-400 rounded-full mr-1.5 md:mr-2 landscape-mobile:mr-2 animate-pulse" />
+                    <span className="text-[8px] md:text-[10px] landscape-mobile:text-[8px] text-gray-500 uppercase tracking-wider">Featured</span>
                   </div>
                 </motion.div>
               </motion.div>
@@ -809,7 +889,7 @@ const mobileImages = [
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: Math.max(0.8 / scrollSpeed, 0.2) }}
-        className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-30 hidden md:block"
+        className="absolute bottom-0 left-1/2 transform -translate-x-1/2 z-30 hidden md:block"
       >
         <motion.div
           animate={{ y: [0, 8, 0] }}
