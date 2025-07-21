@@ -247,7 +247,7 @@ const mobileImages = [
     <section 
       ref={heroRef}
       id="hero" 
-      className="relative min-h-[50vh] xs:min-h-[55vh] sm:min-h-[60vh] bg-black text-white overflow-hidden pb-4 xs:pb-6"
+      className="relative min-h-[50vh] xs:min-h-[55vh] sm:min-h-[60vh] bg-black text-white overflow-hidden pb-4 xs:pb-6 pt-16 sm:pt-20 md:pt-24 lg:pt-28 xl:pt-32 hero-responsive"
       style={{ cursor: isMobile ? 'auto' : 'none' }}
     >
       {/* Background Images with Dissolving Effect */}
@@ -294,53 +294,6 @@ const mobileImages = [
 
       {/* Dark overlay for text readability */}
       <div className="absolute inset-0 bg-black/60" />
-
-      {/* Company Logo - Top Left (Desktop Only) */}
-      <div className="absolute -top-5 left-6 md:left-10 lg:left-14 z-[100] hidden md:block">
-        <motion.a 
-          href="/" 
-          aria-label="Go to homepage" 
-          className="group block hover:scale-110 transition-transform duration-300 ease-out relative"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ 
-            duration: Math.max(0.4 / scrollSpeed, 0.1), 
-            delay: Math.max(0.1 / scrollSpeed, 0.02) 
-          }}
-        >
-          <img 
-            src="/pydart_logo.png" 
-            alt="PyDart Logo" 
-            className="w-22 h-22 md:w-32 md:h-32 lg:w-40 lg:h-40 object-contain hover:opacity-80 transition-opacity duration-300" 
-          />
-        </motion.a>
-      </div>
-
-      {/* Email Us Button - Top Right */}
-      <div className="absolute top-8 right-2 sm:right-4 md:right-6 lg:right-8 z-50 hidden md:block">
-        <a
-          href="https://mail.google.com/mail/?view=cm&fs=1&to=info.pydart@gmail.com&su=Inquiry%20from%20Website&body=Hello%20Pydart%20Team,%0A%0AI%20would%20like%20to%20inquire%20about%20your%20services.%0A%0AThank%20you!"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-[10px] md:text-xs lg:text-sm xl:text-[14px] font-medium group relative overflow-hidden px-3 py-2 rounded-sm transition-colors duration-200 block pointer-events-auto text-white"
-          style={{ pointerEvents: 'auto' }}
-          onMouseEnter={() => setIsHovering(true)}
-          onMouseLeave={() => setIsHovering(false)}
-        >
-          <span className="inline-block px-0.5 md:px-1 lg:px-1.5">
-            <span className="relative">
-              <span className="inline-block transition-all duration-300 group-hover:opacity-0 group-hover:-translate-y-1.5">
-                Email Us
-              </span>
-              <span className="absolute top-0 left-0 transition-all duration-300 translate-y-full opacity-0 text-[#00b4ab] group-hover:-translate-y-0.5 group-hover:opacity-100">
-                Email Us
-              </span>
-            </span>
-            <span className="absolute left-1 md:left-1.5 lg:left-2 -top-1 md:-top-1.5 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-2.5 md:group-hover:translate-y-3 text-[#00b4ab]">(</span>
-            <span className="absolute right-1 md:right-1.5 lg:right-2 -top-1 md:-top-1.5 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-2.5 md:group-hover:translate-y-3 text-[#00b4ab]">)</span>
-          </span>
-        </a>
-      </div>
 
       {/* Futuristic Interactive Cursor - Custom Mouse Pointer (Desktop Only) */}
       {isClient && !isMobile && isMouseInHero && (
@@ -539,28 +492,7 @@ const mobileImages = [
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
             
             {/* Left Content */}
-            <div className="lg:col-span-8 text-left pt-0 xs:pt-0 sm:pt-0 md:pt-4">
-              
-              {/* Company Logo (Mobile Only) - Big logo on top of heading */}
-              <div className="mb-2 xs:mb-3 mt-0 xs:mt-2 md:hidden">
-                <motion.a 
-                  href="/" 
-                  aria-label="Go to homepage" 
-                  className="group block"
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ 
-                    duration: Math.max(0.4 / scrollSpeed, 0.1), 
-                    delay: Math.max(0.1 / scrollSpeed, 0.02) 
-                  }}
-                >
-                  <img 
-                    src="/pydart_logo.png" 
-                    alt="PyDart Logo" 
-                    className="w-24 h-24 xs:w-28 xs:h-28 sm:w-32 sm:h-32 object-contain" 
-                  />
-                </motion.a>
-              </div>
+            <div className="lg:col-span-8 text-left pt-0 xs:pt-0 sm:pt-0 md:pt-4 hero-content">
               
               {/* Main Headline with Typewriter Effect */}
               <motion.h1
@@ -570,7 +502,7 @@ const mobileImages = [
                   duration: Math.max(0.4 / scrollSpeed, 0.1), 
                   delay: Math.max(0.2 / scrollSpeed, 0.05) 
                 }}
-                className="text-3xl xs:text-4xl sm:text-4xl md:text-6xl lg:text-7xl font-black mb-6 text-white leading-tight tracking-tight min-h-[120px] xs:min-h-[140px] sm:min-h-[160px] md:min-h-[220px] lg:min-h-[260px] -mt-2 xs:-mt-3 sm:-mt-4 md:mt-0"
+                className="text-3xl xs:text-4xl sm:text-4xl md:text-6xl lg:text-7xl font-black mb-6 text-white leading-tight tracking-tight min-h-[120px] xs:min-h-[140px] sm:min-h-[160px] md:min-h-[220px] lg:min-h-[260px] -mt-2 xs:-mt-3 sm:-mt-4 md:mt-0 hero-heading"
                 style={{ fontFamily: 'Montserrat, sans-serif' }}
                 onMouseEnter={() => setIsHovering(true)}
                 onMouseLeave={() => setIsHovering(false)}
@@ -653,7 +585,7 @@ const mobileImages = [
                   duration: Math.max(0.2 / scrollSpeed, 0.05), 
                   delay: isTypingComplete ? Math.max(0.05 / scrollSpeed, 0.01) : 0 
                 }}
-                className="text-sm xs:text-base sm:text-base md:text-lg lg:text-xl text-gray-300 mb-8 md:mb-12 leading-relaxed max-w-3xl"
+                className="text-sm xs:text-base sm:text-base md:text-lg lg:text-xl text-gray-300 mb-8 md:mb-12 leading-relaxed max-w-3xl hero-subheading"
                 onMouseEnter={() => setIsHovering(true)}
                 onMouseLeave={() => setIsHovering(false)}
               >
@@ -671,7 +603,7 @@ const mobileImages = [
                   duration: Math.max(0.2 / scrollSpeed, 0.05), 
                   delay: isTypingComplete ? Math.max(0.1 / scrollSpeed, 0.02) : 0 
                 }}
-                className="flex flex-row gap-6"
+                className="flex flex-row gap-6 hero-buttons"
               >
                 <motion.button
                   onClick={scrollToServices}
@@ -729,7 +661,7 @@ const mobileImages = [
                 className="mt-8 md:hidden"
               >
                 <motion.div
-                  className="bg-gradient-to-br from-gray-900 via-black to-gray-900 rounded-lg p-4 shadow-lg border border-gray-800 hover:border-[#00b4ab]/50 transition-all duration-300 group relative overflow-hidden max-w-xs mx-auto"
+                  className="bg-gradient-to-br from-gray-900 via-black to-gray-900 rounded-lg p-4 shadow-lg border border-gray-800 hover:border-[#00b4ab]/50 transition-all duration-300 group relative overflow-hidden max-w-xs mx-auto hero-card-mobile"
                   onMouseEnter={() => setIsHovering(true)}
                   onMouseLeave={() => setIsHovering(false)}
                   whileHover={{ scale: 1.02 }}
