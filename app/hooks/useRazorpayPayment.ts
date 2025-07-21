@@ -44,6 +44,11 @@ export const useRazorpayPayment = () => {
     setPaymentError(null);
 
     try {
+      // Check if Razorpay keys are configured
+      if (!API_CONFIG.razorpay.keyId) {
+        throw new Error('Payment gateway not configured. Please contact support.');
+      }
+      
       console.log('🚀 Initiating payment process...', orderRequest);
       
       // Load Razorpay script
@@ -128,7 +133,9 @@ export const useRazorpayPayment = () => {
         modal: {
           ondismiss: () => {
             setPaymentLoading(false);
-            onError('Payment cancelled by user');
+            const message = 'Payment process was canceled. This could be because you closed the payment window or there was a connection issue. Your registration information is still saved, and you can try again when you are ready.';
+            setPaymentError(message);
+            onError(message);
           }
         }
       };

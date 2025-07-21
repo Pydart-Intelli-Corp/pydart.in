@@ -123,8 +123,8 @@ The system automatically sends:
 ```json
 {
   "Razorpay": {
-    "KeyId": "rzp_live_YK4ixrNgx0OUTC",
-    "KeySecret": "m44QWZae8PiimDqDcTnhp6pA"
+    "KeyId": "YOUR_RAZORPAY_KEY_ID",
+    "KeySecret": "YOUR_RAZORPAY_KEY_SECRET"
   }
 }
 ```

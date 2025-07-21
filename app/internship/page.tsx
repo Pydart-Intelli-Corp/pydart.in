@@ -18,6 +18,7 @@ export default function InternshipRegistrationPage() {
 
   const programInfoRef = useRef<HTMLDivElement>(null);
   const registrationFormRef = useRef<HTMLDivElement>(null);
+  const statusMessageRef = useRef<HTMLDivElement>(null);
   
   // Hero images from Unsplash
   const heroImages = [
@@ -50,8 +51,10 @@ export default function InternshipRegistrationPage() {
       registrationId
     });
     
-    // Scroll to top to show success message
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Small delay to ensure state updates before scrolling
+    setTimeout(() => {
+      statusMessageRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 100);
   };
 
   const handleRegistrationError = (error: string) => {
@@ -60,8 +63,10 @@ export default function InternshipRegistrationPage() {
       message: error
     });
     
-    // Scroll to top to show error message
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Small delay to ensure state updates before scrolling
+    setTimeout(() => {
+      statusMessageRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 100);
   };
 
   const resetForm = () => {
@@ -406,6 +411,7 @@ export default function InternshipRegistrationPage() {
           <AnimatePresence>
             {registrationStatus.type && (
               <motion.div
+                ref={statusMessageRef}
                 initial={{ opacity: 0, y: -30 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -30 }}
@@ -437,13 +443,29 @@ export default function InternshipRegistrationPage() {
                       <p className="text-sm font-medium">{registrationStatus.message}</p>
                       {registrationStatus.type === 'error' && registrationStatus.message && (
                         <div className="mt-3 p-3 bg-red-100 border border-red-200 rounded-lg">
-                          <p className="text-xs text-red-700 font-semibold mb-1">Error Details:</p>
-                          <p className="text-xs text-red-600 whitespace-pre-wrap break-words">{registrationStatus.message}</p>
-                          <div className="mt-2 text-xs text-red-600">
-                            <p>• Please check your internet connection</p>
-                            <p>• Verify all form fields are correctly filled</p>
-                            <p>• If the issue persists, contact support</p>
-                          </div>
+                          <p className="text-xs text-red-700 font-semibold mb-1">What to do next:</p>
+                          
+                          {registrationStatus.message.includes('canceled') || registrationStatus.message.includes('cancelled') ? (
+                            <>
+                              <p className="text-sm text-red-600 whitespace-pre-wrap break-words mb-3">
+                                Don't worry! Your form data has been saved. You can try the payment again.
+                              </p>
+                              <div className="mt-2 text-xs text-red-600">
+                                <p>• Click the "Try Again" button below to retry the payment</p>
+                                <p>• Make sure you have a stable internet connection</p>
+                                <p>• Check that your payment method is working</p>
+                              </div>
+                            </>
+                          ) : (
+                            <>
+                              <p className="text-xs text-red-600 whitespace-pre-wrap break-words">{registrationStatus.message}</p>
+                              <div className="mt-2 text-xs text-red-600">
+                                <p>• Please check your internet connection</p>
+                                <p>• Verify all form fields are correctly filled</p>
+                                <p>• If the issue persists, contact support</p>
+                              </div>
+                            </>
+                          )}
                         </div>
                       )}
                       {registrationStatus.registrationId && (

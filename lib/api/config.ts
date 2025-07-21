@@ -22,8 +22,8 @@ export const API_CONFIG = {
   
   // Razorpay Configuration
   razorpay: {
-    keyId: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_live_YK4ixrNgx0OUTC",
-    keySecret: process.env.RAZORPAY_KEY_SECRET || "m44QWZae8PiimDqDcTnhp6pA"
+    keyId: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "",
+    keySecret: process.env.RAZORPAY_KEY_SECRET || ""
   },
   
   endpoints: {

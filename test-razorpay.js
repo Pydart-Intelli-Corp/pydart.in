@@ -7,8 +7,8 @@ console.log('🔧 Testing Razorpay Integration...');
 // Test 1: Check configuration
 console.log('📋 Configuration Check:');
 console.log('- API Base URL:', API_CONFIG.emailApiUrl);
-console.log('- Razorpay Key ID:', API_CONFIG.razorpay.keyId);
-console.log('- Key ID Type:', API_CONFIG.razorpay.keyId.startsWith('rzp_test_') ? 'TEST' : 'LIVE');
+console.log('- Razorpay Key ID:', API_CONFIG.razorpay.keyId ? '[CONFIGURED]' : '[NOT CONFIGURED]');
+console.log('- Key ID Type:', API_CONFIG.razorpay.keyId?.startsWith('rzp_test_') ? 'TEST' : 'LIVE');
 console.log('- Endpoints:', API_CONFIG.endpoints.internship);
 
 // Test 2: Check if Razorpay script can be loaded
@@ -134,9 +134,9 @@ export async function runRazorpayTests() {
   console.log('4. Payment Flow:', paymentOk ? '✅ OK' : '❌ Failed');
   
   console.log('\n📊 Test Summary:');
-  console.log('- Razorpay Key ID:', API_CONFIG.razorpay.keyId);
+  console.log('- Razorpay Key Status:', API_CONFIG.razorpay.keyId ? 'Configured' : 'Not Configured');
   console.log('- API URL:', API_CONFIG.emailApiUrl);
-  console.log('- Test Environment: Ready for testing');
+  console.log('- Test Environment:', configOk && scriptOk ? 'Ready for testing' : 'Configuration needed');
   
   return {
     config: configOk,

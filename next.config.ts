@@ -1,8 +1,11 @@
 import type { NextConfig } from "next";
 
+// Determine if we're doing static export based on environment
+const isStaticExport = process.env.EXPORT_MODE === 'static' || process.env.NODE_ENV === 'production';
+
 const nextConfig: NextConfig = {
-  // Enable static export for Firebase hosting
-  output: 'export',
+  // Enable static export for Firebase hosting (conditional)
+  output: isStaticExport ? 'export' : undefined,
   trailingSlash: true,
   
   // Disable ESLint during builds
@@ -13,24 +16,26 @@ const nextConfig: NextConfig = {
   // Environment variables
   env: {
     NEXT_PUBLIC_API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL || 'https://lactosure.azurewebsites.net/api',
-    NEXT_PUBLIC_RAZORPAY_KEY_ID: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || 'rzp_live_YK4ixrNgx0OUTC',
-    RAZORPAY_KEY_SECRET: process.env.RAZORPAY_KEY_SECRET || 'm44QWZae8PiimDqDcTnhp6pA',
+    NEXT_PUBLIC_RAZORPAY_KEY_ID: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+    // Never expose secret keys in Next.js env as they can be exposed to the client
   },
 
-  // Security headers for Razorpay integration
-  async headers() {
-    return [
-      {
-        source: '/(.*)',
-        headers: [
-          {
-            key: 'Content-Security-Policy',
-            value: "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://checkout.razorpay.com; frame-src https://api.razorpay.com;"
-          }
-        ]
-      }
-    ];
-  },
+  // Security headers for Razorpay integration (only when not doing static export)
+  ...(isStaticExport ? {} : {
+    async headers() {
+      return [
+        {
+          source: '/(.*)',
+          headers: [
+            {
+              key: 'Content-Security-Policy',
+              value: "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://checkout.razorpay.com; frame-src https://api.razorpay.com;"
+            }
+          ]
+        }
+      ];
+    },
+  }),
 
   // Image configuration for external images
   images: {

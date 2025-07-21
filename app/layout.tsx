@@ -11,8 +11,20 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "PyDart - Intelligent Technology Solutions",
-  description: "PyDart delivers innovative software development, embedded systems, and AI integration solutions.",
+  title: "Pydart - Intelligent Technology Solutions",
+  description: "Pydart delivers innovative software development, embedded systems, and AI integration solutions.",
+  icons: {
+    icon: [
+      { rel: 'icon', url: '/favicon-green.png' },
+      { rel: 'icon', url: '/assets/logos/pydart-Green.png' }
+    ],
+    shortcut: [
+      { rel: 'shortcut icon', url: '/favicon-green.png' }
+    ],
+    apple: [
+      { rel: 'apple-touch-icon', url: '/favicon-green.png' }
+    ],
+  },
 };
 
 export default function RootLayout({
